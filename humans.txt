@@ -3,13 +3,27 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Ryan O'Shea - developer - ryanoshea.com - @ryancoshea
+    Tess Marchant - developer - @thisisnota_tess
+    Henry Lu - developer - @henryyilupe
 
 # THANKS
 
-    <name>
+    Prof. Brian W. Kernighan and the course staff for COS 333, Spring 2015
 
 # TECHNOLOGY COLOPHON
 
-    HTML5, CSS3
-    jQuery, Modernizr
+    Stack:
+     - HTML5, CSS3
+     - AngularJS
+     - Bootstrap
+     - jQuery
+
+    Open Source credits:
+     - HTML5 Boilerplate - h5bp.com
+     - Initializr - initializr.com
+     - Font Awesome - fontawesome.io
+     - Modernizr - modernizr.com
+     - AngularJS - angularjs.org
+     - Bootstrap - getbootstrap.com
+
