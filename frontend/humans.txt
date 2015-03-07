@@ -4,8 +4,8 @@
 # TEAM
 
     Ryan O'Shea - developer - ryanoshea.com - @ryancoshea
-    Tess Marchant - developer - @thisisnota_tess
-    Henry Lu - developer - @henryyilupe
+    Tess Marchant - developer - @tessmmarchant
+    Henry Lu - developer
 
 # THANKS
 
@@ -26,4 +26,3 @@
      - Modernizr - modernizr.com
      - AngularJS - angularjs.org
      - Bootstrap - getbootstrap.com
-
