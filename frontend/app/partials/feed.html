@@ -1,0 +1,9 @@
+<div id="page-feed">
+  <navbar></navbar>
+  <h1>Poll Feed</h1>
+  <a href="#/">Log out</a>
+  <button ng-click="fetchDevs()">See Developers</button>
+  <div ng-show="fetchedDevs" ng-repeat="dev in devs">
+    <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
+  </div>
+</div>
