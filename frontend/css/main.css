@@ -1,22 +1,36 @@
+body
+{
+  background: #eaeaea;
+  font-family: "Source Sans Pro", sans-serif;
+}
 
+#navbar
+{
+  margin-bottom: 3em;
+}
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+#navbar nav
+{
+  background: #ff8878;
+  color: #f2f2f2;
+  min-height: 4.5em;
+  -moz-box-shadow: 0 0 7px #000000;
+  -webkit-box-shadow: 0 0 7px #000000;
+  box-shadow: 0 0 7px #000000;
+  border: none;
+}
 
+#navbar .navbar-brand
+{
+  padding-top: 0.5em;
+}
 
+#navbar .navbar-brand img
+{
+  height: 2.5em;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+h1, h2, h3, h4, h5, h5
+{
+  font-weight: bold;
+}
