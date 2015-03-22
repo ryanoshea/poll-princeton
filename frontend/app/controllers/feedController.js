@@ -12,6 +12,17 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       $scope.fetchedDevs = true;
     });
   };
+
+  /*$scope.showComposeFlyout = function () {
+    $('html').css('overflow', 'hidden');
+    $('.flyout-compose').fadeIn('fast');
+    $('.flyout-compose-contents').show('fast');
+  };
+  $scope.hideComposeFlyout = function () {
+    $('.flyout-compose').fadeOut('fast');
+    $('.flyout-compose-contents').hide('fast');
+    $('html').css('overflow', 'auto');
+  };*/
 });
 
 })();

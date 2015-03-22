@@ -1,0 +1,24 @@
+<div class="flyout flyout-compose" id="flyout-compose">
+
+  <div class="flyout-hide-target" data-ng-click="hideComposeFlyout()"></div>
+
+  <div class="flyout-compose-contents flyout-contents">
+    <a class="flyout-close" href="" data-ng-click="hideComposeFlyout()"><i class="fa fa-times"></i></a>
+    <h2>Write a new poll:</h2>
+    <div class="input-group">
+      <p class="poll-label">QUESTION:</p>
+      <textarea ng-model="newPoll.question" ng-change="printPoll()" id="poll-question" placeholder="Which class should I take this semester?"></textarea>
+      <p class="poll-label">OPTIONS:</p>
+      <ul class="poll-options">
+        <li class="poll-option" ng-repeat="option in newPoll.options track by $index">
+          <i class="fa fa-circle-o"></i> <textarea ng-model="newPoll.options[$index]" placeholder="Option {{$index+1}}"></textarea>
+          <div style="height: 1px; width: 100%; clear: both"><p class="invisible">.</p></div>
+        </li>
+      </ul>
+      <div class="text-center">
+        <button class="btn btn-pp" ng-click="addOption()"><i class="fa fa-plus"></i> Add option</button>
+      </div>
+    </div>
+  </div>
+
+</div>

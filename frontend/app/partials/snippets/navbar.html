@@ -7,6 +7,14 @@
           <img alt="PollPrinceton" src="img/pollprinceton-logo.72ppi.png">
         </a>
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <div ng-controller="composeController">
+            <button id="compose-button" type="button" class="btn btn-pp btn-lg" ng-click="showComposeFlyout()"><i class="fa fa-pencil-square-o"></i></button>
+            <compose></compose>
+          </div>
+        </li>
+      </ul>
     </div><!-- /.container-fluid -->
   </nav>
 </div>
