@@ -5,27 +5,57 @@ var cont = angular.module('poll-princeton.controllers');
 cont.controller('composeController', function ($scope, $filter, $http, $location) {
    $scope.showComposeFlyout = function () {
     $('html').css('overflow', 'hidden');
-    $('.flyout-compose').fadeIn('fast');
-    $('.flyout-compose-contents').show('fast');
+    $('.flyout-compose').fadeIn('medium');
+    $('.flyout-compose-contents').show('medium');
   };
   $scope.hideComposeFlyout = function () {
-    $('.flyout-compose').fadeOut('fast');
-    $('.flyout-compose-contents').hide('fast');
+    if (!$scope.pollEmpty()) {
+      var answer = confirm('You started writing a poll. If you exit the compose window, all your changes will be lost. Click OK to exit and delete your work, or Cancel to keep writing.');
+      if (!answer) {
+        return
+      }
+    }
+    $('.flyout-compose').fadeOut('medium');
+    $('.flyout-compose-contents').hide('medium');
     $('html').css('overflow', 'auto');
+    $scope.clearPoll();
   };
 
-  $scope.newPoll = {
-    question: "",
-    options: ["", ""]
+  $scope.clearPoll = function () {
+    $scope.newPoll = {
+      question: "",
+      options: ["", ""]
+    };
+  };
+
+  $scope.pollEmpty = function () {
+    var emptyOptions = true;
+
+    for (var i in $scope.newPoll.options) {
+      if ($scope.newPoll.options[i] != "") emptyOptions = false;
+    }
+
+    return ($scope.newPoll.question == "" && emptyOptions);
   };
 
   $scope.addOption = function () {
     $scope.newPoll.options.push("");
   };
 
+  $scope.deleteOption = function (index) {
+    if ($scope.newPoll.options.length > 2) {
+      $scope.newPoll.options.splice(index, 1);
+    }
+    else {
+      alert('You can\'t delete this option. Polls need at least 2 choices.')
+    }
+  };
+
   $scope.printPoll = function () {
-    console.log($scope.newPoll);
+    /*console.log($scope.newPoll);*/
   }
+
+  $scope.clearPoll();
 
 });
 

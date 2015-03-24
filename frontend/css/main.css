@@ -48,35 +48,71 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
+a
+{
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
 .btn-pp
 {
   background: #ff8878;
+  box-shadow: 0 0.1em 0 0 #DE7568;
+}
+
+.btn-pp, .btn-pp-success
+{
   border: none;
   border-radius: .2em;
-  box-shadow: 0 0.1em 0 0 #DE7568;
+  color: white;
+  font-weight: 600;
   -webkit-transition: all 0.1s ease-out;
   -moz-transition: all 0.1s ease-out;
   -o-transition: all 0.1s ease-out;
+}
+
+.btn-pp-success
+{
+  background: #009f2f;
+  box-shadow: 0 0.1em 0 0 #008f1f;
+}
+
+.btn-pp:hover, .btn-pp-success:hover
+{
   color: white;
+  margin-top: -0.1em;
+  margin-bottom: 0.1em;
 }
 
 .btn-pp:hover
 {
-  color: white;
-  margin-top: -0.1em;
   box-shadow: 0 0.2em 0 0 #DE7568;
-  margin-bottom: 0.1em;
+}
+
+.btn-pp-success:hover
+{
+  box-shadow: 0 0.2em 0 0 #008f1f;
+}
+
+.btn-pp:active, .btn-pp-success:active
+{
+  color: white;
+  margin-top: 0.1em;
+  margin-bottom: -0.1em;
 }
 
 .btn-pp:active
 {
-  color: white;
-  margin-top: 0.1em;
   box-shadow: 0 0.05em 0 0 #DE7568;
-  margin-bottom: -0.1em;
 }
 
-.btn-pp:focus
+.btn-pp-success:active
+{
+  box-shadow: 0 0.05em 0 0 #008f1f;
+}
+
+.btn-pp:focus, .btn-pp-success:focus
 {
   color: white;
 }
@@ -109,7 +145,7 @@ h1, h2, h3, h4, h5, h5
 .flyout
 {
   display: none;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.6);
   position: fixed;
   top: 0;
   left: 0;
@@ -123,14 +159,14 @@ h1, h2, h3, h4, h5, h5
 {
   display: none;
   position: absolute;
-  top: 5%;
+  top: 10%;
   left: 50%;
   width: 65em;
   background-color: #f5f5f5;
   border-radius: 8px;
-  -webkit-box-shadow: 0px 0px 200px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow:    0px 0px 200px 0px rgba(0, 0, 0, 0.6);
-  box-shadow:         0px 0px 200px 0px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0px 0px 200px 0px rgba(0, 0, 0, 0.9);
+  -moz-box-shadow:    0px 0px 200px 0px rgba(0, 0, 0, 0.9);
+  box-shadow:         0px 0px 200px 0px rgba(0, 0, 0, 0.9);
   margin-left: -32.5em;
   padding: 1.25em;
   text-align: left;
@@ -172,21 +208,26 @@ h1, h2, h3, h4, h5, h5
 }
 }
 
-.flyout-compose h1,
-.flyout-compose h2,
-.flyout-compose h3,
-.flyout-compose h4,
-.flyout-compose h5,
-.flyout-compose h6
+.flyout h1,
+.flyout h2,
+.flyout h3,
+.flyout h4,
+.flyout h5,
+.flyout h6
 {
-  font-weight: 700;
+  font-weight: 900;
   text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #555;
 }
 
 .flyout-compose .poll-options
 {
   list-style: none;
   padding-left: 1em;
+  margin-bottom: 1em;
 }
 
 .flyout-compose .input-group, .flyout-compose
@@ -196,12 +237,13 @@ h1, h2, h3, h4, h5, h5
 
 .input-group input, .flyout-compose .input-group textarea
 {
-  width: 90%;
+  width: 100%;
 }
 
-.flyout-compose ul textarea
+.flyout-compose .poll-option input
 {
-  max-width: 83%;
+  max-width: 85%; /* Any bigger and box will wrap under the circle on an iPhone 4/5 */
+  overflow-y: hidden;
 }
 
 .flyout-compose input, .flyout-compose textarea
@@ -213,7 +255,7 @@ h1, h2, h3, h4, h5, h5
   color: #222;
 }
 
-.flyout-compose .poll-options textarea
+.flyout-compose .poll-options input
 {
   font-size: 2em;
 }
@@ -228,21 +270,34 @@ h1, h2, h3, h4, h5, h5
 }
 
 .flyout-compose #poll-question,
-.flyout-compose .poll-option textarea
+.flyout-compose .poll-option input
 {
   resize: none;
 }
 
-.poll-option i, .poll-option textarea
+.poll-option .circle, .poll-option input
 {
   float: left;
 }
 
-.poll-option i
+.flyout-compose .poll-option .delete-option
+{
+  float: right;
+  color: #888;
+  font-size: 1.5em;
+  margin-top: 0.5em;
+}
+
+.flyout-compose .delete-option:hover
+{
+  color: red;
+}
+
+.flyout-compose .poll-option .circle
 {
   color: #ff8878;
   font-size: 2em;
-  margin-top: 0.25em;
+  margin-top: 0.4em;
   margin-right: 0.5em;
 }
 
@@ -260,5 +315,20 @@ h1, h2, h3, h4, h5, h5
 .flyout-compose .input-group
 {
   display: block;
-  max-width: 95%;
+  max-width: 100%;
+  margin-right: 0;
+}
+
+.poll-option
+{
+  margin-bottom: 0.4em;
+}
+
+.flyout .first
+{
+  margin-top: 0;
+}
+
+.poll-submit {
+  float: right;
 }

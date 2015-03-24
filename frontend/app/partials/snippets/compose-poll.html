@@ -4,19 +4,23 @@
 
   <div class="flyout-compose-contents flyout-contents">
     <a class="flyout-close" href="" data-ng-click="hideComposeFlyout()"><i class="fa fa-times"></i></a>
-    <h2>Write a new poll:</h2>
+    <h2 class="first">Write a new poll</h2>
+    <hr>
     <div class="input-group">
       <p class="poll-label">QUESTION:</p>
-      <textarea ng-model="newPoll.question" ng-change="printPoll()" id="poll-question" placeholder="Which class should I take?"></textarea>
+      <textarea ng-model="newPoll.question" id="poll-question" placeholder="Which class should I take?" maxlength="350"></textarea>
       <p class="poll-label">OPTIONS:</p>
       <ul class="poll-options">
         <li class="poll-option" ng-repeat="option in newPoll.options track by $index">
-          <i class="fa fa-circle-o"></i> <textarea ng-model="newPoll.options[$index]" placeholder="Option {{$index+1}}"></textarea>
+          <i class="fa fa-circle-o circle"></i>
+          <input type="text" ng-model="newPoll.options[$index]" placeholder="Option {{$index+1}}" maxlength="144"></input>
+          <a class="delete-option" href="" ng-click="deleteOption($index)"><i class="fa fa-trash-o"></i></a>
           <div style="height: 1px; width: 100%; clear: both"><p class="invisible">.</p></div>
         </li>
       </ul>
-      <div class="text-center">
+      <div>
         <button class="btn btn-pp" ng-click="addOption()"><i class="fa fa-plus"></i> Add option</button>
+        <button class="btn btn-lg btn-pp-success poll-submit" ng-click="submitPoll()"><i class="fa fa-check-circle"></i> Post</button>
       </div>
     </div>
   </div>
