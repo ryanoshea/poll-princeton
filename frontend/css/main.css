@@ -83,20 +83,22 @@ h1, h2, h3, h4, h5, h5
 
 #compose-button
 {
-  background: #D65342;
+  /*background: #D65342;*/
+  background: #EB6B57;
   font-size: 2.4em;
   padding: 0.1em 0.3em 0;
-  box-shadow: 0 0.1em 0 0 #D13925;
+  box-shadow: 0 0.1em 0 0 #D64F3D; /* Old: #D13925 */
+  margin-right: 0.2em;
 }
 
 #compose-button:hover
 {
-  box-shadow: 0 0.2em 0 0 #D13925;
+  box-shadow: 0 0.2em 0 0 #D64F3D;
 }
 
 #compose-button:active
 {
-  box-shadow: 0 0.05em 0 0 #D13925;
+  box-shadow: 0 0.05em 0 0 #D64F3D;
 }
 
 .navbar-right
@@ -197,6 +199,11 @@ h1, h2, h3, h4, h5, h5
   width: 90%;
 }
 
+.flyout-compose ul textarea
+{
+  max-width: 83%;
+}
+
 .flyout-compose input, .flyout-compose textarea
 {
   background: none;
@@ -237,4 +244,21 @@ h1, h2, h3, h4, h5, h5
   font-size: 2em;
   margin-top: 0.25em;
   margin-right: 0.5em;
+}
+
+.navbar-header
+{
+  display: inline-block;
+  float: left;
+}
+
+.navbar-right
+{
+  float: right;
+}
+
+.flyout-compose .input-group
+{
+  display: block;
+  max-width: 95%;
 }
