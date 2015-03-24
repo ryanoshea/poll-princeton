@@ -10,7 +10,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
   };
   $scope.hideComposeFlyout = function () {
     if (!$scope.pollEmpty()) {
-      var answer = confirm('You started writing a poll. If you exit the compose window, all your changes will be lost. Click OK to exit and delete your work, or Cancel to keep writing.');
+      var answer = confirm('You have unsaved changes. Click OK to exit and delete your work, or Cancel to keep writing.');
       if (!answer) {
         return
       }
