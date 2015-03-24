@@ -162,6 +162,7 @@ a
   top: 10%;
   left: 50%;
   width: 65em;
+  max-width: 100%;
   background-color: #f5f5f5;
   border-radius: 8px;
   -webkit-box-shadow: 0px 0px 200px 0px rgba(0, 0, 0, 0.9);
@@ -242,8 +243,15 @@ a
 
 .flyout-compose .poll-option input
 {
-  max-width: 85%; /* Any bigger and box will wrap under the circle on an iPhone 4/5 */
+  max-width: 92%; /* Any bigger and box will wrap under the circle on an iPhone 4/5 */
   overflow-y: hidden;
+}
+
+@media (max-width: 768px){
+.flyout-compose .poll-option input
+{
+  max-width: 78%;
+}
 }
 
 .flyout-compose input, .flyout-compose textarea
