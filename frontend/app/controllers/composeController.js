@@ -51,6 +51,31 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     }
   };
 
+  $scope.pollValid = function () {
+    return !$scope.pollEmpty();
+  };
+
+  $scope.submitPoll = function () {
+    if (!$scope.pollValid()) return;
+    $('.poll-submit').attr('disabled', true);
+    var poll = {};
+    poll.question = $scope.newPoll.question;
+    poll.options = $scope.newPoll.options;
+    poll.author = 'pp-test'; // Change this when accounts work
+    poll.time = new Date();
+
+    $http.post('/ppapi/polls/submit', poll)
+      .success(function (data, status, headers, config) {
+        $scope.clearPoll();
+        $scope.hideComposeFlyout();
+        // send them to the url for that poll
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.')
+        $('.poll-submit').attr('disabled', false);
+      });
+  };
+
   $scope.printPoll = function () {
     /*console.log($scope.newPoll);*/
   }

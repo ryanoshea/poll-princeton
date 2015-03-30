@@ -1,6 +1,12 @@
 var http = require('http');
 var express = require('express');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 var app = express();
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(multer()); // for parsing multipart/form-data
 
 /* MongoDB Setup */
 var mongoose = require('mongoose');
@@ -9,6 +15,21 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
   console.log('mongoose: Connected to database \'test-pp\'');
+});
+
+var pollSchema = mongoose.Schema({
+  question: String,
+  options: [String],
+  author: String,
+  time: Date
+});
+
+var Poll = mongoose.model('Poll', pollSchema);
+
+app.post('/polls/submit', function (req, res) {
+  res.json(req.body); // parse request body, populate req.body object
+  console.log(req.body);
+  res.end();
 });
 
 var devSchema = mongoose.Schema({

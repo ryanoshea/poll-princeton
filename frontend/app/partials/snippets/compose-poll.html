@@ -20,7 +20,7 @@
       </ul>
       <div>
         <button class="btn btn-pp" ng-click="addOption()"><i class="fa fa-plus"></i> Add option</button>
-        <button class="btn btn-lg btn-pp-success poll-submit" ng-click="submitPoll()"><i class="fa fa-check-circle"></i> Post</button>
+        <button class="btn btn-lg btn-pp-success poll-submit" ng-click="submitPoll()" ng-disabled="!pollValid()"><i class="fa fa-check-circle"></i> Post</button>
       </div>
     </div>
   </div>
