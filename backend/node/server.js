@@ -19,7 +19,7 @@ db.once('open', function (callback) {
 
 var pollSchema = mongoose.Schema({
   question: String,
-  options: [String],
+  choices: [String],
   author: String,
   time: Date
 });

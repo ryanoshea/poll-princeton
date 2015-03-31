@@ -24,30 +24,30 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
   $scope.clearPoll = function () {
     $scope.newPoll = {
       question: "",
-      options: ["", ""]
+      choices: ["", ""]
     };
   };
 
   $scope.pollEmpty = function () {
-    var emptyOptions = true;
+    var emptyChoices = true;
 
-    for (var i in $scope.newPoll.options) {
-      if ($scope.newPoll.options[i] != "") emptyOptions = false;
+    for (var i in $scope.newPoll.choices) {
+      if ($scope.newPoll.choices[i] != "") emptyChoices = false;
     }
 
-    return ($scope.newPoll.question == "" && emptyOptions);
+    return ($scope.newPoll.question == "" && emptyChoices);
   };
 
-  $scope.addOption = function () {
-    $scope.newPoll.options.push("");
+  $scope.addChoice = function () {
+    $scope.newPoll.choices.push("");
   };
 
-  $scope.deleteOption = function (index) {
-    if ($scope.newPoll.options.length > 2) {
-      $scope.newPoll.options.splice(index, 1);
+  $scope.deleteChoice = function (index) {
+    if ($scope.newPoll.choices.length > 2) {
+      $scope.newPoll.choices.splice(index, 1);
     }
     else {
-      alert('You can\'t delete this option. Polls need at least 2 choices.')
+      alert('You can\'t delete this choice. Polls need at least 2 choices.')
     }
   };
 
@@ -60,7 +60,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     $('.poll-submit').attr('disabled', true);
     var poll = {};
     poll.question = $scope.newPoll.question;
-    poll.options = $scope.newPoll.options;
+    poll.choices = $scope.newPoll.choices;
     poll.author = 'pp-test'; // Change this when accounts work
     poll.time = new Date();
 

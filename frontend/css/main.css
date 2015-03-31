@@ -224,7 +224,7 @@ a
   color: #555;
 }
 
-.flyout-compose .poll-options
+.flyout-compose .poll-choices
 {
   list-style: none;
   padding-left: 1em;
@@ -241,14 +241,14 @@ a
   width: 100%;
 }
 
-.flyout-compose .poll-option input
+.flyout-compose .poll-choice input
 {
   max-width: 92%; /* Any bigger and box will wrap under the circle on an iPhone 4/5 */
   overflow-y: hidden;
 }
 
 @media (max-width: 768px){
-.flyout-compose .poll-option input
+.flyout-compose .poll-choice input
 {
   max-width: 78%;
 }
@@ -263,7 +263,7 @@ a
   color: #222;
 }
 
-.flyout-compose .poll-options input
+.flyout-compose .poll-choices input
 {
   font-size: 2em;
 }
@@ -278,17 +278,17 @@ a
 }
 
 .flyout-compose #poll-question,
-.flyout-compose .poll-option input
+.flyout-compose .poll-choice input
 {
   resize: none;
 }
 
-.poll-option .circle, .poll-option input
+.poll-choice .circle, .poll-choice input
 {
   float: left;
 }
 
-.flyout-compose .poll-option .delete-option
+.flyout-compose .poll-choice .delete-choice
 {
   float: right;
   color: #888;
@@ -296,12 +296,12 @@ a
   margin-top: 0.5em;
 }
 
-.flyout-compose .delete-option:hover
+.flyout-compose .delete-choice:hover
 {
   color: red;
 }
 
-.flyout-compose .poll-option .circle
+.flyout-compose .poll-choice .circle
 {
   color: #ff8878;
   font-size: 2em;
@@ -327,7 +327,7 @@ a
   margin-right: 0;
 }
 
-.poll-option
+.poll-choice
 {
   margin-bottom: 0.4em;
 }

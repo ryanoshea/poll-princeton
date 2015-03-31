@@ -10,16 +10,16 @@
       <p class="poll-label">QUESTION:</p>
       <textarea ng-model="newPoll.question" id="poll-question" placeholder="Which class should I take?" maxlength="350"></textarea>
       <p class="poll-label">OPTIONS:</p>
-      <ul class="poll-options">
-        <li class="poll-option" ng-repeat="option in newPoll.options track by $index">
+      <ul class="poll-choices">
+        <li class="poll-choice" ng-repeat="choice in newPoll.choices track by $index">
           <i class="fa fa-circle-o circle"></i>
-          <input type="text" ng-model="newPoll.options[$index]" placeholder="Option {{$index+1}}" maxlength="144"></input>
-          <a class="delete-option" href="" ng-click="deleteOption($index)"><i class="fa fa-trash-o"></i></a>
+          <input type="text" ng-model="newPoll.choices[$index]" placeholder="Choice {{$index+1}}" maxlength="144"></input>
+          <a class="delete-choice" href="" ng-click="deleteChoice($index)"><i class="fa fa-trash-o"></i></a>
           <div style="height: 1px; width: 100%; clear: both"><p class="invisible">.</p></div>
         </li>
       </ul>
       <div>
-        <button class="btn btn-pp" ng-click="addOption()"><i class="fa fa-plus"></i> Add option</button>
+        <button class="btn btn-pp" ng-click="addChoice()"><i class="fa fa-plus"></i> Add choice</button>
         <button class="btn btn-lg btn-pp-success poll-submit" ng-click="submitPoll()" ng-disabled="!pollValid()"><i class="fa fa-check-circle"></i> Post</button>
       </div>
     </div>
