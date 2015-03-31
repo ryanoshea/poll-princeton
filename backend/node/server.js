@@ -29,7 +29,33 @@ var Poll = mongoose.model('Poll', pollSchema);
 app.post('/polls/submit', function (req, res) {
   res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
+  var question = new Poll(req.body);
+  question.save(function (err) {
+    if (err) return console.error(err);
+  });
   res.end();
+});
+
+app.get('/getAllPolls', function (req, res) {
+  console.log('GET request for /getAllPolls');
+  Poll.find({}, function (err, docs) {
+    var polls = [];
+    for (var i in docs) {
+      console.log(i);
+      polls.push({
+        'question': docs[i].question,
+        'choices': docs[i].choices,
+        'author': docs[i].author,
+        'time': docs[i].time
+      });
+    }
+    res.send(polls);
+  });
+});
+
+app.get('/deletePolls', function (req, res) {
+  console.log('GET request for /deletePols');
+  Poll.find({}).remove().exec();
 });
 
 var devSchema = mongoose.Schema({
@@ -56,7 +82,7 @@ app.get('/devs/store', function (req, res) {
   tess.save(function (err) {
     if (err) return console.error(err);
   });
-});
+}); 
 
 app.get('/devs', function (req, res) {
   console.log('GET request for /devs');

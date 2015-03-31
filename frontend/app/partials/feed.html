@@ -3,7 +3,14 @@
   <h1>Poll Feed</h1>
   <a class="btn btn-pp" href="#/">Log out</a>
   <button class="btn btn-pp" ng-click="fetchDevs()">See Developers</button>
+  <button class="btn btn-pp" ng-click="deletePolls()">Delete Polls</button>
   <div ng-show="fetchedDevs" ng-repeat="dev in devs">
     <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
   </div>
+	<div class="polls" ng-show="fetchedPolls" ng-repeat="poll in polls">
+		<p> "This is the main feed" </p>
+		<p><strong>Question:</strong> {{poll.question}}</p>
+		<p ng-show="fetchedChoices" ng-repeat="c in getChoices()"><strong>Choices:</strong> {{c}}</p>
+	</div>
+
 </div>
