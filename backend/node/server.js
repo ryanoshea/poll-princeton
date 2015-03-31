@@ -45,17 +45,17 @@ app.post('/polls/submit', function (req, res) {
 
 app.get('/polls/get/all', function (req, res) {
   console.log('GET request for /polls/get/all');
-  Poll.find({}, function (err, docs) {
-    var polls = [];
-    for (var i in docs) {
-      polls.push({
-        'question': docs[i].question,
-        'choices': docs[i].choices,
-        'time': docs[i].time,
-        'pid': docs[i].pid
-      });
-    }
+  Poll.find({}, 'question choices time pid', function (err, polls) {
     res.send(polls);
+  });
+});
+
+app.get('/polls/get/:pid', function(req, res) {
+  console.log('GET request for /polls/get/' + req.params.pid);
+  Poll.findOne({'pid' : req.params.pid}, 'question choices time pid', function (err, poll) {
+    if (err) console.log('Error.');
+    if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+    else res.send(poll);
   });
 });
 

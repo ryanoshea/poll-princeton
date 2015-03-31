@@ -34,7 +34,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   };
 
   //async?
-  $scope.polls = $scope.fetchAllPolls();
+  $scope.fetchAllPolls();
 
 
 
