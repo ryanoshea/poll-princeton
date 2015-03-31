@@ -30,7 +30,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   }
 
   var GET = getUrlVars();
-  var pid = GET['p'].replace(/%20/g, '+') + '=';
+  var pid = GET['p'].replace(/%20/g, '+').replace(/%2F/g, '/') + '=';
 
   fetchPoll(pid);
 
