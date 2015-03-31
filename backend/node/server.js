@@ -37,7 +37,7 @@ app.post('/polls/submit', function (req, res) {
   newPoll.author = req.body.author;
   var sha256 = crypto.createHash('sha256');
   sha256.update(newPoll.question + newPoll.author);
-  newPoll.pid = sha256.digest('base64');
+  newPoll.pid = sha256.digest('hex');
   newPoll.time = new Date();
   var question = new Poll(newPoll);
   question.save(function (err) {
