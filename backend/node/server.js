@@ -31,7 +31,10 @@ var Poll = mongoose.model('Poll', pollSchema);
 app.post('/polls/submit', function (req, res) {
   res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
-  var newPoll = req.body;
+  var newPoll = {};
+  newPoll.question = req.body.question;
+  newPoll.choices = req.body.choices;
+  newPoll.author = req.body.author;
   var sha256 = crypto.createHash('sha256');
   sha256.update(newPoll.question + newPoll.author);
   newPoll.pid = sha256.digest('base64');
