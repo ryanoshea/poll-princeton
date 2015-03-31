@@ -8,12 +8,14 @@
     <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
   </div>
   <div class="polls">
-  	<div class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls">
-  		<span class="poll-question">{{poll.question}}</span><br>
-      <span>{{poll.choices.length}} choices</span>
-      <span>{{poll.humanTime}}</span><br>
-      <span>ID: {{poll.pid}}</span>
-  	</div>
+  	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pid}}">
+  		<p class="poll-question">{{poll.question}}</p>
+      <p class="poll-choices-preview">Vote: &#8216;{{poll.choices[0]}}&#8217;<span ng-show="poll.choices.length > 2">, </span><span ng-show="poll.choices.length == 2"> vs. </span>&#8216;{{poll.choices[1]}}&#8217;<span ng-show="poll.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span>
+      <div class="poll-meta">
+        <span><i class="fa fa-list-alt"></i> {{poll.choices.length}} choices</span>
+        <span><i class="fa fa-clock-o"></i> {{poll.humanTime}}</span>
+      </div>
+  	</a>
   </div>
 
 </div>

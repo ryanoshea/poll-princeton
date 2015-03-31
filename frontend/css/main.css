@@ -1,5 +1,6 @@
 body
 {
+  color: #222;
   background: #eaeaea;
   font-family: "Source Sans Pro", sans-serif;
 }
@@ -343,6 +344,46 @@ a
 
 #page-feed .poll-question
 {
-  font-size: 2em;
+  font-size: 2.25em;
   font-weight: 300;
+}
+
+a.poll
+{
+  color: #222;
+  display: block;
+  margin: 0.6em 0;
+  padding: 0.7em 1em 1em 1em;
+  -webkit-border-radius: 0.6em;
+  -moz-border-radius: 0.6em;
+  border-radius: 0.6em;
+  background: none;
+  background: rgba(0,0,0,0);
+}
+
+a.poll:hover, a.poll:active
+{
+  text-decoration: none;
+  background: #e0e0e0;
+  background: rgba(0,0,0,0.05);
+}
+
+a.poll .poll-question
+{
+  margin: 0;
+}
+
+a.poll .poll-meta
+{
+  color: #aaa;
+}
+
+a.poll .poll-meta span
+{
+  margin-right: 1em;
+}
+
+a.poll .poll-choices-preview
+{
+  color: #666;
 }
