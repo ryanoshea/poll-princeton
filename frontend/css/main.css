@@ -340,3 +340,9 @@ a
 .poll-submit {
   float: right;
 }
+
+#page-feed .poll-question
+{
+  font-size: 2em;
+  font-weight: 300;
+}

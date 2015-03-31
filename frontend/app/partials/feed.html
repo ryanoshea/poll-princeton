@@ -7,10 +7,13 @@
   <div ng-show="fetchedDevs" ng-repeat="dev in devs">
     <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
   </div>
-	<div class="polls" ng-show="fetchedPolls" ng-repeat="poll in polls">
-		<p> "This is the main feed" </p>
-		<p><strong>Question:</strong> {{poll.question}}</p>
-		<p ng-show="fetchedChoices" ng-repeat="c in getChoices()"><strong>Choices:</strong> {{c}}</p>
-	</div>
+  <div class="polls">
+  	<div class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls">
+  		<span class="poll-question">{{poll.question}}</span><br>
+      <span>{{poll.choices.length}} choices</span>
+      <span>{{poll.humanTime}}</span><br>
+      <span>ID: {{poll.pid}}</span>
+  	</div>
+  </div>
 
 </div>

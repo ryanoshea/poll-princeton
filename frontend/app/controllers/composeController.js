@@ -62,7 +62,6 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     poll.question = $scope.newPoll.question;
     poll.choices = $scope.newPoll.choices;
     poll.author = 'pp-test'; // Change this when accounts work
-    poll.time = new Date();
 
     $http.post('/ppapi/polls/submit', poll)
       .success(function (data, status, headers, config) {

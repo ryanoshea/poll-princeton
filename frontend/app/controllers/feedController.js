@@ -7,8 +7,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.devs = [];
   $scope.fetchedPolls = false;
   $scope.polls = [];
-  $scope.fetchedChoicess = false;
-
+  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   $scope.fetchDevs = function () {
     $http.get('http://' + window.location.hostname + '/ppapi/devs').success(function (data, status, headers, config) {
@@ -18,31 +17,24 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   };
 
   $scope.deletePolls = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/deletePolls').success(function (data, status, headers, config) {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/delete/all').success(function (data, status, headers, config) {
     });
   };
 
-  $scope.fetchPolls = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/getAllPolls').success(function (data, status, headers, config) {
+  $scope.fetchAllPolls = function () {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/all').success(function (data, status, headers, config) {
       $scope.polls = data;
+      for (var i in $scope.polls) {
+        var thisPoll = $scope.polls[i];
+        var date = new Date(thisPoll.time);
+        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      }
       $scope.fetchedPolls = true;
     });
   };
 
-  $scope.getChoices = function () {
-    choices = [];
-    for (p in $scope.polls) {
-      for (c in p.choices) {
-        $scope.choices.push(c);
-      }
-    }
-    $scope.fetchedChoices = true;
-    return choices;
-  };
-
-
-  //async? 
-  $scope.polls = $scope.fetchPolls();
+  //async?
+  $scope.polls = $scope.fetchAllPolls();
 
 
 

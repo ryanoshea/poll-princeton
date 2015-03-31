@@ -2,6 +2,7 @@ var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer');
+var crypto = require('crypto');
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -21,7 +22,8 @@ var pollSchema = mongoose.Schema({
   question: String,
   choices: [String],
   author: String,
-  time: Date
+  time: Date,
+  pid: String
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
@@ -29,33 +31,38 @@ var Poll = mongoose.model('Poll', pollSchema);
 app.post('/polls/submit', function (req, res) {
   res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
-  var question = new Poll(req.body);
+  var newPoll = req.body;
+  var sha256 = crypto.createHash('sha256');
+  sha256.update(newPoll.question + newPoll.author);
+  newPoll.pid = sha256.digest('base64');
+  newPoll.time = new Date();
+  var question = new Poll(newPoll);
   question.save(function (err) {
     if (err) return console.error(err);
   });
   res.end();
 });
 
-app.get('/getAllPolls', function (req, res) {
-  console.log('GET request for /getAllPolls');
+app.get('/polls/get/all', function (req, res) {
+  console.log('GET request for /polls/get/all');
   Poll.find({}, function (err, docs) {
     var polls = [];
     for (var i in docs) {
-      console.log(i);
       polls.push({
         'question': docs[i].question,
         'choices': docs[i].choices,
-        'author': docs[i].author,
-        'time': docs[i].time
+        'time': docs[i].time,
+        'pid': docs[i].pid
       });
     }
     res.send(polls);
   });
 });
 
-app.get('/deletePolls', function (req, res) {
-  console.log('GET request for /deletePols');
+app.get('/polls/delete/all', function (req, res) {
+  console.log('GET request for /polls/delete/all');
   Poll.find({}).remove().exec();
+  res.end();
 });
 
 var devSchema = mongoose.Schema({
@@ -82,7 +89,7 @@ app.get('/devs/store', function (req, res) {
   tess.save(function (err) {
     if (err) return console.error(err);
   });
-}); 
+});
 
 app.get('/devs', function (req, res) {
   console.log('GET request for /devs');
