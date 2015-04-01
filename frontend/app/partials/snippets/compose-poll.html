@@ -14,7 +14,7 @@
         <li class="poll-choice" ng-repeat="choice in newPoll.choices track by $index">
           <i class="fa fa-circle-o circle"></i>
           <input type="text" ng-model="newPoll.choices[$index]" placeholder="Choice {{$index+1}}" maxlength="144"></input>
-          <a class="delete-choice" href="" ng-click="deleteChoice($index)"><i class="fa fa-trash-o"></i></a>
+          <a class="delete-choice" href="" ng-click="deleteChoice($index)" tabindex="-1"><i class="fa fa-trash-o"></i></a>
           <div style="height: 1px; width: 100%; clear: both"><p class="invisible">.</p></div>
         </li>
       </ul>

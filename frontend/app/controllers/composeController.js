@@ -7,6 +7,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     $('html').css('overflow', 'hidden');
     $('.flyout-compose').fadeIn('medium');
     $('.flyout-compose-contents').show('medium');
+    $('#poll-question').focus();
   };
   $scope.hideComposeFlyout = function () {
     if (!$scope.pollEmpty()) {
@@ -68,6 +69,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
         $scope.clearPoll();
         $scope.hideComposeFlyout();
         // send them to the url for that poll
+        window.location = window.location.origin + window.location.pathname + '#/poll/?p=' + data.pid;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')

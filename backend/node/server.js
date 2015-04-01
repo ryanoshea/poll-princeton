@@ -29,7 +29,7 @@ var pollSchema = mongoose.Schema({
 var Poll = mongoose.model('Poll', pollSchema);
 
 app.post('/polls/submit', function (req, res) {
-  res.json(req.body); // parse request body, populate req.body object
+  //res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
   var newPoll = {};
   newPoll.question = req.body.question;
@@ -43,7 +43,7 @@ app.post('/polls/submit', function (req, res) {
   question.save(function (err) {
     if (err) return console.error(err);
   });
-  res.end();
+  res.send({'pid' : newPoll.pid});
 });
 
 app.get('/polls/get/all', function (req, res) {
