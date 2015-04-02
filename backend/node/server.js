@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer');
@@ -27,6 +28,13 @@ var pollSchema = mongoose.Schema({
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
+
+var ticketSchema = mongoose.Schema({
+  netid: String,
+  ticket: String
+});
+
+var Ticket = mongoose.model('Ticket', ticketSchema);
 
 app.post('/polls/submit', function (req, res) {
   //res.json(req.body); // parse request body, populate req.body object
@@ -66,6 +74,62 @@ app.get('/polls/delete/all', function (req, res) {
   console.log('GET request for /polls/delete/all');
   Poll.find({}).remove().exec();
   res.end();
+});
+
+
+// Indicates whether the provided CAS ticket (for just-after-login) or ticket/netid pair (for return
+// visits) are valid, and thus the user is logged in. Returns {loggedin : true/false}.
+app.post('/auth/loggedin', function (req, res) {
+  console.log('POST request for /auth/loggedin');
+
+  // Check for the ticket in the db of currently-logged-in tickets/users
+  var foundInDB = false;
+  var sentTicket = {ticket: req.body.ticket, netid: req.body.netid};
+  Ticket.findOne({ticket: sentTicket.ticket}, function (err, ticket) {
+
+    if (ticket != null) {
+      // The user is already logged in
+      console.log("Found user " + ticket.netid + " in database. Authenticated.");
+      foundInDB = true;
+      res.send({loggedin: true, netid: ticket.netid});
+    }
+    else {
+      // User not found in db; check with CAS's validation server
+      console.log("Could not find user " + sentTicket.netid + " in database.");
+      var casValidateUrl = 'https://fed.princeton.edu/cas/validate?ticket=' + req.body.ticket + '&service=' + req.body.returnUrl;
+      console.log('Querying ' + casValidateUrl);
+      var response = "";
+      https.get(casValidateUrl, function(resp) {
+        resp.on('data', function(d) {
+          // Piece chunks of response together
+          response = response + d;
+        });
+        resp.on('end', function(d) {
+          // Response is ready, continue
+          console.log('Response from CAS: ' + response);
+          if (response.charAt(0) == 'y') {
+            // CAS approved the ticket
+            var netid = response.substring(response.indexOf('\n') + 1, response.length - 1);
+            var newTicket = {ticket: req.body.ticket, netid: netid};
+            console.log(newTicket);
+            var saveTicket = new Ticket(newTicket);
+            saveTicket.save(function (err) {
+              if (err)
+                console.log("Database ticket save error.");
+            });
+            res.send({'loggedin' : true, 'netid' : netid});
+          }
+          else {
+            // CAS rejected the ticket
+            res.send({'loggedin' : false});
+          }
+        });
+        resp.on('error', function(e) {
+          res.send({'loggedin' : false}); // just to be safe
+        });
+      });
+    }
+  });
 });
 
 var devSchema = mongoose.Schema({

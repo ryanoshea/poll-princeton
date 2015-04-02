@@ -13,6 +13,13 @@ angular.module('poll-princeton')
       restrict: 'E',
       templateUrl: 'app/partials/snippets/compose-poll.html'
     }
+  })
+
+  .directive('auth', function () {
+    return {
+      restrict: 'E',
+      templateUrl: 'app/partials/snippets/auth.html'
+    }
   });
 
 })();

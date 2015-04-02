@@ -14,7 +14,7 @@ app.config(function ($routeProvider) {
   // configure view routing
   $routeProvider
     .when('/', {
-      controller: 'authController',
+      controller: 'loginController',
       templateUrl: 'app/partials/login.html'
     })
     .when('/feed', {
