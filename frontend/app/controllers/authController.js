@@ -53,7 +53,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
   $http.post('/ppapi/auth/loggedin', {
     'ticket' : ticket,
     'netid' : netid,
-    'returnUrl' : 'http://localhost/pp/#/feed/'})
+    'returnUrl' : window.location.origin + window.location.pathname + '#/feed'})
     .success(function (data, status, headers, config) {
       if (!data.loggedin) {
         // User is not authenticated; wipe localStorage and send back to login page.
