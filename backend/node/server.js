@@ -24,7 +24,9 @@ var pollSchema = mongoose.Schema({
   choices: [String],
   author: String,
   time: Date,
-  pid: String
+  pid: String,
+  score: Number,
+  responders: [String]
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
@@ -43,6 +45,7 @@ app.post('/polls/submit', function (req, res) {
   newPoll.question = req.body.question;
   newPoll.choices = req.body.choices;
   newPoll.author = req.body.author;
+  newPoll.score = 0;
   var sha256 = crypto.createHash('sha256');
   sha256.update(newPoll.question + newPoll.author);
   newPoll.pid = sha256.digest('hex');
@@ -56,14 +59,14 @@ app.post('/polls/submit', function (req, res) {
 
 app.get('/polls/get/all', function (req, res) {
   console.log('GET request for /polls/get/all');
-  Poll.find({}, 'question choices time pid', function (err, polls) {
+  Poll.find({}, 'question choices time pid score', function (err, polls) {
     res.send(polls);
   });
 });
 
 app.get('/polls/get/:pid', function(req, res) {
   console.log('GET request for /polls/get/' + req.params.pid);
-  Poll.findOne({'pid' : req.params.pid}, 'question choices time pid', function (err, poll) {
+  Poll.findOne({'pid' : req.params.pid}, 'question choices time pid score', function (err, poll) {
     if (err) console.log('Error.');
     if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
     else res.send(poll);
@@ -76,6 +79,34 @@ app.get('/polls/delete/all', function (req, res) {
   res.end();
 });
 
+// POST with upOrDown as -1 for downvote button. +1 for upvote button. 
+// Plus send pid. 
+app.post('/polls/vote', function (req, res) {
+  //res.json(req.body); // parse request body, populate req.body object
+  console.log(req.body);
+  upOrDown = req.body.upOrDown;
+  pollID = req.body.pollID;
+  var conditions = {pid: pollID};
+  var update = {$inc: {score:upOrDown}};
+  Poll.findOneAndUpdate(conditions, update, function (err, updatedPoll) {
+      if (err) console.log('Error.');
+      if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+        res.send(updatedPoll)
+  });
+});
+
+app.post('/polls/respond', function (req, res) {
+  //res.json(req.body); // parse request body, populate req.body object
+  console.log(req.body);
+  pollID = req.body.pollID;
+  var conditions = {pid: pollID};
+  var update = {$inc: {score:1}, };
+  Poll.findOneAndUpdate(conditions, update, function (err, updatedPoll) {
+      if (err) console.log('Error.');
+      if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+        res.send(updatedPoll)
+  });
+});
 
 // Indicates whether the provided CAS ticket (for just-after-login) or ticket/netid pair (for return
 // visits) are valid, and thus the user is logged in. Returns {loggedin : true/false}.
