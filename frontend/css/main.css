@@ -5,6 +5,16 @@ body
   font-family: "Source Sans Pro", sans-serif;
 }
 
+*
+{
+  cursor: default;
+}
+
+input[type=text], textarea
+{
+  cursor: text;
+}
+
 #content
 {
   visibility: hidden;
@@ -13,6 +23,31 @@ body
 button, .btn
 {
   cursor: default;
+}
+
+a.pp, a.pp:hover, a.pp:visited, a.pp:active, a.pp:focus, a.pp.hover
+{
+  cursor: pointer;
+  color: #ff8878;
+  padding: 0.3em;
+  border-radius: .2em;
+  text-decoration: none;
+}
+
+a.pp
+{
+  background: rgba(255, 136, 120, 0);
+}
+
+a.pp:hover, a.pp:visited, a.pp:active, a.pp:focus
+{
+  color: white;
+  background: rgba(255, 136, 120, 1);
+}
+
+a.btn
+{
+  color: white;
 }
 
 /* Disable outlines on clicked buttons */
@@ -123,6 +158,11 @@ a
   color: white;
 }
 
+.container
+{
+  padding: 0 .2em;
+}
+
 #compose-button
 {
   /*background: #D65342;*/
@@ -220,7 +260,8 @@ a
 .flyout h3,
 .flyout h4,
 .flyout h5,
-.flyout h6
+.flyout h6,
+#content h1
 {
   font-weight: 900;
   text-transform: uppercase;
@@ -366,6 +407,11 @@ a
   background: rgba(0,0,0,0);
 }
 
+a.poll *
+{
+  cursor: pointer;
+}
+
 #page-feed a.poll:hover, a.poll:active
 {
   text-decoration: none;
@@ -393,20 +439,20 @@ a
   color: #666;
 }
 
-#logout, #logout:visited
+/*#logout, #logout:visited
 {
-  color: rgba(255,255,255,.7);
+  color: rgba(0,0,0,.7);
 }
 
 #logout:hover, #logout:active
 {
-  color: rgba(255,255,255,1);
-}
+  color: rgba(0,0,0,1);
+}*/
 
 #logout
 {
-  font-size: 1.5em;
-  margin: 0.5em 1em 0 0;
+  font-size: 1.2em;
+  padding-bottom: 0.1em;
   display: block;
 }
 
@@ -418,5 +464,40 @@ a
 
 #username
 {
-  margin: 0.95em 1em 0 0;
+  margin: 0.45em 1em 0 0;
+}
+
+#auth
+{
+  margin-top: -1em;
+  margin-bottom: -3em;
+}
+
+#page-login #content
+{
+  margin-top: 3em;
+}
+
+@media (max-width: 768px){
+  #content
+  {
+    margin-top: 3em;
+  }
+}
+
+p.blurb
+{
+  font-size: 1.3em;
+  font-weight: 300;
+  text-align: center;
+}
+
+hr
+{
+  border-top: 1px solid #ccc;
+}
+
+#feed-sort
+{
+  text-align: center;
 }

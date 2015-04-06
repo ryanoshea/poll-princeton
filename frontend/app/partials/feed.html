@@ -1,10 +1,15 @@
 <div id="page-feed" class="container container-fluid">
   <navbar></navbar>
   <div id="content">
-    <h1>Poll Feed</h1>
-    <a class="btn btn-pp" href="#/">Log out</a>
-    <button class="btn btn-pp" ng-click="fetchDevs()">See Developers</button>
-    <button class="btn btn-pp" ng-click="deletePolls()">Delete Polls</button>
+    <h1>Polls</h1>
+    <p class="blurb">
+      Open questions from Princeton students.<br>
+      Answer someone's, write your own, and see what the Orange Bubble has to think.
+    </p>
+    <hr>
+    <div id="feed-sort">
+      <p>SORT BY: <a class="pp">NEWEST</a> | <a class="pp">POPULAR</a></p>
+    </div>
     <div ng-show="fetchedDevs" ng-repeat="dev in devs">
       <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
     </div>
@@ -18,5 +23,9 @@
         </div>
     	</a>
     </div>
+
+    <p>Admin: </p>
+    <button class="btn btn-pp" ng-click="fetchDevs()">See Developers</button>
+    <button class="btn btn-pp" ng-click="deletePolls()">Delete Polls</button>
   </div>
 </div>
