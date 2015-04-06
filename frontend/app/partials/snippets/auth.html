@@ -1,1 +1,8 @@
-<div id="auth-module" style="width: 0; height: 0; visibility: hidden" ng-controller="authController"></div>
+<div id="auth" ng-controller="authController">
+  <span>
+    <a id="logout" ng-click="logout()" ng-hide="username == ''" href=""><i class="fa fa-power-off"></i></a>
+  </span>
+  <span id="username">
+    {{username}}
+  </span>
+</div>

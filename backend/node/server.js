@@ -79,8 +79,8 @@ app.get('/polls/delete/all', function (req, res) {
   res.end();
 });
 
-// POST with upOrDown as -1 for downvote button. +1 for upvote button. 
-// Plus send pid. 
+// POST with upOrDown as -1 for downvote button. +1 for upvote button.
+// Plus send pid.
 app.post('/polls/vote', function (req, res) {
   //res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
@@ -161,6 +161,12 @@ app.post('/auth/loggedin', function (req, res) {
       });
     }
   });
+});
+
+app.get('/auth/logout/:netid', function (req, res) {
+  console.log('GET request for /auth/logout/' + req.params.netid);
+  Ticket.find({netid: req.params.netid}).remove().exec();
+  res.end();
 });
 
 var devSchema = mongoose.Schema({

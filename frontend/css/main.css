@@ -392,3 +392,31 @@ a
 {
   color: #666;
 }
+
+#logout, #logout:visited
+{
+  color: rgba(255,255,255,.7);
+}
+
+#logout:hover, #logout:active
+{
+  color: rgba(255,255,255,1);
+}
+
+#logout
+{
+  font-size: 1.5em;
+  margin: 0.5em 1em 0 0;
+  display: block;
+}
+
+#auth span
+{
+  display: block;
+  float: right;
+}
+
+#username
+{
+  margin: 0.95em 1em 0 0;
+}

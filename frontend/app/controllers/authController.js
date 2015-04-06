@@ -4,6 +4,8 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('authController', function ($scope, $filter, $http, $location) {
 
+  $scope.username = "";
+
   // One way of parsing GET variables
   function getUrlVars() {
     var vars = [], hash;
@@ -68,6 +70,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         // User is authenticated; store their ticket/netid in localStorage and send them to feed.
         localStorage.setItem('ticket', ticket);
         localStorage.setItem('netid', data.netid);
+        $scope.username = data.netid;
         if ($('#page-login').length > 0)
           window.location = window.location.origin + window.location.pathname + '#/feed';
         else
@@ -81,6 +84,19 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         window.location = window.location.origin + window.location.pathname + '#/';
       }
     });
+
+    $scope.logout = function () {
+      var netid = localStorage.getItem('netid');
+      localStorage.removeItem('ticket');
+      localStorage.removeItem('netid');
+      $http.get('/ppapi/auth/logout/' + netid)
+      .success(function () {
+        window.location = 'https://fed.princeton.edu/cas/logout';
+      })
+      .error(function() {
+        window.location = 'https://fed.princeton.edu/cas/logout';
+      });
+    };
 
 });
 
