@@ -39,9 +39,9 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
 
   /* Handle URL problems on first log in from CAS. Also has the effect of removing ticket from URL
      during login */
-  if ($('#page-login').length == 0) {
+  if ($('#page-feed').length > 0) {
     var url = window.location.href;
-    if (url.indexOf('?ticket') !== -1) {
+    if (url.indexOf('?ticket') !== -1 && url.indexOf('feed') > url.indexOf('?ticket')) {
       var ticketStr = url.substring(url.indexOf('?ticket='), url.indexOf('#'));
       console.log(ticketStr);
       var newUrl = url.substring(0, url.indexOf('?ticket=')) + '#/feed' + ticketStr;
