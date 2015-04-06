@@ -5,6 +5,11 @@ body
   font-family: "Source Sans Pro", sans-serif;
 }
 
+#content
+{
+  visibility: hidden;
+}
+
 button, .btn
 {
   cursor: default;

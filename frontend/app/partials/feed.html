@@ -1,21 +1,22 @@
 <div id="page-feed" class="container container-fluid">
   <navbar></navbar>
-  <h1>Poll Feed</h1>
-  <a class="btn btn-pp" href="#/">Log out</a>
-  <button class="btn btn-pp" ng-click="fetchDevs()">See Developers</button>
-  <button class="btn btn-pp" ng-click="deletePolls()">Delete Polls</button>
-  <div ng-show="fetchedDevs" ng-repeat="dev in devs">
-    <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
+  <div id="content">
+    <h1>Poll Feed</h1>
+    <a class="btn btn-pp" href="#/">Log out</a>
+    <button class="btn btn-pp" ng-click="fetchDevs()">See Developers</button>
+    <button class="btn btn-pp" ng-click="deletePolls()">Delete Polls</button>
+    <div ng-show="fetchedDevs" ng-repeat="dev in devs">
+      <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
+    </div>
+    <div class="polls">
+    	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pid}}">
+    		<p class="poll-question">{{poll.question}}</p>
+        <p class="poll-choices-preview">Vote: &#8216;{{poll.choices[0]}}&#8217;<span ng-show="poll.choices.length > 2">, </span><span ng-show="poll.choices.length == 2"> vs. </span>&#8216;{{poll.choices[1]}}&#8217;<span ng-show="poll.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
+        <div class="poll-meta">
+          <span><i class="fa fa-list-alt"></i> {{poll.choices.length}} choices</span>
+          <span><i class="fa fa-clock-o"></i> {{poll.humanTime}}</span>
+        </div>
+    	</a>
+    </div>
   </div>
-  <div class="polls">
-  	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pid}}">
-  		<p class="poll-question">{{poll.question}}</p>
-      <p class="poll-choices-preview">Vote: &#8216;{{poll.choices[0]}}&#8217;<span ng-show="poll.choices.length > 2">, </span><span ng-show="poll.choices.length == 2"> vs. </span>&#8216;{{poll.choices[1]}}&#8217;<span ng-show="poll.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span>
-      <div class="poll-meta">
-        <span><i class="fa fa-list-alt"></i> {{poll.choices.length}} choices</span>
-        <span><i class="fa fa-clock-o"></i> {{poll.humanTime}}</span>
-      </div>
-  	</a>
-  </div>
-
 </div>

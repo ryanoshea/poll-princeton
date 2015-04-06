@@ -37,7 +37,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
 
   /* Handle URL problems on first log in from CAS. Also has the effect of removing ticket from URL
      during login */
-  if ($('page-login').length > 0) {
+  if ($('#page-login').length > 0) {
     var url = window.location.href;
     if (url.indexOf('?ticket') !== -1) {
       var ticketStr = url.substring(url.indexOf('?ticket='), url.indexOf('#'));
@@ -59,7 +59,10 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         // User is not authenticated; wipe localStorage and send back to login page.
         localStorage.removeItem('ticket');
         localStorage.removeItem('netid');
-        window.location = window.location.origin + window.location.pathname + '#/';
+        if ($('#page-login').length == 0)
+          window.location = window.location.origin + window.location.pathname + '#/';
+        else
+          $('#content').css('visibility', 'visible');
       }
       else {
         // User is authenticated; store their ticket/netid in localStorage and send them to feed.
@@ -67,6 +70,8 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.setItem('netid', data.netid);
         if ($('#page-login').length > 0)
           window.location = window.location.origin + window.location.pathname + '#/feed';
+        else
+          $('#content').css('visibility', 'visible');
       }
     }).error(function (data, status, headers, config) {
       // Log them out, to be safe

@@ -1,6 +1,8 @@
 <div id="page-poll" class="container container-fluid">
   <navbar></navbar>
-  <h1>Poll Page</h1>
-  <p ng-show="fetchedPoll">{{poll.question}}</p>
-  <p ng-show="fetchedPoll" ng-repeat="c in poll.choices">{{c}}</p>
+  <div id="content">
+    <h1>Poll Page</h1>
+    <p ng-show="fetchedPoll">{{poll.question}}</p>
+    <p ng-show="fetchedPoll" ng-repeat="c in poll.choices">{{c}}</p>
+  </div>
 </div>
