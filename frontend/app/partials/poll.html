@@ -4,5 +4,8 @@
     <h1>Poll Page</h1>
     <p ng-show="fetchedPoll">{{poll.question}}</p>
     <p ng-show="fetchedPoll" ng-repeat="c in poll.choices">{{c}}</p>
+    <p class="btn btn-pp vote-submit" ng-click="upVote(poll.pid)">good poll!</button>
+    <p ng-show="fetchedPoll">{{poll.score}}</p>
+    <p class="btn btn-pp vote-submit" ng-click="downVote(poll.pid)">bad poll!</button>
   </div>
 </div>

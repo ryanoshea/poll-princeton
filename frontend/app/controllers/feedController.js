@@ -33,6 +33,22 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
+  /*$scope.upVote = function (pid) {
+    $http.post('/ppapi/polls/vote', )
+      .success(function (data, status, headers, config) {
+        //Update the number displayed for the poll. Color the arrow. 
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.')
+        $('.vote-submit').attr('disabled', false);
+      });
+  };
+
+  $scope.deletePolls = function () {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/delete/all').success(function (data, status, headers, config) {
+    });
+  };*/
+
   //async?
   $scope.fetchAllPolls();
 

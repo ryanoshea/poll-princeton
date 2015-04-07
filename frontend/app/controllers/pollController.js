@@ -29,6 +29,38 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     });
   }
 
+  $scope.upVote = function (pid) {
+    var pkg = {};
+    var user = localStorage.getItem('netid');
+    pkg.upOrDown = true;
+    pkg.pollID = pid;
+    pkg.netid = user;
+    $http.post('/ppapi/polls/vote', pkg)
+      .success(function (data, status, headers, config) {
+        //Update the number displayed for the poll. Color the arrow. 
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.')
+        $('.vote-submit').attr('disabled', false);
+      });
+  };
+
+  $scope.downVote = function (pid) {
+    var pkg = {};
+    var user = localStorage.getItem('netid');
+    pkg.upOrDown = false;
+    pkg.pollID = pid;
+    pkg.netid = user;
+    $http.post('/ppapi/polls/vote', pkg)
+      .success(function (data, status, headers, config) {
+        //Update the number displayed for the poll. Color the arrow. 
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.')
+        $('.vote-submit').attr('disabled', false);
+      });
+  };
+
   var GET = getUrlVars();
   var pid = GET['p'];
 

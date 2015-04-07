@@ -25,6 +25,8 @@ var pollSchema = mongoose.Schema({
   author: String,
   time: Date,
   pid: String,
+  upvotes: Number,
+  downvotes: Number,
   score: Number,
   responders: [String]
 });
@@ -38,14 +40,27 @@ var ticketSchema = mongoose.Schema({
 
 var Ticket = mongoose.model('Ticket', ticketSchema);
 
+var voteSchema = mongoose.Schema({
+  netid: String,
+  pid: String,
+  upOrDown: Boolean //true is up
+});
+
+var Vote = mongoose.model('Vote', voteSchema);
+
 app.post('/polls/submit', function (req, res) {
+  console.log('POST request for /polls/submit/');
+
   //res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
   var newPoll = {};
   newPoll.question = req.body.question;
   newPoll.choices = req.body.choices;
   newPoll.author = req.body.author;
+  newPoll.upvotes = 0;
+  newPoll.downvotes = 0;
   newPoll.score = 0;
+
   var sha256 = crypto.createHash('sha256');
   sha256.update(newPoll.question + newPoll.author);
   newPoll.pid = sha256.digest('hex');
@@ -76,24 +91,99 @@ app.get('/polls/get/:pid', function(req, res) {
 app.get('/polls/delete/all', function (req, res) {
   console.log('GET request for /polls/delete/all');
   Poll.find({}).remove().exec();
+  Vote.find({}).remove().exec();
   res.end();
 });
 
-// POST with upOrDown as -1 for downvote button. +1 for upvote button.
 // Plus send pid.
 app.post('/polls/vote', function (req, res) {
+  console.log('POST request for /polls/vote');
   //res.json(req.body); // parse request body, populate req.body object
   console.log(req.body);
-  upOrDown = req.body.upOrDown;
+  upOrDown = req.body.upOrDown; // up is true
   pollID = req.body.pollID;
-  var conditions = {pid: pollID};
-  var update = {$inc: {score:upOrDown}};
-  Poll.findOneAndUpdate(conditions, update, function (err, updatedPoll) {
-      if (err) console.log('Error.');
-      if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-        res.send(updatedPoll)
-  });
+  netid = req.body.netid;
+  var reversed = false;
+  var negated = false;
+
+  if (netid !== null) {
+    Vote.findOne({'pid' : pollID, 'netid' : netid}, 'upOrDown', function (err, oldVote) {
+      if (err) console.log('Error with vote db.');
+      if (oldVote) { 
+        var oldUpOrDown = oldVote.upOrDown;
+        console.log("new " + upOrDown);
+        console.log("old " + oldUpOrDown);  
+        if (upOrDown == oldUpOrDown) {  
+          console.log("removing " + pollID + " " + netid);
+          var conditions = {pid: pollID, netid: netid};  
+          Vote.findOneAndRemove(conditions, function (err, results) {
+            console.log("remove results: " + results);   //** These two not guaranteed to execute in order
+          });    //if already voted button pressed again
+          negated = true;
+        }
+        else {
+          var conditions = {pid: pollID, netid: netid};
+          var update = {upOrDown: upOrDown};
+          Vote.findOneAndUpdate(conditions, update, function (err, results) {
+            console.log("updated results: " + results); //** Need to be made sync?
+          }); //if other button pressed
+          reversed = true;
+        }
+      }
+      else {
+        var newVoteFields = {};
+        newVoteFields.netid = netid;
+        newVoteFields.upOrDown = upOrDown;
+        newVoteFields.pid = pollID;
+        var newVote = new Vote(newVoteFields);
+        newVote.save(function (err) {
+        if (err) return console.error(err);   //if no button pressed yet
+        });
+      }
+      var conditions = {pid: pollID};
+      var update;
+      console.log("negated " + negated);
+
+      // This clusterfuck
+      if (upOrDown) {
+        if (reversed) {
+          update = {$inc: {upvotes:1, downvotes: -1, score:2}};
+        }
+        else if (negated) {
+          update = {$inc: {upvotes:-1, score:-1}};
+        }
+        else {
+          update = {$inc: {upvotes:1, score:1}};
+        }
+      }
+      else {
+        if (reversed) {
+          update = {$inc: {downvotes:1, upvotes: -1, score:-2}};
+        }
+        else if (negated) {
+          update = {$inc: {downvotes:-1, score:1}};
+        }
+        else {
+          update = {$inc: {downvotes:1, score:-1}};
+        }
+      }
+      var options = {new: true};
+      Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
+          console.log('New score: ' + updatedPoll);
+          if (err) console.log('Error.');
+          if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+          else res.send(updatedPoll); //How to get it to update dynamically 
+      });
+    });
+  }
+  else {
+    res.send({'err': true, 'netid': 'You are not logged in.'});
+  }
+
 });
+
+
+  
 
 app.post('/polls/respond', function (req, res) {
   //res.json(req.body); // parse request body, populate req.body object
@@ -104,7 +194,7 @@ app.post('/polls/respond', function (req, res) {
   Poll.findOneAndUpdate(conditions, update, function (err, updatedPoll) {
       if (err) console.log('Error.');
       if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-        res.send(updatedPoll)
+      else res.send(updatedPoll);
   });
 });
 
