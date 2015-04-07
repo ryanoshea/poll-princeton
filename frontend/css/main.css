@@ -501,3 +501,54 @@ hr
 {
   text-align: center;
 }
+
+#page-poll #content
+{
+  margin-top: 2em;
+}
+
+#page-poll .scoring
+{
+  float: left;
+  width: 6em;
+  text-align: center;
+}
+
+#page-poll .poll-content
+{
+  margin-left: 8em;
+}
+
+#page-poll .score
+{
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 0.5em 0;
+}
+
+#page-poll .poll-content .question
+{
+  font-weight: 300;
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+}
+
+#page-poll .poll-content .label
+{
+  font-size: 1.2em;
+  color: #ff8878;
+  font-weight: bolder;
+  margin: 1em 0 2em 0;
+  padding: 0;
+}
+
+#page-poll .poll-content .choices
+{
+  margin: 1em 0 0 1em;
+}
+
+#page-poll .poll-content .choice
+{
+  font-size: 1.5em;
+  font-weight: 300;
+}

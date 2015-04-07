@@ -1,11 +1,21 @@
 <div id="page-poll" class="container container-fluid">
   <navbar></navbar>
-  <div id="content">
-    <h1>Poll Page</h1>
-    <p ng-show="fetchedPoll">{{poll.question}}</p>
-    <p ng-show="fetchedPoll" ng-repeat="c in poll.choices">{{c}}</p>
-    <p class="btn btn-pp vote-submit" ng-click="upVote(poll.pid)">good poll!</button>
-    <p ng-show="fetchedPoll">{{poll.score}}</p>
-    <p class="btn btn-pp vote-submit" ng-click="downVote(poll.pid)">bad poll!</button>
+  <div ng-show="fetchedPoll" id="content">
+
+    <div class="scoring">
+      <a class="btn btn-pp btn-sm vote-submit" ng-click="upVote(poll.pid)">good poll!</a>
+      <p class="score">{{poll.score}}</p>
+      <a class="btn btn-pp btn-sm vote-submit" ng-click="downVote(poll.pid)">bad poll!</a>
+    </div>
+
+    <div class="poll-content">
+      <p class="label">SOMEONE IN PRINCETON WANTS TO KNOW:</p>
+      <p class="question">{{poll.question}}</p>
+      <p class="label">CHOICES:</p>
+      <div class="choices">
+        <p class="choice" ng-repeat="c in poll.choices">{{c}}</p>
+      </div>
+    </div>
+
   </div>
 </div>
