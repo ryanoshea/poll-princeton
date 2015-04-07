@@ -43,9 +43,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
     var url = window.location.href;
     if (url.indexOf('?ticket') !== -1 && url.indexOf('feed') > url.indexOf('?ticket')) {
       var ticketStr = url.substring(url.indexOf('?ticket='), url.indexOf('#'));
-      console.log(ticketStr);
       var newUrl = url.substring(0, url.indexOf('?ticket=')) + '#/feed' + ticketStr;
-      console.log(newUrl);
       window.location = newUrl;
     }
   }

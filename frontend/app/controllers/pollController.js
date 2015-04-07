@@ -68,8 +68,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   fetchPoll(pid);
 
-  console.log(pid);
-
 });
 
 })();
