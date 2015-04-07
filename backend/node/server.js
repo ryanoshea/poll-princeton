@@ -79,12 +79,33 @@ app.get('/polls/get/all', function (req, res) {
   });
 });
 
-app.get('/polls/get/:pid', function(req, res) {
-  console.log('GET request for /polls/get/' + req.params.pid);
+app.get('/polls/get/:pid/:netid', function(req, res) {
+  console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid);
   Poll.findOne({'pid' : req.params.pid}, 'question choices time pid score', function (err, poll) {
     if (err) console.log('Error.');
     if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-    else res.send(poll);
+    else {
+
+      var ret = {};
+      ret.question = poll.question;
+      ret.choices = poll.choices;
+      ret.time = poll.time;
+      ret.pid = poll.pid;
+      ret.score = poll.score;
+
+      Vote.findOne({'pid' : req.params.pid, 'netid' : req.params.netid}, function (err, vote) {
+        console.log(vote);
+        if (vote != null) {
+          console.log('test');
+          ret.userVote = vote.upOrDown;
+        }
+        else {
+          ret.userVote = null;
+        }
+        console.log(ret);
+        res.send(ret);
+      });
+    }
   });
 });
 
@@ -109,13 +130,13 @@ app.post('/polls/vote', function (req, res) {
   if (netid !== null) {
     Vote.findOne({'pid' : pollID, 'netid' : netid}, 'upOrDown', function (err, oldVote) {
       if (err) console.log('Error with vote db.');
-      if (oldVote) { 
+      if (oldVote) {
         var oldUpOrDown = oldVote.upOrDown;
         console.log("new " + upOrDown);
-        console.log("old " + oldUpOrDown);  
-        if (upOrDown == oldUpOrDown) {  
+        console.log("old " + oldUpOrDown);
+        if (upOrDown == oldUpOrDown) {
           console.log("removing " + pollID + " " + netid);
-          var conditions = {pid: pollID, netid: netid};  
+          var conditions = {pid: pollID, netid: netid};
           Vote.findOneAndRemove(conditions, function (err, results) {
             console.log("remove results: " + results);   //** These two not guaranteed to execute in order
           });    //if already voted button pressed again
@@ -172,7 +193,19 @@ app.post('/polls/vote', function (req, res) {
           console.log('New score: ' + updatedPoll);
           if (err) console.log('Error.');
           if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-          else res.send(updatedPoll); //How to get it to update dynamically 
+          else {
+            var ret = {};
+            ret.question = updatedPoll.question;
+            ret.score = updatedPoll.score;
+            ret.choices = updatedPoll.choices;
+            ret.pid = updatedPoll.pid;
+            if (negated)
+              ret.userVote = null;
+            else {
+              ret.userVote = upOrDown;
+            }
+            res.send(ret);
+          }
       });
     });
   }
@@ -183,7 +216,7 @@ app.post('/polls/vote', function (req, res) {
 });
 
 
-  
+
 
 app.post('/polls/respond', function (req, res) {
   //res.json(req.body); // parse request body, populate req.body object

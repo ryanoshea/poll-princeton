@@ -3,9 +3,9 @@
   <div ng-show="fetchedPoll" id="content">
 
     <div class="scoring">
-      <a class="btn btn-pp btn-sm vote-submit" ng-click="upVote(poll.pid)">good poll!</a>
+      <a class="btn btn-pp btn-sm vote-submit" ng-click="upVote(poll.pid)" ng-class="{chosen: poll.userVote == true}">good poll</a>
       <p class="score">{{poll.score}}</p>
-      <a class="btn btn-pp btn-sm vote-submit" ng-click="downVote(poll.pid)">bad poll!</a>
+      <a class="btn btn-pp btn-sm vote-submit" ng-click="downVote(poll.pid)" ng-class="{chosen: poll.userVote == false}">bad poll</a>
     </div>
 
     <div class="poll-content">

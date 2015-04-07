@@ -20,7 +20,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   }
 
   function fetchPoll(pid) {
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/' + pid).success(function (data, status, headers, config) {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/' + pid + '/' + localStorage.getItem('netid')).success(function (data, status, headers, config) {
       $scope.poll = data;
       var thisPoll = $scope.poll;
       var date = new Date(thisPoll.time);
@@ -37,7 +37,8 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     pkg.netid = user;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
-        //Update the number displayed for the poll. Color the arrow. 
+        //Update the number displayed for the poll. Color the arrow.
+        $scope.poll = data;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')
@@ -53,7 +54,8 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     pkg.netid = user;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
-        //Update the number displayed for the poll. Color the arrow. 
+        //Update the number displayed for the poll. Color the arrow.
+        $scope.poll = data;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')
