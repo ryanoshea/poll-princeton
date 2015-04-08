@@ -281,6 +281,9 @@ app.post('/auth/loggedin', function (req, res) {
         resp.on('error', function(e) {
           res.send({'loggedin' : false}); // just to be safe
         });
+      }).on('error', function(e) {
+        console.log("Got error from CAS: " + e.message);
+        res.send({'loggedin' : false}); // just to be safe
       });
     }
   });

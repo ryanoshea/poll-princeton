@@ -3,6 +3,9 @@
 var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('feedController', function ($scope, $filter, $http, $location) {
+
+  $('body').css('padding-top', '50px');
+
   $scope.fetchedDevs = false;
   $scope.devs = [];
   $scope.fetchedPolls = false;
@@ -36,7 +39,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   /*$scope.upVote = function (pid) {
     $http.post('/ppapi/polls/vote', )
       .success(function (data, status, headers, config) {
-        //Update the number displayed for the poll. Color the arrow. 
+        //Update the number displayed for the poll. Color the arrow.
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')

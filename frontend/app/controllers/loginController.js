@@ -4,7 +4,9 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('loginController', function ($scope, $filter, $http, $location) {
 
-  $scope.casReturnUrl = window.location.origin + window.location.pathname + '#/feed';;
+  $scope.casReturnUrl = window.location.origin + window.location.pathname + '#/feed';
+
+  $('body').css('padding-top', '0');
 
 });
 

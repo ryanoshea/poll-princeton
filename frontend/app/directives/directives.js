@@ -8,6 +8,13 @@ angular.module('poll-princeton')
     }
   })
 
+  .directive('ppfooter', function () {
+    return {
+      restrict: 'E',
+      templateUrl: 'app/partials/snippets/footer.html'
+    }
+  })
+
   .directive('compose', function () {
     return {
       restrict: 'E',

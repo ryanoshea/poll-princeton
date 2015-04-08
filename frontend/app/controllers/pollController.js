@@ -4,6 +4,8 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
+  $('body').css('padding-top', '50px');
+
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   $scope.fetchedPoll = false;
 

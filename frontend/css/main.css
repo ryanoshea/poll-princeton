@@ -3,7 +3,12 @@ body
   color: #222;
   background: #eaeaea;
   font-family: "Source Sans Pro", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
 }
+
+::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
+::selection { background: #fe57a1; color: #fff; text-shadow: none; }
 
 *
 {
@@ -30,6 +35,7 @@ a.pp, a.pp:hover, a.pp:visited, a.pp:active, a.pp:focus, a.pp.hover
   cursor: pointer;
   color: #ff8878;
   padding: 0.3em;
+  margin: -0.3em;
   border-radius: .2em;
   text-decoration: none;
 }
@@ -39,7 +45,7 @@ a.pp
   background: rgba(255, 136, 120, 0);
 }
 
-a.pp:hover, a.pp:visited, a.pp:active, a.pp:focus
+a.pp:hover, a.pp:active, a.pp:focus
 {
   color: white;
   background: rgba(255, 136, 120, 1);
@@ -86,6 +92,7 @@ a.btn
 
 h1, h2, h3, h4, h5, h5
 {
+  font-family: Roboto;
   font-weight: bold;
 }
 
@@ -473,11 +480,6 @@ a.poll *
   margin-bottom: -3em;
 }
 
-#page-login #content
-{
-  margin-top: 3em;
-}
-
 @media (max-width: 768px){
   #content
   {
@@ -561,4 +563,167 @@ hr
 #page-poll .scoring .chosen
 {
   opacity: 1;
+}
+
+#page-login .jumbotron
+{
+  background: url('../img/splash-cover.jpg') no-repeat fixed center 50%;
+  background-size: cover;
+  color: white;
+  padding: 0;
+}
+
+#page-login .jumbotron #screen
+{
+  background: rgba(0,0,0,.7);
+  padding: 7em 0 2em 0;
+}
+
+
+#page-login .jumbotron h1,
+#page-login .jumbotron h2,
+#page-login .jumbotron h3,
+#page-login .jumbotron h4,
+#page-login .jumbotron h5,
+#page-login .jumbotron h5
+{
+  font-family: "Source Sans Pro";
+}
+
+#page-login #logo-replace
+{
+  font-size: 1.2em;
+  color: rgba(0,0,0,0);
+  text-indent: -10000px;
+  background: url('../img/pollprinceton-logo.72ppi.png') no-repeat center bottom;
+  background-size: 100%;
+
+}
+
+#page-login .jumbotron h1, #page-login .jumbotron h3
+{
+  text-transform: none;
+  color: white;
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+#page-login .jumbotron h1
+{
+  font-size: 5em;
+}
+
+#page-login .jumbotron h3
+{
+  font-size: 2em;
+}
+
+@media (max-width: 768px){
+  #page-login .jumbotron h1
+  {
+    font-size: 3em;
+  }
+
+  #page-login .jumbotron h3
+  {
+    font-size: 1.5em;
+  }
+}
+
+#page-login .jumbotron p
+{
+  font-size: 1em;
+}
+
+.centered
+{
+  text-align: center;
+  margin: 0 auto;
+}
+
+#login-button
+{
+  font-size: 2em;
+  opacity: 0.85;
+  font-weight: 300;
+}
+
+@media (max-width: 768px){
+  #login-button
+  {
+    font-size: 1.3em;
+  }
+}
+
+#page-login .navbar
+{
+  background: rgba(255, 136, 120, 0.8);
+}
+
+#page-login #compose-button
+{
+  display: none;
+}
+
+#page-login .info-block
+{
+  display: inline-block;
+  vertical-align: top;
+  width: 22em;
+  margin: 2.8em;
+}
+
+#page-login .info-block h4
+{
+  text-align: center;
+}
+
+#page-login .info-block .icon img
+{
+  height: 7em;
+}
+
+#page-login .info-block .icon .fa
+{
+  font-size: 7em;
+}
+
+#page-login .info-block .text p
+{
+  text-align: justify;
+}
+
+.page-head, .flyout h2
+{
+  font-family: "Source Sans Pro";
+}
+
+.poll-label, .label
+{
+  font-family: Roboto;
+}
+
+footer
+{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #eaeaea;
+  border-top: 1px solid #ccc;
+  font-size: 0.8em;
+}
+
+footer *
+{
+  margin-bottom: 0;
+  color: #555;
+}
+
+footer p
+{
+  text-align: right;
+  margin: 0.5em 2em;
 }

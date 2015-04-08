@@ -3,6 +3,7 @@
 var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('composeController', function ($scope, $filter, $http, $location) {
+
    $scope.showComposeFlyout = function () {
     $('html').css('overflow', 'hidden');
     $('.flyout-compose').fadeIn('medium');

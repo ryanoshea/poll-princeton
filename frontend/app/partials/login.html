@@ -1,8 +1,60 @@
-<div id="page-login" class="container container-fluid">
-  <navbar></navbar>
-  <div id="content">
-    <h1>Login Page</h1>
-    <a class="btn btn-pp" href="#/feed">Go to feed</a>
-    <a class="btn btn-pp" href="https://fed.princeton.edu/cas/login?service={{casReturnUrl}}">Log in</a>
+<div id="page-login">
+  <div class="container container-fluid">
+    <navbar></navbar>
   </div>
+  <div id="content">
+    <div class="jumbotron">
+      <div id="screen">
+        <div class="container container-fluid">
+          <h1>Welcome to <span id="logo-replace"><span style="visibility: hidden">PollPrinceton</span></span></h1>
+          <h3>Ask questions. Get opinions from your peers. Learn about your audience.</h3>
+          <h3 style="margin-bottom: 2em;">Anonymous, easy, and instant.</h3>
+          <div class="centered" id="login-button-wrap">
+            <a id="login-button" class="btn btn-pp" href="https://fed.princeton.edu/cas/login?service={{casReturnUrl}}">Sign in with your Princeton ID</a>
+            <p style="margin-top: 4em; opacity: 0.75">
+              scroll for more
+              <br>
+              <i class="fa fa-long-arrow-down"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container container-fluid">
+      <div class="centered">
+        <div class="info-block">
+          <div class="icon centered">
+            <img src="img/tile.svg">
+          </div>
+          <div class="text">
+            <h4>Write Unlimited Polls</h4>
+            <p>
+              Ask any question you want to the Princeton community. Need to know what class to take next semester? Which professor is the most forgiving? Which eating club has the best Dean's Date? Write a poll, list as many options as you want, and get answers from your classmates.
+            </p>
+          </div>
+        </div><div class="info-block">
+          <div class="icon centered">
+            <i class="fa fa-bar-chart" style="color: #5cb85c"></i>
+          </div>
+          <div class="text">
+            <h4>Get Instant Feedback</h4>
+            <p>
+              Anyone with a Princeton email can answer a poll. Share links with your friends to see what they think or browse the feed to see what other people are asking. Get statistics on how your poll is doing, what the most popular responses are, and response demographics.
+            </p>
+          </div>
+        </div><div class="info-block">
+          <div class="icon centered">
+            <i class="fa fa-user-secret" style="color: #777"></i>
+          </div>
+          <div class="text">
+            <h4>Stay Anonymous</h4>
+            <p>
+              No one on PollPrinceton can know who published a poll other than its author. Votes are anonymous too. Ask whatever you want, without fear of judgment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ppfooter></ppfooter>
 </div>
