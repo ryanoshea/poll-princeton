@@ -7,6 +7,13 @@ body
   font-smoothing: antialiased;
 }
 
+@media (max-width: 768px){
+  html
+  {
+    overflow-x: none;
+  }
+}
+
 ::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
 ::selection { background: #fe57a1; color: #fff; text-shadow: none; }
 
@@ -480,12 +487,12 @@ a.poll *
   margin-bottom: -3em;
 }
 
-@media (max-width: 768px){
+/*@media (max-width: 768px){
   #content
   {
     margin-top: 3em;
   }
-}
+}*/
 
 p.blurb
 {
@@ -672,7 +679,7 @@ hr
   display: inline-block;
   vertical-align: top;
   width: 22em;
-  margin: 2.8em;
+  margin: 2em;
 }
 
 #page-login .info-block h4
