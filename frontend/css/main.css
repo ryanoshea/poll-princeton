@@ -523,6 +523,11 @@ hr
   text-align: center;
 }
 
+#page-poll .scoring p
+{
+  margin: 0;
+}
+
 #page-poll .poll-content
 {
   margin-left: 8em;
@@ -562,11 +567,6 @@ hr
   font-weight: 300;
 }
 
-#page-poll .scoring a
-{
-  opacity: .5;
-}
-
 #page-poll .scoring .chosen
 {
   opacity: 1;
@@ -603,7 +603,7 @@ hr
   color: rgba(0,0,0,0);
   text-indent: -10000px;
   background: url('../img/pollprinceton-logo.72ppi.png') no-repeat center bottom;
-  background-size: 100%;
+  background-size: contain;
 
 }
 
@@ -732,4 +732,43 @@ footer p
 {
   text-align: right;
   margin: 0.5em 2em;
+}
+
+.vote-submit
+{
+  display: block;
+  height: 3em;
+  width: 5.5em;
+  margin-left: auto;
+  margin-right: auto;
+  color: #ff8878;
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-size: 0.8em;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
+.vote-submit:visited, .vote-submit:hover, .vote-submit:active, .vote-submit:focus
+{
+  color: #ff8878;
+  text-decoration: none;
+}
+
+.vote-submit:hover
+{
+  opacity: 1;
+}
+
+.upvote
+{
+  background: url('../img/upvote.svg') no-repeat bottom center;
+  background-size: contain;
+}
+
+.downvote
+{
+  padding-top: 2em;
+  background: url('../img/downvote.svg') no-repeat top center;
+  background-size: contain;
 }
