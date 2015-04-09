@@ -28,6 +28,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       var date = new Date(thisPoll.time);
       thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       $scope.fetchedPoll = true;
+      document.title = $scope.poll.question + ' | PollPrinceton';
     });
   }
 

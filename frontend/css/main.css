@@ -749,15 +749,23 @@ footer p
   opacity: 0.5;
 }
 
+.vote-submit:focus
+{
+  opacity: 0.5;
+}
+
 .vote-submit:visited, .vote-submit:hover, .vote-submit:active, .vote-submit:focus
 {
   color: #ff8878;
   text-decoration: none;
 }
 
-.vote-submit:hover
-{
-  opacity: 1;
+/* No hover effects on mobile */
+@media (min-width: 768px){
+  .vote-submit:hover
+  {
+    opacity: 1;
+  }
 }
 
 .upvote

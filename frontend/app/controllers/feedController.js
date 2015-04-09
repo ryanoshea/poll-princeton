@@ -4,6 +4,8 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
+  document.title = 'Feed | PollPrinceton'
+
   $('body').css('padding-top', '50px');
 
   $scope.fetchedDevs = false;
