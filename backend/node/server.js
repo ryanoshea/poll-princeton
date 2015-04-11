@@ -225,6 +225,7 @@ app.post('/polls/vote', function (req, res) {
             ret.question = updatedPoll.question;
             ret.score = updatedPoll.score;
             ret.choices = updatedPoll.choices;
+            ret.responses = updatedPoll.responses;
             ret.pid = updatedPoll.pid;
             if (negated)
               ret.userVote = null;

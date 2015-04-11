@@ -41,7 +41,8 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         //Update the number displayed for the poll. Color the arrow.
-        $scope.poll = data;
+        $scope.poll.score = data.score;
+        $scope.poll.userVote = data.userVote;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.');
@@ -58,7 +59,8 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         //Update the number displayed for the poll. Color the arrow.
-        $scope.poll = data;
+        $scope.poll.score = data.score;
+        $scope.poll.userVote = data.userVote;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.');
