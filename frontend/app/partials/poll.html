@@ -13,7 +13,7 @@
       <p class="question">{{poll.question}}</p>
       <p class="label">CHOICES:</p>
       <div class="choices">
-        <p class="choice" ng-repeat="c in poll.choices">{{c}}</p>
+        <p class="choice" href="" ng-repeat="c in poll.choices track by $index"><a href="" ng-click="respond($index)" ng-class="{selected: poll.userResponse == $index, unselected: poll.userResponse != -1 && poll.userResponse != $index}"><img src="img/radio-button-on.svg" ng-show="poll.userResponse == $index" class="pp-radio"><img src="img/radio-button-off.svg" ng-hide="poll.userResponse == $index" class="pp-radio"> <span class="choice-text">{{c}}</span> <span class="choice-score" ng-hide="poll.userResponse == -1"><strong>{{poll.responses[$index]}}</strong> <span ng-show="poll.userResponse == $index">other</span> user<span ng-hide="poll.responses[$index] == 1">s</span> chose this</span></a></p>
       </div>
     </div>
 

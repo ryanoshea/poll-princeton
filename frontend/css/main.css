@@ -1,5 +1,7 @@
 body
 {
+  padding-top: 50px;
+  padding-bottom: 20px;
   color: #222;
   background: #eaeaea;
   font-family: "Source Sans Pro", sans-serif;
@@ -103,7 +105,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a
+a, span
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -543,7 +545,7 @@ hr
 #page-poll .poll-content .question
 {
   font-weight: 300;
-  font-size: 2.5em;
+  font-size: 3.5em;
   margin-bottom: 0.5em;
 }
 
@@ -563,7 +565,7 @@ hr
 
 #page-poll .poll-content .choice
 {
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: 300;
 }
 
@@ -779,4 +781,72 @@ footer p
   padding-top: 2em;
   background: url('../img/downvote.svg') no-repeat top center;
   background-size: contain;
+}
+
+#page-poll .poll-content .choice a,
+#page-poll .poll-content .choice a:hover,
+#page-poll .poll-content .choice a:visited,
+#page-poll .poll-content .choice a:focus,
+#page-poll .poll-content .choice a:active
+{
+  display: block;
+  text-decoration: none;
+}
+
+#page-poll .poll-content .choice a span.choice-text
+{
+  color: #222;
+  padding: .2em .3em;
+  border-radius: .3em;
+}
+
+#page-poll .poll-content .choice a span.choice-text,
+#page-poll .poll-content .choice a:visited span.choice-text,
+#page-poll .poll-content .choice a:focus span.choice-text
+{
+  background: rgba(0,0,0,0);
+}
+
+#page-poll .poll-content .choice a:hover span.choice-text,
+#page-poll .poll-content .choice a:active span.choice-text
+{
+  background: rgba(0,0,0,0.05);
+}
+
+#page-poll .poll-content .choice a.unselected:hover span.choice-text,
+#page-poll .poll-content .choice a.unselected:active span.choice-text
+{
+  /* Account for the opacity difference */
+  background: rgba(0,0,0,0.1);
+}
+
+#page-poll .poll-content .choice .selected
+{
+  font-weight: normal;
+}
+
+#page-poll .poll-content .choice .unselected
+{
+  opacity: 0.5;
+}
+
+.pp-radio
+{
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+  margin-bottom: 0.2em;
+}
+
+#page-poll .poll-content .choice
+{
+  margin: 0.2em;
+}
+
+#page-poll .poll-content .choice-score
+{
+  color: #888;
+  font-size: 0.5em;
+  font-weight: bold;
+  text-align: right;
 }

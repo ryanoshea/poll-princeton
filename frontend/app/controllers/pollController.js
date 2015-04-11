@@ -44,7 +44,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         $scope.poll = data;
       })
       .error(function (data, status, headers, config) {
-        alert('Something went wrong. Please try to submit again in a few moments.')
+        alert('Something went wrong. Please try to submit again in a few moments.');
         $('.vote-submit').attr('disabled', false);
       });
   };
@@ -61,8 +61,25 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         $scope.poll = data;
       })
       .error(function (data, status, headers, config) {
-        alert('Something went wrong. Please try to submit again in a few moments.')
+        alert('Something went wrong. Please try to submit again in a few moments.');
         $('.vote-submit').attr('disabled', false);
+      });
+  };
+
+  $scope.respond = function (idx) {
+    var pkg = {};
+    pkg.idx = idx;
+    pkg.netid = localStorage.getItem('netid');
+    pkg.pid = $scope.poll.pid;
+    $http.post('/ppapi/polls/respond', pkg)
+      .success(function (data, status, headers, config) {
+        if (data.err !== true) {
+          $scope.poll.responses = data.responses;
+          $scope.poll.userResponse = data.userResponse;
+        }
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.');
       });
   };
 

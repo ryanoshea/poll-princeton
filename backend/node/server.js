@@ -19,16 +19,19 @@ db.once('open', function (callback) {
   console.log('mongoose: Connected to database \'test-pp\'');
 });
 
+
+/* Collections */
+
 var pollSchema = mongoose.Schema({
   question: String,
   choices: [String],
+  responses: [Number],
   author: String,
   time: Date,
   pid: String,
   upvotes: Number,
   downvotes: Number,
-  score: Number,
-  responders: [String]
+  score: Number
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
@@ -48,6 +51,17 @@ var voteSchema = mongoose.Schema({
 
 var Vote = mongoose.model('Vote', voteSchema);
 
+var responseSchema = mongoose.Schema({
+  netid: String,
+  pid: String,
+  idx: Number //true is up
+});
+
+var Response = mongoose.model('Response', responseSchema);
+
+
+/* REST Handlers */
+
 app.post('/polls/submit', function (req, res) {
   console.log('POST request for /polls/submit/');
 
@@ -56,6 +70,9 @@ app.post('/polls/submit', function (req, res) {
   var newPoll = {};
   newPoll.question = req.body.question;
   newPoll.choices = req.body.choices;
+  newPoll.responses = [];
+  for (var i in newPoll.choices)
+    newPoll.responses.push(0);
   newPoll.author = req.body.author;
   newPoll.upvotes = 0;
   newPoll.downvotes = 0;
@@ -81,7 +98,7 @@ app.get('/polls/get/all', function (req, res) {
 
 app.get('/polls/get/:pid/:netid', function(req, res) {
   console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid);
-  Poll.findOne({'pid' : req.params.pid}, 'question choices time pid score', function (err, poll) {
+  Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score', function (err, poll) {
     if (err) console.log('Error.');
     if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
     else {
@@ -89,6 +106,7 @@ app.get('/polls/get/:pid/:netid', function(req, res) {
       var ret = {};
       ret.question = poll.question;
       ret.choices = poll.choices;
+      ret.responses = poll.responses;
       ret.time = poll.time;
       ret.pid = poll.pid;
       ret.score = poll.score;
@@ -102,8 +120,17 @@ app.get('/polls/get/:pid/:netid', function(req, res) {
         else {
           ret.userVote = null;
         }
-        console.log(ret);
-        res.send(ret);
+
+        Response.findOne({pid: req.params.pid, netid: req.params.netid}, function (err, response) {
+          if (err) console.log('Error.');
+          if (response == null)
+            ret.userResponse = -1;
+          else
+            ret.userResponse = response.idx;
+
+          console.log(ret);
+          res.send(ret);
+        })
       });
     }
   });
@@ -215,20 +242,129 @@ app.post('/polls/vote', function (req, res) {
 
 });
 
-
-
-
+/* Logs a user response to a poll. Returns the updated responses array for the poll. */
 app.post('/polls/respond', function (req, res) {
   //res.json(req.body); // parse request body, populate req.body object
-  console.log(req.body);
-  pollID = req.body.pollID;
-  var conditions = {pid: pollID};
-  var update = {$inc: {score:1}, };
-  Poll.findOneAndUpdate(conditions, update, function (err, updatedPoll) {
-      if (err) console.log('Error.');
-      if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-      else res.send(updatedPoll);
-  });
+  console.log('POST request for /polls/respond');
+  console.log('Request contents: ' + req.body);
+  var netid = req.body.netid;
+  var pid = req.body.pid;
+  var idx = req.body.idx;
+
+  if (netid !== null) {
+    Response.findOne({'netid': netid, 'pid': pid}, function (err, response) {
+        if (err) console.log('Error.');
+        else if (response == null) {
+          // Create new response object, update poll with new score for the right choice
+          console.log('User ' + netid + ' has not responded to poll ' + pid + ' before. Creating new response.');
+          var newResp = {};
+          newResp.netid = netid;
+          newResp.pid = pid;
+          newResp.idx = idx;
+          var entry = new Response(newResp);
+          entry.save(function (err) {
+            if (err) {
+              console.error(err);
+              res.send({err: true});
+            }
+            else {
+              var update = {$inc: {}};
+              update.$inc['responses.' + idx] = 1;
+              Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+                if (err) {
+                  console.error(err);
+                  res.send({err: true});
+                }
+                Poll.findOne({pid: pid}, function(err, newPoll) {
+                  if (err) {
+                    console.error(err);
+                    res.send({err: true});
+                  }
+                  else if (newPoll == null) {
+                    res.send({err: true});
+                  }
+                  else {
+                    res.send({responses: newPoll.responses, userResponse: idx});
+                  }
+                });
+              });
+            }
+          });
+        }
+        else {
+          if (response.idx === idx) {
+            // Revoke response
+            console.log('User ' + netid + ' unselected their response to ' + pid + '. Revoking response.');
+            Response.findOneAndRemove({'netid': netid, 'pid': pid}, function (err, response) {
+              if (err) {
+                console.error(err);
+                res.send({err: true});
+              }
+              else {
+                var update = {$inc: {}};
+                update.$inc['responses.' + idx] = -1;
+                Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+                  if (err) {
+                    console.error(err);
+                    res.send({err: true});
+                  }
+                  else {
+                    Poll.findOne({pid: pid}, function(err, newPoll) {
+                      if (err) {
+                        console.error(err);
+                        res.send({err: true});
+                      }
+                      else if (newPoll == null) {
+                        res.send({err: true});
+                      }
+                      else {
+                        res.send({responses: newPoll.responses, userResponse: -1});
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+          else {
+            // Update response
+            console.log('User ' + netid + ' has changed their response to ' + pid + '. Updating response.');
+            var update = {$set: {idx: idx}};
+            Response.findOneAndUpdate({pid: pid, netid: netid}, update, function (err, newResponse) {
+              if (err) {
+                console.error(err);
+                res.send({err: true});
+              }
+              else {
+                var update = {$inc: {}};
+                update.$inc['responses.' + response.idx] = -1;
+                update.$inc['responses.' + idx] = 1;
+                Poll.findOneAndUpdate({pid: pid}, update, function (err, newPoll) {
+                  if (err) {
+                    console.error(err);
+                    res.send({err: true});
+                  }
+                  else {
+                    Poll.findOne({pid: pid}, function(err, newPoll) {
+                      if (err) {
+                        console.error(err);
+                        res.send({err: true});
+                      }
+                      else if (newPoll == null) {
+                        res.send({err: true});
+                      }
+                      else {
+                        res.send({responses: newPoll.responses, userResponse: idx});
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        }
+    });
+  }
 });
 
 // Indicates whether the provided CAS ticket (for just-after-login) or ticket/netid pair (for return
@@ -295,50 +431,8 @@ app.get('/auth/logout/:netid', function (req, res) {
   res.end();
 });
 
-var devSchema = mongoose.Schema({
-  name: String,
-  job: String
-});
 
-var Dev = mongoose.model('Dev', devSchema);
 
-app.get('/devs/store', function (req, res) {
-  console.log('Saving devs to db');
-  var devs = [{name:'Ryan', job:'developer'},
-            {name:'Tess', job:'developer'},
-            {name:'Henry', job:'developer'}];
-  var ryan = new Dev(devs[0]);
-  var henry = new Dev(devs[1]);
-  var tess = new Dev(devs[2]);
-  ryan.save(function (err) {
-    if (err) return console.error(err);
-  });
-  henry.save(function (err) {
-    if (err) return console.error(err);
-  });
-  tess.save(function (err) {
-    if (err) return console.error(err);
-  });
-});
-
-app.get('/devs', function (req, res) {
-  console.log('GET request for /devs');
-  //res.send(devs)
-  Dev.find({}, function (err, docs) {
-    var devs = [];
-    for (var i in docs) {
-      devs.push({
-        'name' : docs[i].name,
-        'job' : docs[i].job,
-      });
-    }
-    res.send(devs);
-  });
-});
-
-app.get('/devs/:id', function (req, res) {
-  res.send(devs[req.params.id - 1]);
-});
 
 app.listen(3000);
 console.log('Server running at http://127.0.0.1:3000/');
