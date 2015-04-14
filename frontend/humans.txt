@@ -4,7 +4,7 @@
 # TEAM
 
     Ryan O'Shea - developer - ryanoshea.com - @ryancoshea
-    Tess Marchant - developer - @tessmarchant
+    Tess Marchant - developer - tessmarchant.com - @tessmarchant
     Henry Lu - developer
 
 # THANKS
