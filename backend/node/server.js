@@ -59,6 +59,19 @@ var responseSchema = mongoose.Schema({
 
 var Response = mongoose.model('Response', responseSchema);
 
+var studentSchema = mongoose.Schema({
+  first: String,
+  last: String,
+  netid: String,
+  'class': String,
+  home: String,
+  major: String,
+  dorm: String,
+  rescol: String
+});
+
+var Student = mongoose.model('Student', studentSchema);
+
 
 /* REST Handlers */
 
@@ -382,7 +395,15 @@ app.post('/auth/loggedin', function (req, res) {
       // The user is already logged in
       console.log("Found user " + ticket.netid + " in database. Authenticated.");
       foundInDB = true;
-      res.send({loggedin: true, netid: ticket.netid});
+      // Query for user's Full Name
+      var fullname = "";
+      Student.findOne({'netid': ticket.netid}, function (err, student) {
+        if (err) console.log('Student db error');
+        if (student !== null) {
+          fullname = student.first + ' ' + student.last;
+        }
+        res.send({'loggedin' : true, 'netid' : ticket.netid, 'fullname': fullname});
+      });
     }
     else {
       // User not found in db; check with CAS's validation server
@@ -408,7 +429,16 @@ app.post('/auth/loggedin', function (req, res) {
               if (err)
                 console.log("Database ticket save error.");
             });
-            res.send({'loggedin' : true, 'netid' : netid});
+
+            // Query for user's Full Name
+            var fullname = "";
+            Student.findOne({'netid': netid}, function (err, student) {
+              if (err) console.log('Student db error');
+              if (student !== null) {
+                fullname = student.first + ' ' + student.last;
+              }
+              res.send({'loggedin' : true, 'netid' : netid, 'fullname': fullname});
+            });
           }
           else {
             // CAS rejected the ticket

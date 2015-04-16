@@ -5,6 +5,7 @@ var cont = angular.module('poll-princeton.controllers');
 cont.controller('authController', function ($scope, $filter, $http, $location) {
 
   $scope.username = "";
+  $scope.fullname = "";
 
   // One way of parsing GET variables
   function getUrlVars() {
@@ -59,6 +60,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         // User is not authenticated; wipe localStorage and send back to login page.
         localStorage.removeItem('ticket');
         localStorage.removeItem('netid');
+        localStorage.removeItem('fullname');
         if ($('#page-login').length == 0)
           window.location = window.location.origin + window.location.pathname + '#/';
         else
@@ -68,7 +70,9 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         // User is authenticated; store their ticket/netid in localStorage and send them to feed.
         localStorage.setItem('ticket', ticket);
         localStorage.setItem('netid', data.netid);
+        localStorage.setItem('fullname', data.fullname);
         $scope.username = data.netid;
+        $scope.fullname = data.fullname;
         if ($('#page-login').length > 0)
           window.location = window.location.origin + window.location.pathname + '#/feed';
         else
@@ -79,6 +83,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
       if (!data.loggedin) {
         localStorage.removeItem('ticket');
         localStorage.removeItem('netid');
+        localStorage.removeItem('fullname');
         window.location = window.location.origin + window.location.pathname + '#/';
       }
     });
@@ -87,6 +92,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
       var netid = localStorage.getItem('netid');
       localStorage.removeItem('ticket');
       localStorage.removeItem('netid');
+      localStorage.removeItem('fullname');
       $http.get('/ppapi/auth/logout/' + netid)
       .success(function () {
         window.location = 'https://fed.princeton.edu/cas/logout';
