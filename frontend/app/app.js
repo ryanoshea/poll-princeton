@@ -25,6 +25,10 @@ app.config(function ($routeProvider) {
       controller: 'pollController',
       templateUrl: 'app/partials/poll.html'
     })
+    .when('/account', {
+      controller: 'accountController',
+      templateUrl: 'app/partials/account.html'
+    })
     /*.when('/edit', {
       controller: 'editListingController',
       templateUrl: 'app/partials/edit-listing.html',

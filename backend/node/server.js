@@ -149,6 +149,15 @@ app.get('/polls/get/:pid/:netid', function(req, res) {
   });
 });
 
+// This + the get function above. Authentication?
+app.get('/polls/get/:netid', function(req, res) {
+  var user = req.params.netid;
+  console.log('GET request for /polls/get/' + user);
+  Poll.find({"author": user}, 'question choices time pid score', function (err, polls) {
+    res.send(polls);
+  });
+});
+
 app.get('/polls/delete/all', function (req, res) {
   console.log('GET request for /polls/delete/all');
   Poll.find({}).remove().exec();

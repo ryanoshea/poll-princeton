@@ -1,0 +1,25 @@
+<div id="page-feed" class="container container-fluid">
+  <navbar></navbar>
+  <div id="content">
+    <h1 class="page-head">My Polls</h1>
+    <p class="blurb">
+      View and Edit your submitted polls here<br>
+    </p>
+    <hr>
+    <div id="feed-sort">
+      <p>SORT BY: <a class="pp">NEWEST</a> | <a class="pp">POPULAR</a></p>
+    </div>
+    
+    <div class="polls">
+    	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pid}}">
+    		<p class="poll-question">{{poll.question}}</p>
+        <p class="poll-choices-preview">Vote: &#8216;{{poll.choices[0]}}&#8217;<span ng-show="poll.choices.length > 2">, </span><span ng-show="poll.choices.length == 2"> vs. </span>&#8216;{{poll.choices[1]}}&#8217;<span ng-show="poll.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
+        <div class="poll-meta">
+          <span><i class="fa fa-list-alt"></i> {{poll.choices.length}} choices</span>
+          <span><i class="fa fa-clock-o"></i> {{poll.humanTime}}</span>
+        </div>
+    	</a>
+    </div>
+  </div>
+  <ppfooter></ppfooter>
+</div>

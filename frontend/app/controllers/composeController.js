@@ -63,7 +63,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     var poll = {};
     poll.question = $scope.newPoll.question;
     poll.choices = $scope.newPoll.choices;
-    poll.author = 'pp-test'; // Change this when accounts work
+    poll.author = localStorage.getItem('netid');  // Change this when accounts work
 
     $http.post('/ppapi/polls/submit', poll)
       .success(function (data, status, headers, config) {
