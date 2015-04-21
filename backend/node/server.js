@@ -147,12 +147,12 @@ app.get('/polls/get/:sortType/:netid/:num', function(req, res) {
             userResponse = response.idx;
           var newPollData = {
             pollData: p,
-            vote: userVote,
-            response: userResponse
+            userVote: userVote,
+            userResponse: userResponse
           };
           //console.log("time added into ret: " + newPollData.pollData.time);
           ret.push(newPollData);
-          //console.log(ret.length);  
+          //console.log(ret.length);
           callback();
         })
       });

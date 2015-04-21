@@ -70,10 +70,33 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
-  /*$scope.upVote = function (pid) {
-    $http.post('/ppapi/polls/vote', )
+  $scope.upVote = function (pid, idx) {
+    var pkg = {};
+    var user = localStorage.getItem('netid');
+    pkg.upOrDown = true;
+    pkg.pollID = pid;
+    pkg.netid = user;
+    $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
-        //Update the number displayed for the poll. Color the arrow.
+        $scope.polls[idx].pollData.score = data.score;
+        $scope.polls[idx].userVote = data.userVote;
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to submit again in a few moments.')
+        $('.vote-submit').attr('disabled', false);
+      });
+  };
+
+  $scope.downVote = function (pid, idx) {
+    var pkg = {};
+    var user = localStorage.getItem('netid');
+    pkg.upOrDown = false;
+    pkg.pollID = pid;
+    pkg.netid = user;
+    $http.post('/ppapi/polls/vote', pkg)
+      .success(function (data, status, headers, config) {
+        $scope.polls[idx].pollData.score = data.score;
+        $scope.polls[idx].userVote = data.userVote;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')
@@ -84,7 +107,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.deletePolls = function () {
     $http.get('http://' + window.location.hostname + '/ppapi/polls/delete/all').success(function (data, status, headers, config) {
     });
-  };*/
+  };
 
   $scope.sortPopular = function () {
     if ($scope.sort !== 'popular') {
@@ -108,6 +131,10 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         $('.polls').fadeIn();
       });
     }
+  };
+
+  $scope.goToPoll = function (pid) {
+    window.location = 'http://' + window.location.hostname + window.location.pathname + '#/poll?p=' + pid;
   };
 
   $scope.fetch10Best();
