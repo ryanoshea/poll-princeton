@@ -1,12 +1,12 @@
 <div id="auth" ng-controller="authController">
-  <div class="container container-fluid">
-    <span>
-      <a id="logout" title="Log out" ng-click="logout()" ng-hide="username == ''" class="btn btn-pp btn-sm" href=""><i class="fa fa-power-off"></i></a>
-    </span>
-    <span id="username">
-    	<a class="name" href="#/account">
-      		<strong>{{fullname}}</strong>
-      	</a>
-    </span>
+  <div class="dropdown" ng-hide="username == ''">
+    <button class="btn btn-pp dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      <i class="fa fa-user"></i> <i class="fa fa-caret-down"></i>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation" class="dropdown-header">{{fullname}}</li>
+      <li role="presentation"><a href="#/account" role="menuitem" tabindex="-1">My Polls</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="logout()">Logout</a></li>
+    </ul>
   </div>
 </div>
