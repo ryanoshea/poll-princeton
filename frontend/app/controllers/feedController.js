@@ -39,6 +39,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
+  //Get call returns an array of objects containing three things: pollData (a complete poll with all data), 
+  //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Best = function () {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/' + user + '/' + $scope.currentPolls).success(function (data, status, headers, config) {
