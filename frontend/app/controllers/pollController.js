@@ -28,9 +28,20 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       var date = new Date(thisPoll.time);
       thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       $scope.fetchedPoll = true;
+      redrawBars();
       document.title = $scope.poll.question + ' | PollPrinceton';
     });
   }
+
+  function redrawBars() {
+    var maxResp = Math.max.apply(Math, $scope.poll.responses);
+    $scope.barWidths = [];
+    for(var i in $scope.poll.responses) {
+      var frac = $scope.poll.responses[i] / maxResp;
+      var newWidth = (frac * 100 * .8) + '%';
+      $scope.barWidths.push(newWidth);
+    }
+  };
 
   $scope.upVote = function (pid) {
     var pkg = {};
@@ -78,6 +89,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         if (data.err !== true) {
           $scope.poll.responses = data.responses;
           $scope.poll.userResponse = data.userResponse;
+          redrawBars();
         }
       })
       .error(function (data, status, headers, config) {

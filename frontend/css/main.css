@@ -1,7 +1,7 @@
 body
 {
   padding-top: 50px;
-  padding-bottom: 20px;
+  padding-bottom: 2.5em;
   color: #222;
   background: #eaeaea;
   font-family: "Source Sans Pro", sans-serif;
@@ -885,4 +885,55 @@ footer p
   font-size: 0.5em;
   font-weight: bold;
   text-align: right;
+}
+
+#page-poll .bars
+{
+  float: left;
+}
+
+#page-poll .text-wrapper
+{
+  width: 60%;
+  min-width: 10em;
+  margin-right: 0;
+  float: left;
+}
+
+#page-poll .choice-bar-wrapper
+{
+  opacity: 0.8;
+  float: left;
+  height: 1em;
+  width: 40%;
+  position: relative;
+}
+
+#page-poll .choice-bar
+{
+  background: #ff8878;
+  height: 1em;
+  border-right: 0.25em solid #ff8878;
+  border-radius: 0.1em;
+  float: left;
+}
+
+#page-poll .choice-tally
+{
+  margin: 0.35em 0 0 0.5em;
+  display: inline-block;
+  font-size: 0.4em;
+  color: white;
+  background: rgba(0,0,0,0.75);
+  padding: 0.2em 0.4em;
+  border-radius: 0.4em;
+  float: left;
+  font-weight: bold;
+  max-width: 19%;
+  opacity: 0;
+}
+
+#page-poll .choice-bar-wrapper:hover .choice-tally
+{
+  opacity: 1;
 }
