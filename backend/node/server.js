@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var crypto = require('crypto');
+var async = require('async');
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -105,7 +106,63 @@ app.post('/polls/submit', function (req, res) {
 app.get('/polls/get/all', function (req, res) {
   console.log('GET request for /polls/get/all');
   Poll.find({}, 'question choices time pid score', function (err, polls) {
+    /*console.log(typeof polls);
+    console.log(polls[1]);
+    console.log(polls[0]);*/
     res.send(polls);
+  });
+});
+
+app.get('/polls/get/:sortType/:netid/:num', function(req, res) {
+  console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.num);
+  var user = req.params.netid;
+  var current = req.params.num;
+  var sortBy;
+  if (req.params.sortType == 'popular')
+    sortBy = {'score': -1};
+  else if (req.params.sortType == 'newest')
+    sortBy = {time: -1};
+
+  Poll.find({}).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
+    var ret = [];
+    async.eachSeries(polls, function(p, callback) {
+      //console.log("date at start of loop: " + p.time);
+      var pid = p.pid;
+      var userVote;
+      var userResponse;
+      Vote.findOne({'pid' : pid, 'netid' : user}, function (err, vote) {
+        //console.log(vote);
+        if (vote != null) {
+          //console.log('test');
+          userVote = vote.upOrDown;
+        }
+        else {
+          userVote = null;
+        }
+        Response.findOne({pid: pid, netid: user}, function (err, response) {
+          if (err) console.log('Error.');
+          if (response == null)
+            userResponse = -1;
+          else
+            userResponse = response.idx;
+          var newPollData = {
+            pollData: p,
+            vote: userVote,
+            response: userResponse
+          };
+          //console.log("time added into ret: " + newPollData.pollData.time);
+          ret.push(newPollData);
+          //console.log(ret.length);  
+          callback();
+        })
+      });
+    }, function(err) {
+      if (err) console.log('Error.');
+      else {
+        //console.log(polls.length + " " + ret.length);
+        res.send(ret);
+      }
+    });
   });
 });
 
@@ -125,7 +182,7 @@ app.get('/polls/get/:pid/:netid', function(req, res) {
       ret.score = poll.score;
 
       Vote.findOne({'pid' : req.params.pid, 'netid' : req.params.netid}, function (err, vote) {
-        console.log(vote);
+        //console.log(vote);
         if (vote != null) {
           console.log('test');
           ret.userVote = vote.upOrDown;

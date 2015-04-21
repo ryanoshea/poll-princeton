@@ -12,6 +12,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.devs = [];
   $scope.fetchedPolls = false;
   $scope.polls = [];
+  $scope.currentPolls = 0;
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   $scope.fetchDevs = function () {
@@ -38,6 +39,34 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
+  $scope.fetch10Best = function () {
+    var user = localStorage.getItem('netid');
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/' + user + '/' + $scope.currentPolls).success(function (data, status, headers, config) {
+      $scope.polls = data;
+      $scope.currentPolls = $scope.currentPolls + 10; 
+      for (var i in $scope.polls) {
+        var thisPoll = $scope.polls[i].pollData;
+        var date = new Date(thisPoll.time);
+        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      }
+      $scope.fetchedPolls = true;
+    });
+  };
+
+  $scope.fetch10New = function () {
+    var user = localStorage.getItem('netid');
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/' + user + '/' + $scope.currentPolls).success(function (data, status, headers, config) {
+      $scope.polls = data;
+      $scope.currentPolls = $scope.currentPolls + 10; 
+      for (var i in $scope.polls) {
+        var thisPoll = $scope.polls[i].pollData;
+        var date = new Date(thisPoll.time);
+        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      }
+      $scope.fetchedPolls = true;
+    });
+  };
+
   /*$scope.upVote = function (pid) {
     $http.post('/ppapi/polls/vote', )
       .success(function (data, status, headers, config) {
@@ -55,7 +84,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   };*/
 
   //async?
-  $scope.fetchAllPolls();
+  $scope.fetch10Best();
 
 
 
