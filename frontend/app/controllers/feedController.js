@@ -44,7 +44,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Best = function () {
     var user = localStorage.getItem('netid');
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/' + user + '/' + $scope.currentPolls).success(function (data, status, headers, config) {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/' 
+        + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
       $scope.polls = data;
       $scope.currentPolls = $scope.currentPolls + 10;
       for (var i in $scope.polls) {
@@ -58,7 +59,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $scope.fetch10New = function () {
     var user = localStorage.getItem('netid');
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/' + user + '/' + $scope.currentPolls).success(function (data, status, headers, config) {
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/' 
+        + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
       $scope.polls = data;
       $scope.currentPolls = $scope.currentPolls + 10;
       for (var i in $scope.polls) {
