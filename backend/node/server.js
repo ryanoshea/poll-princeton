@@ -44,6 +44,13 @@ var ticketSchema = mongoose.Schema({
 
 var Ticket = mongoose.model('Ticket', ticketSchema);
 
+var userLogSchema = mongoose.Schema({
+  netid: String,
+  time: Date
+});
+
+var userLog = mongoose.model('userLog', userLogSchema);
+
 var voteSchema = mongoose.Schema({
   netid: String,
   pid: String,
@@ -470,6 +477,16 @@ app.post('/auth/loggedin', function (req, res) {
       foundInDB = true;
       // Query for user's Full Name
       var fullname = "";
+
+      //Logging visitors
+      var newLogDate = new Date();      
+      var newUserLog = {netid: ticket.netid, time: newLogDate};
+      var saveLog = new userLog(newUserLog);
+      saveLog.save(function (err) {
+        if (err)
+          console.log("Database log save error.");
+      });
+
       Student.findOne({'netid': ticket.netid}, function (err, student) {
         if (err) console.log('Student db error');
         if (student !== null) {
@@ -495,6 +512,16 @@ app.post('/auth/loggedin', function (req, res) {
           if (response.charAt(0) == 'y') {
             // CAS approved the ticket
             var netid = response.substring(response.indexOf('\n') + 1, response.length - 1);
+            
+            //Logging visitors
+            var newLogDate = new Date();
+            var newUserLog = {netid: netid, time: newLogDate};
+            var saveLog = new userLog(newUserLog);
+            saveLog.save(function (err) {
+              if (err)
+                console.log("Database log save error.");
+            });
+
             var newTicket = {ticket: req.body.ticket, netid: netid};
             console.log(newTicket);
             var saveTicket = new Ticket(newTicket);
