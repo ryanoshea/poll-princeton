@@ -80,7 +80,7 @@ a.btn
 
 #navbar
 {
-  margin-bottom: 3em;
+  /*margin-bottom: 3em;*/
 }
 
 #navbar nav
@@ -529,9 +529,14 @@ hr
   margin-right: 1em;
 }
 
-#page-poll #content
+#content
 {
-  margin-top: 2em;
+  margin-top: 3em;
+}
+
+#page-login #content
+{
+  margin-top: 0;
 }
 
 #page-poll .scoring, #page-feed .scoring
