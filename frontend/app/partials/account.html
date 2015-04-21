@@ -11,12 +11,12 @@
     </div>
     
     <div class="polls">
-    	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pid}}">
-    		<p class="poll-question">{{poll.question}}</p>
-        <p class="poll-choices-preview">Vote: &#8216;{{poll.choices[0]}}&#8217;<span ng-show="poll.choices.length > 2">, </span><span ng-show="poll.choices.length == 2"> vs. </span>&#8216;{{poll.choices[1]}}&#8217;<span ng-show="poll.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
+    	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pollData.pid}}">
+    		<p class="poll-question">{{poll.pollData.question}}</p>
+        <p class="poll-choices-preview">Vote: &#8216;{{poll.pollData.choices[0]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, </span><span ng-show="poll.pollData.choices.length == 2"> vs. </span>&#8216;{{poll.pollData.choices[1]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
         <div class="poll-meta">
-          <span><i class="fa fa-list-alt"></i> {{poll.choices.length}} choices</span>
-          <span><i class="fa fa-clock-o"></i> {{poll.humanTime}}</span>
+          <span><i class="fa fa-list-alt"></i> {{poll.pollData.choices.length}} choices</span>
+          <span><i class="fa fa-clock-o"></i> {{poll.pollData.humanTime}}</span>
         </div>
     	</a>
     </div>

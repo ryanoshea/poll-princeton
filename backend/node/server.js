@@ -113,17 +113,24 @@ app.get('/polls/get/all', function (req, res) {
   });
 });
 
-app.get('/polls/get/:sortType/:netid/:num', function(req, res) {
+app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
   console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.num);
   var user = req.params.netid;
   var current = req.params.num;
+  var onlyUser = req.params.onlyUser;
   var sortBy;
+  var fields;
   if (req.params.sortType == 'popular')
     sortBy = {'score': -1};
   else if (req.params.sortType == 'newest')
     sortBy = {time: -1};
 
-  Poll.find({}).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
+  if (req.params.onlyUser == 'true')
+    fields = {'author': user};
+  else if (req.params.onlyUser == 'false') 
+    fields = {};
+
+  Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
     var ret = [];
     async.eachSeries(polls, function(p, callback) {
       //console.log("date at start of loop: " + p.time);
