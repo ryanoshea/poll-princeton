@@ -8,7 +8,7 @@
     </p>
     <hr>
     <div id="feed-sort">
-      <p>SORT BY: <a class="pp">NEWEST</a> | <a class="pp">POPULAR</a></p>
+      <p>SORT BY: <a ng-click="sortPopular()" ng-class="{selected: sort === 'popular'}" class="pp">POPULAR</a> | <a ng-click="sortNewest()" ng-class="{selected: sort === 'newest'}" class="pp">NEWEST</a></p>
     </div>
     <div ng-show="fetchedDevs" ng-repeat="dev in devs">
       <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>

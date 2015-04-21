@@ -39,6 +39,11 @@ button, .btn
   cursor: default;
 }
 
+.strong
+{
+  font-weight: bold;
+}
+
 a.pp, a.pp:hover, a.pp:visited, a.pp:active, a.pp:focus, a.pp.hover
 {
   cursor: pointer;
@@ -54,7 +59,7 @@ a.pp
   background: rgba(255, 136, 120, 0);
 }
 
-a.pp:hover, a.pp:active, a.pp:focus
+a.pp:hover, a.pp:active, a.pp:focus, a.pp.selected
 {
   color: white;
   background: rgba(255, 136, 120, 1);
@@ -511,6 +516,12 @@ hr
 #feed-sort
 {
   text-align: center;
+}
+
+#feed-sort a
+{
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 #page-poll #content
