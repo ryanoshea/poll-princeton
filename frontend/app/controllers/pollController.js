@@ -104,12 +104,15 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   };
 
   $scope.deletePoll = function () {
+    var answer = confirm('This poll and its results will be permanently deleted. Are you sure you want to continue?');
+    if (!answer) return;
     $http.delete('/ppapi/polls/delete/' + $scope.poll.pid + '/' + localStorage.getItem('netid') + '/' + localStorage.getItem('ticket'), {})
       .success(function (data, status, headers, config) {
         if (data.err) {
           alert('Something went wrong. Error message: ' + data.msg);
         }
         else {
+          alert('The poll was permanently deleted.');
           window.location = 'http://' + window.location.hostname + window.location.pathname;
         }
       });
@@ -119,6 +122,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   var pid = GET['p'];
 
   fetchPoll(pid);
+  $scope.netid = localStorage.getItem('netid');
 
 });
 

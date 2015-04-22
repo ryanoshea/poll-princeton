@@ -959,6 +959,8 @@ footer p
 #page-poll .poll-controls
 {
   text-align: right;
+  margin-bottom: -1em;
+  height: 1em;
 }
 
 a.pp-grey, a.pp-grey:hover, a.pp-grey:active, a.pp-grey:visited, a.pp-grey:focus

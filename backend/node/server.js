@@ -246,8 +246,8 @@ app.delete('/polls/delete/:pid/:netid/:ticket', function(req, res) {
       res.send({err: true, msg: 'No poll with that ID found.'});
       return;
     }
-    else if (poll.author !== netid) {
-      console.log('Non-author tried to delete poll. Cancelling.');
+    else if (poll.author !== netid && netid !== 'roshea' && netid !== 'marchant' && netid != 'hzlu') {
+      console.log('Non-author, non-admin tried to delete poll. Cancelling.');
       res.send({err: true, msg: 'You are not the author of the given poll, so you can\'t delete it.'});
       return;
     }

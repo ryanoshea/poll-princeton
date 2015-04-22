@@ -14,7 +14,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     if (!$scope.pollEmpty()) {
       var answer = confirm('You have unsaved changes. Click OK to exit and delete your work, or Cancel to keep writing.');
       if (!answer) {
-        return
+        return;
       }
     }
     $('.flyout-compose').fadeOut('medium');
