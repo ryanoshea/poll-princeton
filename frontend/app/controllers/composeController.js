@@ -64,6 +64,10 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
       $scope.invalidReason = 'Your poll needs to ask a question.';
       return false;
     }
+    if (poll.question.length > 350) { // shouldn't happen, but just in case they get around limits with devtools
+      $scope.invalidReason = 'Your question is too long.';
+      return false;
+    }
     for (var j in bannedWords) {
       if (poll.question.toLowerCase().indexOf(bannedWords[j].toLowerCase()) !== -1) {
         if (j < 4) {
@@ -79,6 +83,10 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     for (var i in poll.choices) {
       if (poll.choices[i].length === 0) {
         $scope.invalidReason = 'Your poll can\'t have any blank choices.';
+        return false;
+      }
+      if (poll.choices[i].length > 144) {
+        $scope.invalidReason = 'One of your choices is too long.';
         return false;
       }
       for (var j in bannedWords) {
