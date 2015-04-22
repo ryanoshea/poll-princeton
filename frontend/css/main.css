@@ -942,3 +942,11 @@ footer p
 {
   opacity: 1;
 }
+
+#flyout-compose .poll-valid-indicator
+{
+  font-size: 1.2em;
+  display: block;
+  float: right;
+  margin: 0.8em 1.5em;
+}

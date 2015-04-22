@@ -4,7 +4,7 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('composeController', function ($scope, $filter, $http, $location) {
 
-   $scope.showComposeFlyout = function () {
+  $scope.showComposeFlyout = function () {
     $('html').css('overflow', 'hidden');
     $('.flyout-compose').fadeIn('medium');
     $('.flyout-compose-contents').show('medium');
@@ -53,8 +53,56 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     }
   };
 
+  var bannedWords = ['ryan o\'shea', 'ryan oshea', 'tess marchant', 'henry lu','fuck', 'shit', 'cum', 'whore', 'slut', 'douche','cunt', 'nigger', 'fag'];
   $scope.pollValid = function () {
-    return !$scope.pollEmpty();
+    var poll = $scope.newPoll;
+    if ($scope.pollEmpty()) {
+      $scope.invalidReason = 'Your poll is empty.';
+      return false;
+    }
+    if (poll.question.length === 0) {
+      $scope.invalidReason = 'Your poll needs to ask a question.';
+      return false;
+    }
+    for (var j in bannedWords) {
+      if (poll.question.toLowerCase().indexOf(bannedWords[j].toLowerCase()) !== -1) {
+        if (j < 4) {
+          $scope.invalidReason = 'Your poll can\'t mention someone\'s name';
+          return false;
+        }
+        else {
+          $scope.invalidReason = 'Your poll can\'t contain profanity or hate speech.';
+          return false;
+        }
+      }
+    }
+    for (var i in poll.choices) {
+      if (poll.choices[i].length === 0) {
+        $scope.invalidReason = 'Your poll can\'t have any blank choices.';
+        return false;
+      }
+      for (var j in bannedWords) {
+        if (poll.choices[i].toLowerCase().indexOf(bannedWords[j].toLowerCase()) !== -1) {
+          if (j < 4) {
+            $scope.invalidReason = 'Your poll can\'t mention someone\'s name';
+            return false;
+          }
+          else {
+            $scope.invalidReason = 'Your poll can\'t contain profanity or hate speech.';
+            return false;
+          }
+        }
+      }
+    }
+    var sortedChoices = poll.choices.slice(0).sort();
+    for (var i = 0; i < sortedChoices.length - 1; i++) {
+      if (sortedChoices[i] === sortedChoices[i + 1]) {
+        $scope.invalidReason = 'Your poll can\'t have duplicate choices.';
+        return false;
+      }
+    }
+    $scope.invalidReason = 'Your poll is ready!';
+    return true;
   };
 
   $scope.submitPoll = function () {
