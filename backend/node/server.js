@@ -110,15 +110,14 @@ app.post('/polls/submit', function (req, res) {
   res.send({'pid' : newPoll.pid});
 });
 
+/*
 app.get('/polls/get/all', function (req, res) {
   console.log('GET request for /polls/get/all');
   Poll.find({}, 'question choices time pid score', function (err, polls) {
-    /*console.log(typeof polls);
-    console.log(polls[1]);
-    console.log(polls[0]);*/
     res.send(polls);
   });
 });
+*/
 
 app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
   console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.num);
@@ -134,7 +133,7 @@ app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
 
   if (req.params.onlyUser == 'true')
     fields = {'author': user};
-  else if (req.params.onlyUser == 'false') 
+  else if (req.params.onlyUser == 'false')
     fields = {};
 
   Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
@@ -162,7 +161,8 @@ app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
           var newPollData = {
             pollData: p,
             userVote: userVote,
-            userResponse: userResponse
+            userResponse: userResponse,
+            isAuthor: p.author == user
           };
           //console.log("time added into ret: " + newPollData.pollData.time);
           ret.push(newPollData);
@@ -182,7 +182,7 @@ app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
 
 app.get('/polls/get/:pid/:netid', function(req, res) {
   console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid);
-  Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score', function (err, poll) {
+  Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score author', function (err, poll) {
     if (err) console.log('Error.');
     if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
     else {
@@ -194,6 +194,7 @@ app.get('/polls/get/:pid/:netid', function(req, res) {
       ret.time = poll.time;
       ret.pid = poll.pid;
       ret.score = poll.score;
+      ret.isAuthor = poll.author === req.params.netid;
 
       Vote.findOne({'pid' : req.params.pid, 'netid' : req.params.netid}, function (err, vote) {
         //console.log(vote);
@@ -229,12 +230,47 @@ app.get('/polls/get/:netid', function(req, res) {
   });
 });
 
+app.delete('/polls/delete/:pid/:netid/:ticket', function(req, res) {
+  console.log('DELETE request for poll: ' + req.params.pid + ' by user: ' + req.params.netid);
+  var pid = req.params.pid;
+  var netid = req.params.netid;
+  var ticket = req.params.ticket;
+  Poll.findOne({pid: pid}, 'author', function (err, poll) {
+    if (err) {
+      console.log('Database error.');
+      res.send({err: true, msg: 'Database error.'});
+      return;
+    }
+    else if (poll == null) {
+      console.log('Poll not found.');
+      res.send({err: true, msg: 'No poll with that ID found.'});
+      return;
+    }
+    else if (poll.author !== netid) {
+      console.log('Non-author tried to delete poll. Cancelling.');
+      res.send({err: true, msg: 'You are not the author of the given poll, so you can\'t delete it.'});
+      return;
+    }
+    else {
+      Poll.findOneAndRemove({pid: pid}, function (err, poll) {
+        Response.remove({pid: pid}, function (err) {
+          Vote.remove({pid: pid}, function (err) {
+            res.send({err: false});
+          });
+        });
+      });
+    }
+  });
+});
+
+/*
 app.get('/polls/delete/all', function (req, res) {
   console.log('GET request for /polls/delete/all');
   Poll.find({}).remove().exec();
   Vote.find({}).remove().exec();
   res.end();
 });
+*/
 
 // Plus send pid.
 app.post('/polls/vote', function (req, res) {
@@ -479,7 +515,7 @@ app.post('/auth/loggedin', function (req, res) {
       var fullname = "";
 
       //Logging visitors
-      var newLogDate = new Date();      
+      var newLogDate = new Date();
       var newUserLog = {netid: ticket.netid, time: newLogDate};
       var saveLog = new userLog(newUserLog);
       saveLog.save(function (err) {
@@ -512,7 +548,7 @@ app.post('/auth/loggedin', function (req, res) {
           if (response.charAt(0) == 'y') {
             // CAS approved the ticket
             var netid = response.substring(response.indexOf('\n') + 1, response.length - 1);
-            
+
             //Logging visitors
             var newLogDate = new Date();
             var newUserLog = {netid: netid, time: newLogDate};

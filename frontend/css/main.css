@@ -955,3 +955,29 @@ footer p
   text-align: left;
   color: #888;
 }
+
+#page-poll .poll-controls
+{
+  text-align: right;
+}
+
+a.pp-grey, a.pp-grey:hover, a.pp-grey:active, a.pp-grey:visited, a.pp-grey:focus
+{
+  color: #888;
+  cursor: pointer;
+  padding: 0.3em;
+  margin: -0.3em;
+  border-radius: .2em;
+  text-decoration: none;
+}
+
+a.pp-grey
+{
+  background: rgba(0,0,0,0);
+}
+
+a.pp-grey:hover, a.pp-grey:active
+{
+  background: rgba(0,0,0,0.05);
+  color: black;
+}

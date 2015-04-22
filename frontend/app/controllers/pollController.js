@@ -103,6 +103,18 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       });
   };
 
+  $scope.deletePoll = function () {
+    $http.delete('/ppapi/polls/delete/' + $scope.poll.pid + '/' + localStorage.getItem('netid') + '/' + localStorage.getItem('ticket'), {})
+      .success(function (data, status, headers, config) {
+        if (data.err) {
+          alert('Something went wrong. Error message: ' + data.msg);
+        }
+        else {
+          window.location = 'http://' + window.location.hostname + window.location.pathname;
+        }
+      });
+  };
+
   var GET = getUrlVars();
   var pid = GET['p'];
 
