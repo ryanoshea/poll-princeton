@@ -844,20 +844,20 @@ footer p
 #page-poll .poll-content .choice a:visited span.choice-text,
 #page-poll .poll-content .choice a:focus span.choice-text
 {
-  background: rgba(0,0,0,0);
+  background: #eaeaea;
 }
 
 #page-poll .poll-content .choice a:hover span.choice-text,
 #page-poll .poll-content .choice a:active span.choice-text
 {
-  background: rgba(0,0,0,0.05);
+  background: #e0e0e0;
 }
 
 #page-poll .poll-content .choice a.unselected:hover span.choice-text,
 #page-poll .poll-content .choice a.unselected:active span.choice-text
 {
   /* Account for the opacity difference */
-  background: rgba(0,0,0,0.1);
+  background: #d5d5d5;
 }
 
 #page-poll .poll-content .choice .selected
