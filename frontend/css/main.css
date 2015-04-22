@@ -461,11 +461,6 @@ navbar .btn-pp
   color: #aaa;
 }
 
-#page-feed .poll .poll-meta span
-{
-  margin-right: 1em;
-}
-
 #page-feed .poll .poll-choices-preview
 {
   color: #666;
@@ -581,7 +576,11 @@ hr
 {
   font-weight: 300;
   font-size: 3.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
+}
+
+#page-poll .poll-meta {
+  margin-bottom: 2em;
 }
 
 #page-poll .poll-content .label
@@ -899,7 +898,7 @@ footer p
 
 #page-poll .text-wrapper
 {
-  width: 60%;
+  width: 50%;
   min-width: 10em;
   margin-right: 0;
   float: left;
@@ -910,7 +909,7 @@ footer p
   opacity: 0.8;
   float: left;
   height: 1em;
-  width: 40%;
+  width: 50%;
   position: relative;
 }
 
@@ -949,4 +948,10 @@ footer p
   display: block;
   float: right;
   margin: 0.8em 1.5em;
+}
+
+#page-poll .poll-meta
+{
+  text-align: left;
+  color: #888;
 }

@@ -27,6 +27,9 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       var thisPoll = $scope.poll;
       var date = new Date(thisPoll.time);
       thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
+        return a + b;
+      });
       $scope.fetchedPoll = true;
       redrawBars();
       document.title = $scope.poll.question + ' | PollPrinceton';
@@ -90,6 +93,9 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.responses = data.responses;
           $scope.poll.userResponse = data.userResponse;
           redrawBars();
+          $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
+            return a + b;
+          });
         }
       })
       .error(function (data, status, headers, config) {
