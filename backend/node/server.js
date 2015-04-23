@@ -521,8 +521,19 @@ app.post('/auth/loggedin', function (req, res) {
 
       //Logging visitors
       var newLogDate = new Date();
-      var newUserLog = ticket.netid + " " + newLogDate + '\n';
-      fs.appendFile('userLog.txt', newUserLog, function (err) 
+      var log = ticket.netid + " " + newLogDate + '\n';
+      var newUserLog = {netid: ticket.netid, time: newLogDate};
+      var saveLog = new userLog(newUserLog);
+      userLog.findOne({netid: ticket.netid}, function(err, result) {
+        if (result == null) {
+          saveLog.save(function (err) {
+          console.log("saving unique user");
+          if (err)
+            console.log("Database log save error.");
+          });
+        }
+      });
+      fs.appendFile('userLog.txt', log, function (err) 
       {
         if (err) console.log('Logging error');
       });
@@ -555,12 +566,23 @@ app.post('/auth/loggedin', function (req, res) {
 
             //Logging visitors
             var newLogDate = new Date();
-            var newUserLog = netid + " " + newLogDate + '\n';
-            fs.appendFile('userLog.txt', newUserLog, function (err) 
+            var log = netid + " " + newLogDate + '\n';
+            var newUserLog = {netid: netid, time: newLogDate};
+            var saveLog = new userLog(newUserLog);
+            userLog.findOne({netid: netid}, function(err, result) {
+              if (result == null) {
+                saveLog.save(function (err) {
+                if (err)
+                  console.log("Database log save error.");
+                });
+              }
+            });
+            fs.appendFile('userLog.txt', log, function (err) 
             {
               if (err) console.log('Logging error');
             });
 
+            //Save ticket
             var newTicket = {ticket: req.body.ticket, netid: netid};
             console.log(newTicket);
             var saveTicket = new Ticket(newTicket);
@@ -568,7 +590,6 @@ app.post('/auth/loggedin', function (req, res) {
               if (err)
                 console.log("Database ticket save error.");
             });
-
             // Query for user's Full Name
             var fullname = "";
             Student.findOne({'netid': netid}, function (err, student) {
