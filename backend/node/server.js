@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var crypto = require('crypto');
 var async = require('async');
+var fs = require('fs');
 var app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -520,11 +521,10 @@ app.post('/auth/loggedin', function (req, res) {
 
       //Logging visitors
       var newLogDate = new Date();
-      var newUserLog = {netid: ticket.netid, time: newLogDate};
-      var saveLog = new userLog(newUserLog);
-      saveLog.save(function (err) {
-        if (err)
-          console.log("Database log save error.");
+      var newUserLog = ticket.netid + " " + newLogDate + '\n';
+      fs.appendFile('userLog.txt', newUserLog, function (err) 
+      {
+        if (err) console.log('Logging error');
       });
 
       Student.findOne({'netid': ticket.netid}, function (err, student) {
@@ -555,11 +555,10 @@ app.post('/auth/loggedin', function (req, res) {
 
             //Logging visitors
             var newLogDate = new Date();
-            var newUserLog = {netid: netid, time: newLogDate};
-            var saveLog = new userLog(newUserLog);
-            saveLog.save(function (err) {
-              if (err)
-                console.log("Database log save error.");
+            var newUserLog = ticket.netid + " " + newLogDate + '\n';
+            fs.appendFile('userLog.txt', newUserLog, function (err) 
+            {
+              if (err) console.log('Logging error');
             });
 
             var newTicket = {ticket: req.body.ticket, netid: netid};
