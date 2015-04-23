@@ -187,6 +187,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.sortPopular = function () {
     if ($scope.sort !== 'popular') {
       $('.polls').fadeOut(function () {
+        $scope.noMorePolls = false;
         $scope.sort = 'popular';
         $scope.polls = [];
         $scope.currentPolls = 0;
@@ -199,6 +200,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.sortNewest = function () {
     if ($scope.sort !== 'newest') {
       $('.polls').fadeOut(function () {
+        $scope.noMorePolls = false;
         $scope.sort = 'newest';
         $scope.polls = [];
         $scope.currentPolls = 0;
