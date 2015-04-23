@@ -174,7 +174,11 @@ app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
       if (err) console.log('Error.');
       else {
         //console.log(polls.length + " " + ret.length);
-        res.send(ret);
+        if (ret.length === 0) {
+          res.send({err: true});
+        }
+        else
+          res.send(ret);
       }
     });
   });

@@ -10,6 +10,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $scope.fetchedDevs = false;
   $scope.fetchedPolls = false;
+  $scope.fetching = true;
+  $scope.noMorePolls = false;
   $scope.polls = [];
   $scope.currentPolls = 0;
   $scope.sort = "popular";
@@ -46,8 +48,13 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
         + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+      $scope.fetching = false;
+      if (data.err) {
+        $scope.noMorePolls = true;
+        return;
+      }
       $scope.polls = data;
-      $scope.currentPolls += 10;
+      $scope.currentPolls = 10;
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
@@ -61,10 +68,16 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   };
 
   $scope.fetchNext10Best = function () {
+    if ($scope.noMorePolls) return;
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
         + user + '/' + $scope.currentPolls + '/false')
       .success(function (data, status, headers, config) {
+        $scope.fetching = false;
+        if (data.err) {
+          $scope.noMorePolls = true;
+          return;
+        }
         var polls = data;
         $scope.currentPolls += 10;
         for (var i in polls) {
@@ -83,8 +96,13 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
         + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+      $scope.fetching = false;
+      if (data.err) {
+        $scope.noMorePolls = true;
+        return;
+      }
       $scope.polls = data;
-      $scope.currentPolls += 10;
+      $scope.currentPolls = 10;
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
@@ -98,10 +116,16 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   };
 
   $scope.fetchNext10New = function () {
+    if ($scope.noMorePolls) return;
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
         + user + '/' + $scope.currentPolls + '/false')
       .success(function (data, status, headers, config) {
+        $scope.fetching = false;
+        if (data.err) {
+          $scope.noMorePolls = true;
+          return;
+        }
         var polls = data;
         $scope.currentPolls += 10;
         for (var i in polls) {
@@ -188,7 +212,18 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     window.location = 'http://' + window.location.hostname + window.location.pathname + '#/poll?p=' + pid;
   };
 
+  $scope.refresh = function () {
+    location.reload();
+  };
+
   $scope.fetch10Best();
+
+  $(window).scroll(function () {
+    if ($scope.fetchedPolls && $(window).height() + $(window).scrollTop() == $(document).height()) {
+      $scope.fetching = true;
+      $scope.fetchMore();
+    }
+  });
 });
 
 })();

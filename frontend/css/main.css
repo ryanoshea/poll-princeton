@@ -983,3 +983,10 @@ a.pp-grey:hover, a.pp-grey:active
   background: rgba(0,0,0,0.05);
   color: black;
 }
+
+.loading
+{
+  color: black;
+  opacity: 0.6;
+  font-size: 3em;
+}
