@@ -47,7 +47,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
         + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
       $scope.polls = data;
-      $scope.currentPolls = $scope.currentPolls + 10;
+      $scope.currentPolls += 10;
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
@@ -60,12 +60,31 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
+  $scope.fetchNext10Best = function () {
+    var user = localStorage.getItem('netid');
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
+        + user + '/' + $scope.currentPolls + '/false')
+      .success(function (data, status, headers, config) {
+        var polls = data;
+        $scope.currentPolls += 10;
+        for (var i in polls) {
+          var thisPoll = polls[i].pollData;
+          var date = new Date(thisPoll.time);
+          thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+          thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
+            return a + b;
+          });
+          $scope.polls.push(polls[i]);
+        }
+      });
+  };
+
   $scope.fetch10New = function () {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
         + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
       $scope.polls = data;
-      $scope.currentPolls = $scope.currentPolls + 10;
+      $scope.currentPolls += 10;
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
@@ -76,6 +95,30 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       }
       $scope.fetchedPolls = true;
     });
+  };
+
+  $scope.fetchNext10New = function () {
+    var user = localStorage.getItem('netid');
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
+        + user + '/' + $scope.currentPolls + '/false')
+      .success(function (data, status, headers, config) {
+        var polls = data;
+        $scope.currentPolls += 10;
+        for (var i in polls) {
+          var thisPoll = polls[i].pollData;
+          var date = new Date(thisPoll.time);
+          thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+          thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
+            return a + b;
+          });
+          $scope.polls.push(polls[i]);
+        }
+      });
+  };
+
+  $scope.fetchMore = function () {
+    if ($scope.sort === 'popular') $scope.fetchNext10Best();
+    else $scope.fetchNext10New();
   };
 
   $scope.upVote = function (pid, idx) {
