@@ -16,6 +16,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.currentPolls = 0;
   $scope.sort = "popular";
 
+
+  var onlyUser = '/false';
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   $scope.fetchDevs = function () {
@@ -47,7 +49,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.fetch10Best = function () {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+        + user + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -71,7 +73,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if ($scope.noMorePolls) return;
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + $scope.currentPolls + '/false')
+        + user + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {
@@ -95,7 +97,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.fetch10New = function () {
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+        + user + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -119,7 +121,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if ($scope.noMorePolls) return;
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + $scope.currentPolls + '/false')
+        + user + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {
