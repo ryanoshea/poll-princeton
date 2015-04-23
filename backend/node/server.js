@@ -555,7 +555,7 @@ app.post('/auth/loggedin', function (req, res) {
 
             //Logging visitors
             var newLogDate = new Date();
-            var newUserLog = ticket.netid + " " + newLogDate + '\n';
+            var newUserLog = netid + " " + newLogDate + '\n';
             fs.appendFile('userLog.txt', newUserLog, function (err) 
             {
               if (err) console.log('Logging error');
