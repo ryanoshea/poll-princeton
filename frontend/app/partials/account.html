@@ -7,19 +7,34 @@
     </p>
     <hr>
     <div id="feed-sort">
-      <p>SORT BY: <a class="pp">NEWEST</a> | <a class="pp">POPULAR</a></p>
+      <p>SORT BY: <a ng-click="sortPopular()" ng-class="{selected: sort === 'popular'}" class="pp">POPULAR</a> | <a ng-click="sortNewest()" ng-class="{selected: sort === 'newest'}" class="pp">NEWEST</a></p>
     </div>
     
-    <div class="polls">
-    	<a class="poll" ng-show="fetchedPolls" ng-repeat="poll in polls" href="#/poll?p={{poll.pollData.pid}}">
-    		<p class="poll-question">{{poll.pollData.question}}</p>
-        <p class="poll-choices-preview">Vote: &#8216;{{poll.pollData.choices[0]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, </span><span ng-show="poll.pollData.choices.length == 2"> vs. </span>&#8216;{{poll.pollData.choices[1]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
-        <div class="poll-meta">
-          <span><i class="fa fa-list-alt"></i> {{poll.pollData.choices.length}} choices</span>
-          <span><i class="fa fa-clock-o"></i> {{poll.pollData.humanTime}}</span>
+    <div class="polls" ng-show="fetchedPolls">
+      <div class="poll" ng-repeat="poll in polls track by $index">
+        <div class="scoring">
+          <a class="vote-submit upvote" ng-click="upVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == true}">good poll</a>
+          <p class="score"><strong>{{poll.pollData.score}}</strong></p>
+          <a class="vote-submit downvote" ng-click="downVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == false}">bad poll</a>
         </div>
-    	</a>
+        <div class="poll-content" ng-click="goToPoll(poll.pollData.pid)">
+          <p class="poll-question">{{poll.pollData.question}}</p>
+          <p class="poll-choices-preview">Vote: &#8216;{{poll.pollData.choices[0]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, </span><span ng-show="poll.pollData.choices.length == 2"> vs. </span>&#8216;{{poll.pollData.choices[1]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
+          <div class="poll-meta">
+            <span>
+              <span><i class="fa fa-clock-o"></i> &nbsp; Posted {{poll.pollData.humanTime}}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span><i class="fa fa-list-alt"></i> &nbsp; {{poll.pollData.choices.length}} choices</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span><i class="fa fa-pie-chart"></i> &nbsp; {{poll.pollData.numResponses}} <span ng-show="poll.pollData.numResponses !== 1">people</span><span ng-hide="poll.pollData.numResponses !== 1">person</span> responded</span>
+            </span>
+          </div>
+        </div>
+        <div style="visibility: hidden; clear: both; width: 100%; height: 0">.</div>
+      </div>
+      <p class="centered" style="height: 3em"><i ng-show="fetching" class="fa fa-refresh fa-spin loading"></i><span ng-show="noMorePolls">No more polls to display. Want more? <a href class="pp" ng-click="refresh()">Refresh.</a></span></p>
     </div>
+
   </div>
   <ppfooter></ppfooter>
 </div>

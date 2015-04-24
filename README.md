@@ -18,3 +18,9 @@ You can read about who we are, the stack we deployed, and who we have to thank i
 	- If you're on Ubuntu, you might need to follow the instructions [here](http://stackoverflow.com/a/22242472/859085) to get mongoose working.
 - Install MongoDB and run it on the default port.
 - Run `node server.js` to get the backend up and running.
+
+## How to run on server
+- cd into backend/node
+- git pull
+- pkill nodejs
+- nodejs server.js > server.log &

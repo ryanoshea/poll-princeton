@@ -16,6 +16,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.currentPolls = 0;
   $scope.sort = "popular";
 
+
+  var onlyUser = '/false';
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   $scope.fetchDevs = function () {
@@ -50,7 +52,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + ticket + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -77,7 +79,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + ticket + '/' + $scope.currentPolls + '/false')
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {
@@ -104,7 +106,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + ticket + '/' + $scope.currentPolls + '/false').success(function (data, status, headers, config) {
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -131,7 +133,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     } while (user == null || ticket == null);
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + ticket + '/' + $scope.currentPolls + '/false')
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {
