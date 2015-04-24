@@ -86,7 +86,9 @@ var Student = mongoose.model('Student', studentSchema);
 
 app.post('/polls/submit', function (req, res) {
   console.log('POST request for /polls/submit/');
-  Ticket.findOne({netid: req.body.author, ticket: req.body.ticket}, function (err, ticket) {
+  var user = req.body.author;
+  var ticket  = req.body.ticket;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
     if (err) {
       console.log('Database error.');
       res.status(500).send({msg: 'Database error.'});
