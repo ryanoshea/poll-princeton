@@ -119,68 +119,82 @@ app.get('/polls/get/all', function (req, res) {
 });
 */
 
-app.get('/polls/get/:sortType/:netid/:num/:onlyUser', function(req, res) {
-  console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.num);
+app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res) {
+  console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.ticket + '/' + req.params.num);
   var user = req.params.netid;
+  var ticket = req.params.ticket;
   var current = req.params.num;
   var onlyUser = req.params.onlyUser;
-  var sortBy;
-  var fields;
-  if (req.params.sortType == 'popular')
-    sortBy = {'score': -1};
-  else if (req.params.sortType == 'newest')
-    sortBy = {time: -1};
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      var sortBy;
+      var fields;
+      if (req.params.sortType == 'popular')
+        sortBy = {'score': -1};
+      else if (req.params.sortType == 'newest')
+        sortBy = {time: -1};
 
-  if (req.params.onlyUser == 'true')
-    fields = {'author': user};
-  else if (req.params.onlyUser == 'false')
-    fields = {};
+      if (req.params.onlyUser == 'true')
+        fields = {'author': user};
+      else if (req.params.onlyUser == 'false')
+        fields = {};
 
-  Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
-    var ret = [];
-    async.eachSeries(polls, function(p, callback) {
-      //console.log("date at start of loop: " + p.time);
-      var pid = p.pid;
-      var userVote;
-      var userResponse;
-      Vote.findOne({'pid' : pid, 'netid' : user}, function (err, vote) {
-        //console.log(vote);
-        if (vote != null) {
-          //console.log('test');
-          userVote = vote.upOrDown;
-        }
-        else {
-          userVote = null;
-        }
-        Response.findOne({pid: pid, netid: user}, function (err, response) {
+      Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
+        var ret = [];
+        async.eachSeries(polls, function(p, callback) {
+          //console.log("date at start of loop: " + p.time);
+          var pid = p.pid;
+          var userVote;
+          var userResponse;
+          Vote.findOne({'pid' : pid, 'netid' : user}, function (err, vote) {
+            //console.log(vote);
+            if (vote != null) {
+              //console.log('test');
+              userVote = vote.upOrDown;
+            }
+            else {
+              userVote = null;
+            }
+            Response.findOne({pid: pid, netid: user}, function (err, response) {
+              if (err) console.log('Error.');
+              if (response == null)
+                userResponse = -1;
+              else
+                userResponse = response.idx;
+              var newPollData = {
+                pollData: p,
+                userVote: userVote,
+                userResponse: userResponse,
+                isAuthor: p.author == user
+              };
+              //console.log("time added into ret: " + newPollData.pollData.time);
+              ret.push(newPollData);
+              //console.log(ret.length);
+              callback();
+            })
+          });
+        }, function(err) {
           if (err) console.log('Error.');
-          if (response == null)
-            userResponse = -1;
-          else
-            userResponse = response.idx;
-          var newPollData = {
-            pollData: p,
-            userVote: userVote,
-            userResponse: userResponse,
-            isAuthor: p.author == user
-          };
-          //console.log("time added into ret: " + newPollData.pollData.time);
-          ret.push(newPollData);
-          //console.log(ret.length);
-          callback();
-        })
+          else {
+            //console.log(polls.length + " " + ret.length);
+            if (ret.length === 0) {
+              res.send({err: true});
+            }
+            else
+              res.send(ret);
+          }
+        });
       });
-    }, function(err) {
-      if (err) console.log('Error.');
-      else {
-        //console.log(polls.length + " " + ret.length);
-        if (ret.length === 0) {
-          res.send({err: true});
-        }
-        else
-          res.send(ret);
-      }
-    });
+    }
   });
 });
 
@@ -530,7 +544,10 @@ app.post('/auth/loggedin', function (req, res) {
       Student.findOne({'netid': ticket.netid}, function (err, student) {
         if (err) console.log('Student db error');
         if (student !== null) {
-          fullname = student.first + ' ' + student.last;
+          var fullname = student.first + ' ' + student.last;
+        }
+        else {
+          var fullname = ticket.netid;
         }
         res.send({'loggedin' : true, 'netid' : ticket.netid, 'fullname': fullname});
       });
