@@ -47,9 +47,12 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
   //Get call returns an array of objects containing three things: pollData (a complete poll with all data),
   //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Best = function () {
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -71,9 +74,12 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
 
   $scope.fetchNext10Best = function () {
     if ($scope.noMorePolls) return;
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
-        + user + '/' + $scope.currentPolls + onlyUser)
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {
@@ -95,9 +101,12 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
   };
 
   $scope.fetch10New = function () {
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
         $scope.noMorePolls = true;
@@ -119,9 +128,13 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
 
   $scope.fetchNext10New = function () {
     if ($scope.noMorePolls) return;
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     var user = localStorage.getItem('netid');
     $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
-        + user + '/' + $scope.currentPolls + onlyUser)
+        + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
         if (data.err) {

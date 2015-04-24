@@ -86,29 +86,40 @@ var Student = mongoose.model('Student', studentSchema);
 
 app.post('/polls/submit', function (req, res) {
   console.log('POST request for /polls/submit/');
+  Ticket.findOne({netid: req.body.author, ticket: req.body.ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      console.log(req.body);
+      var newPoll = {};
+      newPoll.question = req.body.question;
+      newPoll.choices = req.body.choices;
+      newPoll.responses = [];
+      for (var i in newPoll.choices)
+        newPoll.responses.push(0);
+      newPoll.author = req.body.author;
+      newPoll.upvotes = 0;
+      newPoll.downvotes = 0;
+      newPoll.score = 0;
 
-  //res.json(req.body); // parse request body, populate req.body object
-  console.log(req.body);
-  var newPoll = {};
-  newPoll.question = req.body.question;
-  newPoll.choices = req.body.choices;
-  newPoll.responses = [];
-  for (var i in newPoll.choices)
-    newPoll.responses.push(0);
-  newPoll.author = req.body.author;
-  newPoll.upvotes = 0;
-  newPoll.downvotes = 0;
-  newPoll.score = 0;
-
-  var sha256 = crypto.createHash('sha256');
-  sha256.update(newPoll.question + newPoll.author);
-  newPoll.pid = sha256.digest('hex');
-  newPoll.time = new Date();
-  var question = new Poll(newPoll);
-  question.save(function (err) {
-    if (err) return console.error(err);
+      var sha256 = crypto.createHash('sha256');
+      sha256.update(newPoll.question + newPoll.author);
+      newPoll.pid = sha256.digest('hex');
+      newPoll.time = new Date();
+      var question = new Poll(newPoll);
+      question.save(function (err) {
+        if (err) return console.error(err);
+      });
+      res.send({'pid' : newPoll.pid});
+    }
   });
-  res.send({'pid' : newPoll.pid});
 });
 
 /*
@@ -199,84 +210,125 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
   });
 });
 
-app.get('/polls/get/:pid/:netid', function(req, res) {
-  console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid);
-  Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score author', function (err, poll) {
-    if (err) console.log('Error.');
-    if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
+  console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid + '/' + req.params.ticket);
+  var user = req.params.netid;
+  var ticket = req.params.ticket;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
     else {
-
-      var ret = {};
-      ret.question = poll.question;
-      ret.choices = poll.choices;
-      ret.responses = poll.responses;
-      ret.time = poll.time;
-      ret.pid = poll.pid;
-      ret.score = poll.score;
-      ret.isAuthor = poll.author === req.params.netid;
-
-      Vote.findOne({'pid' : req.params.pid, 'netid' : req.params.netid}, function (err, vote) {
-        //console.log(vote);
-        if (vote != null) {
-          console.log('test');
-          ret.userVote = vote.upOrDown;
-        }
+      console.log('User ' + user + ' is authorized to make this request.');
+      Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score author', function (err, poll) {
+        if (err) console.log('Error.');
+        if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
         else {
-          ret.userVote = null;
+          var ret = {};
+          ret.question = poll.question;
+          ret.choices = poll.choices;
+          ret.responses = poll.responses;
+          ret.time = poll.time;
+          ret.pid = poll.pid;
+          ret.score = poll.score;
+          ret.isAuthor = poll.author === req.params.netid;
+
+          Vote.findOne({'pid' : req.params.pid, 'netid' : req.params.netid}, function (err, vote) {
+            //console.log(vote);
+            if (vote != null) {
+              console.log('test');
+              ret.userVote = vote.upOrDown;
+            }
+            else {
+              ret.userVote = null;
+            }
+
+            Response.findOne({pid: req.params.pid, netid: req.params.netid}, function (err, response) {
+              if (err) console.log('Error.');
+              if (response == null)
+                ret.userResponse = -1;
+              else
+                ret.userResponse = response.idx;
+
+              console.log(ret);
+              res.send(ret);
+            })
+          });
         }
-
-        Response.findOne({pid: req.params.pid, netid: req.params.netid}, function (err, response) {
-          if (err) console.log('Error.');
-          if (response == null)
-            ret.userResponse = -1;
-          else
-            ret.userResponse = response.idx;
-
-          console.log(ret);
-          res.send(ret);
-        })
       });
     }
   });
 });
 
-// This + the get function above. Authentication?
-app.get('/polls/get/:netid', function(req, res) {
+app.get('/polls/get/:netid/:ticket', function(req, res) {
+  console.log('GET request for /polls/get/' + user + '/' + req.params.ticket);
   var user = req.params.netid;
-  console.log('GET request for /polls/get/' + user);
-  Poll.find({"author": user}, 'question choices time pid score', function (err, polls) {
-    res.send(polls);
+  var ticket = req.params.ticket;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      Poll.find({"author": user}, 'question choices time pid score', function (err, polls) {
+        res.send(polls);
+      });
+    }
   });
 });
 
 app.delete('/polls/delete/:pid/:netid/:ticket', function(req, res) {
-  console.log('DELETE request for poll: ' + req.params.pid + ' by user: ' + req.params.netid);
+  console.log('DELETE request for poll: ' + req.params.pid + ' by user: ' + req.params.netid + ' with ticket ' + req.params.ticket);
   var pid = req.params.pid;
   var netid = req.params.netid;
   var ticket = req.params.ticket;
-  Poll.findOne({pid: pid}, 'author', function (err, poll) {
+  var user = netid;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
     if (err) {
       console.log('Database error.');
-      res.send({err: true, msg: 'Database error.'});
-      return;
+      res.status(500).send({msg: 'Database error.'});
     }
-    else if (poll == null) {
-      console.log('Poll not found.');
-      res.send({err: true, msg: 'No poll with that ID found.'});
-      return;
-    }
-    else if (poll.author !== netid && netid !== 'roshea' && netid !== 'marchant' && netid != 'hzlu') {
-      console.log('Non-author, non-admin tried to delete poll. Cancelling.');
-      res.send({err: true, msg: 'You are not the author of the given poll, so you can\'t delete it.'});
-      return;
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
     }
     else {
-      Poll.findOneAndRemove({pid: pid}, function (err, poll) {
-        Response.remove({pid: pid}, function (err) {
-          Vote.remove({pid: pid}, function (err) {
-            res.send({err: false});
+      console.log('User ' + user + ' is authorized to make this request.');
+      Poll.findOne({pid: pid}, 'author', function (err, poll) {
+        if (err) {
+          console.log('Database error.');
+          res.send({err: true, msg: 'Database error.'});
+          return;
+        }
+        else if (poll == null) {
+          console.log('Poll not found.');
+          res.send({err: true, msg: 'No poll with that ID found.'});
+          return;
+        }
+        else if (poll.author !== netid && netid !== 'roshea' && netid !== 'marchant' && netid != 'hzlu') {
+          console.log('Non-author, non-admin tried to delete poll. Cancelling.');
+          res.send({err: true, msg: 'You are not the author of the given poll, so you can\'t delete it.'});
+          return;
+        }
+        else {
+          Poll.findOneAndRemove({pid: pid}, function (err, poll) {
+            Response.remove({pid: pid}, function (err) {
+              Vote.remove({pid: pid}, function (err) {
+                res.send({err: false});
+              });
+            });
           });
-        });
+        }
       });
     }
   });
@@ -301,94 +353,107 @@ app.post('/polls/vote', function (req, res) {
   netid = req.body.netid;
   var reversed = false;
   var negated = false;
+  var user = netid;
+  var ticket = req.body.ticket;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      if (netid !== null) {
+        Vote.findOne({'pid' : pollID, 'netid' : netid}, 'upOrDown', function (err, oldVote) {
+          if (err) console.log('Error with vote db.');
+          if (oldVote) {
+            var oldUpOrDown = oldVote.upOrDown;
+            console.log("new " + upOrDown);
+            console.log("old " + oldUpOrDown);
+            if (upOrDown == oldUpOrDown) {
+              console.log("removing " + pollID + " " + netid);
+              var conditions = {pid: pollID, netid: netid};
+              Vote.findOneAndRemove(conditions, function (err, results) {
+                console.log("remove results: " + results);   //** These two not guaranteed to execute in order
+              });    //if already voted button pressed again
+              negated = true;
+            }
+            else {
+              var conditions = {pid: pollID, netid: netid};
+              var update = {upOrDown: upOrDown};
+              Vote.findOneAndUpdate(conditions, update, function (err, results) {
+                console.log("updated results: " + results); //** Need to be made sync?
+              }); //if other button pressed
+              reversed = true;
+            }
+          }
+          else {
+            var newVoteFields = {};
+            newVoteFields.netid = netid;
+            newVoteFields.upOrDown = upOrDown;
+            newVoteFields.pid = pollID;
+            var newVote = new Vote(newVoteFields);
+            newVote.save(function (err) {
+            if (err) return console.error(err);   //if no button pressed yet
+            });
+          }
+          var conditions = {pid: pollID};
+          var update;
+          console.log("negated " + negated);
 
-  if (netid !== null) {
-    Vote.findOne({'pid' : pollID, 'netid' : netid}, 'upOrDown', function (err, oldVote) {
-      if (err) console.log('Error with vote db.');
-      if (oldVote) {
-        var oldUpOrDown = oldVote.upOrDown;
-        console.log("new " + upOrDown);
-        console.log("old " + oldUpOrDown);
-        if (upOrDown == oldUpOrDown) {
-          console.log("removing " + pollID + " " + netid);
-          var conditions = {pid: pollID, netid: netid};
-          Vote.findOneAndRemove(conditions, function (err, results) {
-            console.log("remove results: " + results);   //** These two not guaranteed to execute in order
-          });    //if already voted button pressed again
-          negated = true;
-        }
-        else {
-          var conditions = {pid: pollID, netid: netid};
-          var update = {upOrDown: upOrDown};
-          Vote.findOneAndUpdate(conditions, update, function (err, results) {
-            console.log("updated results: " + results); //** Need to be made sync?
-          }); //if other button pressed
-          reversed = true;
-        }
-      }
-      else {
-        var newVoteFields = {};
-        newVoteFields.netid = netid;
-        newVoteFields.upOrDown = upOrDown;
-        newVoteFields.pid = pollID;
-        var newVote = new Vote(newVoteFields);
-        newVote.save(function (err) {
-        if (err) return console.error(err);   //if no button pressed yet
+          // This clusterfuck
+          if (upOrDown) {
+            if (reversed) {
+              update = {$inc: {upvotes:1, downvotes: -1, score:2}};
+            }
+            else if (negated) {
+              update = {$inc: {upvotes:-1, score:-1}};
+            }
+            else {
+              update = {$inc: {upvotes:1, score:1}};
+            }
+          }
+          else {
+            if (reversed) {
+              update = {$inc: {downvotes:1, upvotes: -1, score:-2}};
+            }
+            else if (negated) {
+              update = {$inc: {downvotes:-1, score:1}};
+            }
+            else {
+              update = {$inc: {downvotes:1, score:-1}};
+            }
+          }
+          var options = {new: true};
+          Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
+              console.log('New score: ' + updatedPoll);
+              if (err) console.log('Error.');
+              if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+              else {
+                var ret = {};
+                ret.question = updatedPoll.question;
+                ret.score = updatedPoll.score;
+                ret.choices = updatedPoll.choices;
+                ret.responses = updatedPoll.responses;
+                ret.pid = updatedPoll.pid;
+                if (negated)
+                  ret.userVote = null;
+                else {
+                  ret.userVote = upOrDown;
+                }
+                res.send(ret);
+              }
+          });
         });
       }
-      var conditions = {pid: pollID};
-      var update;
-      console.log("negated " + negated);
-
-      // This clusterfuck
-      if (upOrDown) {
-        if (reversed) {
-          update = {$inc: {upvotes:1, downvotes: -1, score:2}};
-        }
-        else if (negated) {
-          update = {$inc: {upvotes:-1, score:-1}};
-        }
-        else {
-          update = {$inc: {upvotes:1, score:1}};
-        }
-      }
       else {
-        if (reversed) {
-          update = {$inc: {downvotes:1, upvotes: -1, score:-2}};
-        }
-        else if (negated) {
-          update = {$inc: {downvotes:-1, score:1}};
-        }
-        else {
-          update = {$inc: {downvotes:1, score:-1}};
-        }
+        res.send({'err': true, 'netid': 'You are not logged in.'});
       }
-      var options = {new: true};
-      Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
-          console.log('New score: ' + updatedPoll);
-          if (err) console.log('Error.');
-          if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
-          else {
-            var ret = {};
-            ret.question = updatedPoll.question;
-            ret.score = updatedPoll.score;
-            ret.choices = updatedPoll.choices;
-            ret.responses = updatedPoll.responses;
-            ret.pid = updatedPoll.pid;
-            if (negated)
-              ret.userVote = null;
-            else {
-              ret.userVote = upOrDown;
-            }
-            res.send(ret);
-          }
-      });
-    });
-  }
-  else {
-    res.send({'err': true, 'netid': 'You are not logged in.'});
-  }
-
+    }
+  });
 });
 
 /* Logs a user response to a poll. Returns the updated responses array for the poll. */
@@ -399,101 +464,43 @@ app.post('/polls/respond', function (req, res) {
   var netid = req.body.netid;
   var pid = req.body.pid;
   var idx = req.body.idx;
-
-  if (netid !== null) {
-    Response.findOne({'netid': netid, 'pid': pid}, function (err, response) {
-        if (err) console.log('Error.');
-        else if (response == null) {
-          // Create new response object, update poll with new score for the right choice
-          console.log('User ' + netid + ' has not responded to poll ' + pid + ' before. Creating new response.');
-          var newResp = {};
-          newResp.netid = netid;
-          newResp.pid = pid;
-          newResp.idx = idx;
-          var entry = new Response(newResp);
-          entry.save(function (err) {
-            if (err) {
-              console.error(err);
-              res.send({err: true});
-            }
-            else {
-              var update = {$inc: {}};
-              update.$inc['responses.' + idx] = 1;
-              Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+  var user = netid;
+  var ticket = req.body.ticket;
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      if (netid !== null) {
+        Response.findOne({'netid': netid, 'pid': pid}, function (err, response) {
+            if (err) console.log('Error.');
+            else if (response == null) {
+              // Create new response object, update poll with new score for the right choice
+              console.log('User ' + netid + ' has not responded to poll ' + pid + ' before. Creating new response.');
+              var newResp = {};
+              newResp.netid = netid;
+              newResp.pid = pid;
+              newResp.idx = idx;
+              var entry = new Response(newResp);
+              entry.save(function (err) {
                 if (err) {
                   console.error(err);
                   res.send({err: true});
                 }
-                Poll.findOne({pid: pid}, function(err, newPoll) {
-                  if (err) {
-                    console.error(err);
-                    res.send({err: true});
-                  }
-                  else if (newPoll == null) {
-                    res.send({err: true});
-                  }
-                  else {
-                    res.send({responses: newPoll.responses, userResponse: idx});
-                  }
-                });
-              });
-            }
-          });
-        }
-        else {
-          if (response.idx === idx) {
-            // Revoke response
-            console.log('User ' + netid + ' unselected their response to ' + pid + '. Revoking response.');
-            Response.findOneAndRemove({'netid': netid, 'pid': pid}, function (err, response) {
-              if (err) {
-                console.error(err);
-                res.send({err: true});
-              }
-              else {
-                var update = {$inc: {}};
-                update.$inc['responses.' + idx] = -1;
-                Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
-                  if (err) {
-                    console.error(err);
-                    res.send({err: true});
-                  }
-                  else {
-                    Poll.findOne({pid: pid}, function(err, newPoll) {
-                      if (err) {
-                        console.error(err);
-                        res.send({err: true});
-                      }
-                      else if (newPoll == null) {
-                        res.send({err: true});
-                      }
-                      else {
-                        res.send({responses: newPoll.responses, userResponse: -1});
-                      }
-                    });
-                  }
-                });
-              }
-            });
-          }
-          else {
-            // Update response
-            console.log('User ' + netid + ' has changed their response to ' + pid + '. Updating response.');
-            var update = {$set: {idx: idx}};
-            Response.findOneAndUpdate({pid: pid, netid: netid}, update, function (err, newResponse) {
-              if (err) {
-                console.error(err);
-                res.send({err: true});
-              }
-              else {
-                var update = {$inc: {}};
-                update.$inc['responses.' + response.idx] = -1;
-                update.$inc['responses.' + idx] = 1;
-                Poll.findOneAndUpdate({pid: pid}, update, function (err, newPoll) {
-                  if (err) {
-                    console.error(err);
-                    res.send({err: true});
-                  }
-                  else {
+                else {
+                  var update = {$inc: {}};
+                  update.$inc['responses.' + idx] = 1;
+                  Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+                    if (err) {
+                      console.error(err);
+                      res.send({err: true});
+                    }
                     Poll.findOne({pid: pid}, function(err, newPoll) {
                       if (err) {
                         console.error(err);
@@ -506,14 +513,86 @@ app.post('/polls/respond', function (req, res) {
                         res.send({responses: newPoll.responses, userResponse: idx});
                       }
                     });
+                  });
+                }
+              });
+            }
+            else {
+              if (response.idx === idx) {
+                // Revoke response
+                console.log('User ' + netid + ' unselected their response to ' + pid + '. Revoking response.');
+                Response.findOneAndRemove({'netid': netid, 'pid': pid}, function (err, response) {
+                  if (err) {
+                    console.error(err);
+                    res.send({err: true});
+                  }
+                  else {
+                    var update = {$inc: {}};
+                    update.$inc['responses.' + idx] = -1;
+                    Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+                      if (err) {
+                        console.error(err);
+                        res.send({err: true});
+                      }
+                      else {
+                        Poll.findOne({pid: pid}, function(err, newPoll) {
+                          if (err) {
+                            console.error(err);
+                            res.send({err: true});
+                          }
+                          else if (newPoll == null) {
+                            res.send({err: true});
+                          }
+                          else {
+                            res.send({responses: newPoll.responses, userResponse: -1});
+                          }
+                        });
+                      }
+                    });
                   }
                 });
               }
-            });
-          }
-        }
-    });
-  }
+              else {
+                // Update response
+                console.log('User ' + netid + ' has changed their response to ' + pid + '. Updating response.');
+                var update = {$set: {idx: idx}};
+                Response.findOneAndUpdate({pid: pid, netid: netid}, update, function (err, newResponse) {
+                  if (err) {
+                    console.error(err);
+                    res.send({err: true});
+                  }
+                  else {
+                    var update = {$inc: {}};
+                    update.$inc['responses.' + response.idx] = -1;
+                    update.$inc['responses.' + idx] = 1;
+                    Poll.findOneAndUpdate({pid: pid}, update, function (err, newPoll) {
+                      if (err) {
+                        console.error(err);
+                        res.send({err: true});
+                      }
+                      else {
+                        Poll.findOne({pid: pid}, function(err, newPoll) {
+                          if (err) {
+                            console.error(err);
+                            res.send({err: true});
+                          }
+                          else if (newPoll == null) {
+                            res.send({err: true});
+                          }
+                          else {
+                            res.send({responses: newPoll.responses, userResponse: idx});
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            }
+        });
+      }
+    }
+  });
 });
 
 // Indicates whether the provided CAS ticket (for just-after-login) or ticket/netid pair (for return
@@ -547,7 +626,7 @@ app.post('/auth/loggedin', function (req, res) {
           });
         }
       });
-      fs.appendFile('userLog.txt', log, function (err) 
+      fs.appendFile('userLog.txt', log, function (err)
       {
         if (err) console.log('Logging error');
       });
@@ -594,7 +673,7 @@ app.post('/auth/loggedin', function (req, res) {
                 });
               }
             });
-            fs.appendFile('userLog.txt', log, function (err) 
+            fs.appendFile('userLog.txt', log, function (err)
             {
               if (err) console.log('Logging error');
             });

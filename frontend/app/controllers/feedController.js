@@ -161,10 +161,14 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $scope.upVote = function (pid, idx) {
     var pkg = {};
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     pkg.upOrDown = true;
     pkg.pollID = pid;
     pkg.netid = user;
+    pkg.ticket = ticket;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         $scope.polls[idx].pollData.score = data.score;
@@ -178,10 +182,14 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $scope.downVote = function (pid, idx) {
     var pkg = {};
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     pkg.upOrDown = false;
     pkg.pollID = pid;
     pkg.netid = user;
+    pkg.ticket = ticket;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         $scope.polls[idx].pollData.score = data.score;

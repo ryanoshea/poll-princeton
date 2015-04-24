@@ -22,7 +22,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   }
 
   function fetchPoll(pid) {
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/' + pid + '/' + localStorage.getItem('netid')).success(function (data, status, headers, config) {
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/' + pid + '/' + user + '/' + ticket).success(function (data, status, headers, config) {
       $scope.poll = data;
       var thisPoll = $scope.poll;
       var date = new Date(thisPoll.time);
@@ -48,10 +52,14 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   $scope.upVote = function (pid) {
     var pkg = {};
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     pkg.upOrDown = true;
     pkg.pollID = pid;
     pkg.netid = user;
+    pkg.ticket = ticket;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         //Update the number displayed for the poll. Color the arrow.
@@ -66,10 +74,14 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   $scope.downVote = function (pid) {
     var pkg = {};
-    var user = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
     pkg.upOrDown = false;
     pkg.pollID = pid;
     pkg.netid = user;
+    pkg.ticket = ticket;
     $http.post('/ppapi/polls/vote', pkg)
       .success(function (data, status, headers, config) {
         //Update the number displayed for the poll. Color the arrow.
@@ -85,7 +97,12 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   $scope.respond = function (idx) {
     var pkg = {};
     pkg.idx = idx;
-    pkg.netid = localStorage.getItem('netid');
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
+    pkg.netid = user;
+    pkg.ticket = ticket;
     pkg.pid = $scope.poll.pid;
     $http.post('/ppapi/polls/respond', pkg)
       .success(function (data, status, headers, config) {
@@ -106,7 +123,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   $scope.deletePoll = function () {
     var answer = confirm('This poll and its results will be permanently deleted. Are you sure you want to continue?');
     if (!answer) return;
-    $http.delete('/ppapi/polls/delete/' + $scope.poll.pid + '/' + localStorage.getItem('netid') + '/' + localStorage.getItem('ticket'), {})
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
+    $http.delete('/ppapi/polls/delete/' + $scope.poll.pid + '/' + user + '/' + ticket, {})
       .success(function (data, status, headers, config) {
         if (data.err) {
           alert('Something went wrong. Error message: ' + data.msg);
