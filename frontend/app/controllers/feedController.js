@@ -8,7 +8,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $('body').css('padding-top', '50px');
 
-  $scope.fetchedDevs = false;
+  $scope.address = 'http://' + window.location.hostname + window.location.pathname;
   $scope.fetchedPolls = false;
   $scope.fetching = true;
   $scope.noMorePolls = false;

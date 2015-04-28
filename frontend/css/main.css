@@ -547,11 +547,13 @@ hr
   min-width: 5em;
 }
 
-#page-feed .poll-content
+#page-feed .poll-content, #page-feed .poll-content:hover, #page-feed .poll-content:active, #page-feed .poll-content:focus, #page-feed .poll-content:visited
 {
   float: left;
   width: 90%;
   min-width: 10em;
+  text-decoration: none;
+  color: #222;
 }
 
 
