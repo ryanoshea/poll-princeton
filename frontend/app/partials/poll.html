@@ -1,6 +1,6 @@
 <div id="page-poll" class="container container-fluid">
   <navbar></navbar>
-  <div ng-show="fetchedPoll" id="content">
+  <div id="content">
 
     <div class="scoring">
       <a class="vote-submit upvote" ng-click="upVote(poll.pid)" ng-class="{chosen: poll.userVote == true}">good poll</a>
@@ -35,7 +35,9 @@
         </div>
       </div>
     </div>
-
+    <div class="lower-plots">
+      <div id="placeholder" class="piechart"></div>
+    </div>
   </div>
   <ppfooter></ppfooter>
 </div>

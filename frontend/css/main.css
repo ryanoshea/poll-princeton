@@ -110,7 +110,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a, span, div.poll
+a, span.choice-tally, div.poll
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -989,4 +989,23 @@ a.pp-grey:hover, a.pp-grey:active
   color: black;
   opacity: 0.6;
   font-size: 3em;
+}
+
+.piechart
+{
+  width: 200px;
+  height: 200px;
+}
+
+.pieLabel
+{
+  color: white;
+  background: rgba(0,0,0,0.4);
+  padding: .3em;
+  border-radius: .3em;
+  display: block;
+  max-width: 30%;
+  text-align: center;
+  overflow: hidden;
+  font-size: 1em;
 }

@@ -8,6 +8,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   $scope.fetchedPoll = false;
+  $scope.showPlots = false;
 
   function getUrlVars() {
     var vars = [], hash;
@@ -34,20 +35,48 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
         return a + b;
       });
+      console.log($scope.poll.responses);
       $scope.fetchedPoll = true;
       redrawBars();
       document.title = $scope.poll.question + ' | PollPrinceton';
     });
   }
 
+  
   function redrawBars() {
     var maxResp = Math.max.apply(Math, $scope.poll.responses);
     $scope.barWidths = [];
+    var data = [];
+    var increment = 0.9 / $scope.poll.responses.length;
+    var sliceOpacity = 0.95;
     for(var i in $scope.poll.responses) {
       var frac = $scope.poll.responses[i] / maxResp;
       var newWidth = (frac * 100 * .8) + '%';
       $scope.barWidths.push(newWidth);
+      var element = {label: $scope.poll.choices[i], data: $scope.poll.responses[i], color: 'rgba(255, 136, 120,' + sliceOpacity + ')'};
+      sliceOpacity -= increment;
+      data.push(element);
     }
+    $.plot('#placeholder', data, {
+        series: {
+            pie: {
+                show: true,
+                radius: 1,
+                label: {
+                    show: true,
+                    radius: 1/2,
+                    background: {
+                        opacity: 0.5
+                    }
+                }
+            }
+        },
+        legend: {
+            show: false
+        }
+    });
+    $('.pieLabel div').css('color', 'white');
+    $('.pieLabelBackground').css('background', 'none');
   };
 
   $scope.upVote = function (pid) {
@@ -109,6 +138,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         if (data.err !== true) {
           $scope.poll.responses = data.responses;
           $scope.poll.userResponse = data.userResponse;
+          console.log($scope.poll.responses);
           redrawBars();
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
@@ -137,6 +167,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           window.location = 'http://' + window.location.hostname + window.location.pathname;
         }
       });
+  };
+
+  $scope.showLowerPlots = function() {
+    $('.lower-plots').css('visibility','visible');
+    redrawBars();
   };
 
   var GET = getUrlVars();
