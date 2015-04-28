@@ -14,7 +14,14 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
   $scope.noMorePolls = false;
   $scope.polls = [];
   $scope.currentPolls = 0;
-  $scope.sort = "popular";
+  var savedSort = localStorage.getItem('feedSort');
+  if (savedSort !== null) {
+    $scope.sort = savedSort;
+  }
+  else {
+    $scope.sort = "popular";
+    localStorage.setItem('feedSort', 'popular');
+  }
 
 
   var onlyUser = '/false';
@@ -211,6 +218,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       $('.polls').fadeOut(function () {
         $scope.noMorePolls = false;
         $scope.sort = 'popular';
+        localStorage.setItem('feedSort', 'popular');
         $scope.polls = [];
         $scope.currentPolls = 0;
         $scope.fetch10Best();
@@ -224,6 +232,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       $('.polls').fadeOut(function () {
         $scope.noMorePolls = false;
         $scope.sort = 'newest';
+        localStorage.setItem('feedSort', 'newest');
         $scope.polls = [];
         $scope.currentPolls = 0;
         $scope.fetch10New();
