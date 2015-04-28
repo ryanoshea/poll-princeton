@@ -249,7 +249,12 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     location.reload();
   };
 
-  $scope.fetch10Best();
+  if ($scope.sort === 'popular') {
+    $scope.fetch10Best();
+  }
+  else {
+    $scope.fetch10New();
+  }
 
   $(window).scroll(function () {
     if ($scope.fetchedPolls && $(window).height() + $(window).scrollTop() == $(document).height()) {
