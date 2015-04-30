@@ -63,3 +63,6 @@ $RECYCLE.BIN/
 *.ai
 private/
 backend/node/node_modules
+
+# Visual Studio Code project files
+.settings/
