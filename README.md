@@ -23,4 +23,4 @@ You can read about who we are, the stack we deployed, and who we have to thank i
 - cd into backend/node
 - git pull
 - pkill nodejs
-- nodejs server.js > server.log &
+- nodejs server.js > server.log 2> server.err &
