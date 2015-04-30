@@ -28,6 +28,21 @@ var pollSchema = mongoose.Schema({
   question: String,
   choices: [String],
   responses: [Number],
+  demographics: {
+    ab: [Number],
+    bse: [Number],
+    class2015: [Number],
+    class2016: [Number],
+    class2017: [Number],
+    class2018: [Number],
+    class2019: [Number],
+    rocky: [Number],
+    mathey: [Number],
+    butler: [Number],
+    wilson: [Number],
+    whitman: [Number],
+    forbes: [Number]
+  },
   author: String,
   time: Date,
   pid: String,
@@ -104,8 +119,36 @@ app.post('/polls/submit', function (req, res) {
       newPoll.question = req.body.question;
       newPoll.choices = req.body.choices;
       newPoll.responses = [];
-      for (var i in newPoll.choices)
+      newPoll.demographics = {};
+      newPoll.demographics.ab = [];
+      newPoll.demographics.bse = [];
+      newPoll.demographics.class2015 = [];
+      newPoll.demographics.class2016 = [];
+      newPoll.demographics.class2017 = [];
+      newPoll.demographics.class2018 = [];
+      newPoll.demographics.class2019 = [];
+      newPoll.demographics.rocky = [];
+      newPoll.demographics.mathey = [];
+      newPoll.demographics.butler = [];
+      newPoll.demographics.wilson = [];
+      newPoll.demographics.whitman = [];
+      newPoll.demographics.forbes = [];
+      for (var i in newPoll.choices) {
         newPoll.responses.push(0);
+        newPoll.demographics.ab.push(0);
+        newPoll.demographics.bse.push(0);
+        newPoll.demographics.class2015.push(0);
+        newPoll.demographics.class2016.push(0);
+        newPoll.demographics.class2017.push(0);
+        newPoll.demographics.class2018.push(0);
+        newPoll.demographics.class2019.push(0);
+        newPoll.demographics.rocky.push(0);
+        newPoll.demographics.mathey.push(0);
+        newPoll.demographics.butler.push(0);
+        newPoll.demographics.wilson.push(0);
+        newPoll.demographics.whitman.push(0);
+        newPoll.demographics.forbes.push(0);
+      }
       newPoll.author = req.body.author;
       newPoll.upvotes = 0;
       newPoll.downvotes = 0;
@@ -227,7 +270,7 @@ app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
     }
     else {
       console.log('User ' + user + ' is authorized to make this request.');
-      Poll.findOne({'pid' : req.params.pid}, 'question choices responses time pid score author', function (err, poll) {
+      Poll.findOne({'pid' : req.params.pid}, 'question choices responses demographics time pid score author', function (err, poll) {
         if (err) console.log('Error.');
         if (poll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
         else {
@@ -235,6 +278,7 @@ app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
           ret.question = poll.question;
           ret.choices = poll.choices;
           ret.responses = poll.responses;
+          ret.demographics = poll.demographics;
           ret.time = poll.time;
           ret.pid = poll.pid;
           ret.score = poll.score;
@@ -468,131 +512,291 @@ app.post('/polls/respond', function (req, res) {
   var idx = req.body.idx;
   var user = netid;
   var ticket = req.body.ticket;
-  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+  Student.findOne({netid: user}, function (err, student){
     if (err) {
-      console.log('Database error.');
-      res.status(500).send({msg: 'Database error.'});
-    }
-    if (ticket == null) {
-      console.log('User ' + user + ' is unauthorized to make this request.');
-      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+      res.status(500).send({err: true, msg: 'Database error.'});
     }
     else {
-      console.log('User ' + user + ' is authorized to make this request.');
-      if (netid !== null) {
-        Response.findOne({'netid': netid, 'pid': pid}, function (err, response) {
-            if (err) console.log('Error.');
-            else if (response == null) {
-              // Create new response object, update poll with new score for the right choice
-              console.log('User ' + netid + ' has not responded to poll ' + pid + ' before. Creating new response.');
-              var newResp = {};
-              newResp.netid = netid;
-              newResp.pid = pid;
-              newResp.idx = idx;
-              var entry = new Response(newResp);
-              entry.save(function (err) {
-                if (err) {
-                  console.error(err);
-                  res.send({err: true});
-                }
-                else {
-                  var update = {$inc: {}};
-                  update.$inc['responses.' + idx] = 1;
-                  Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
-                    if (err) {
-                      console.error(err);
-                      res.send({err: true});
-                    }
-                    Poll.findOne({pid: pid}, function(err, newPoll) {
-                      if (err) {
-                        console.error(err);
-                        res.send({err: true});
-                      }
-                      else if (newPoll == null) {
-                        res.send({err: true});
-                      }
-                      else {
-                        res.send({responses: newPoll.responses, userResponse: idx});
-                      }
-                    });
-                  });
-                }
-              });
-            }
-            else {
-              if (response.idx === idx) {
-                // Revoke response
-                console.log('User ' + netid + ' unselected their response to ' + pid + '. Revoking response.');
-                Response.findOneAndRemove({'netid': netid, 'pid': pid}, function (err, response) {
+      Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+        if (err) {
+          console.log('Database error.');
+          res.status(500).send({msg: 'Database error.'});
+        }
+        if (ticket == null) {
+          console.log('User ' + user + ' is unauthorized to make this request.');
+          res.status(403).send({msg: 'You are unauthorized to make this request.'});
+        }
+        else {
+          console.log('User ' + user + ' is authorized to make this request.');
+          if (netid !== null) {
+            Response.findOne({'netid': netid, 'pid': pid}, function (err, response) {
+              if (err) console.log('Error.');
+              else if (response == null) {
+                // Create new response object, update poll with new score for the right choice
+                console.log('User ' + netid + ' has not responded to poll ' + pid + ' before. Creating new response.');
+                var newResp = {};
+                newResp.netid = netid;
+                newResp.pid = pid;
+                newResp.idx = idx;
+                var entry = new Response(newResp);
+                entry.save(function (err) {
                   if (err) {
                     console.error(err);
-                    res.send({err: true});
+                    res.status(500).send({err: true, msg: 'Database error.'});
                   }
                   else {
                     var update = {$inc: {}};
-                    update.$inc['responses.' + idx] = -1;
+                    update.$inc['responses.' + idx] = 1;
+                    var delta = 1;
+                    var AB = student.major.charAt(0) != 'B';
+                    if (AB) { // Student is an AB major
+                      update.$inc['demographics.ab.' + idx] = delta;
+                    }
+                    else {
+                      update.$inc['demographics.bse.' + idx] = delta;
+                    }
+                    switch (student.class) {
+                      case '2015':
+                        update.$inc['demographics.class2015.' + idx] = delta;
+                        break;
+                      case '2016':
+                        update.$inc['demographics.class2016.' + idx] = delta;
+                        break;
+                      case '2017':
+                        update.$inc['demographics.class2017.' + idx] = delta;
+                        break;
+                      case '2018':
+                        update.$inc['demographics.class2018.' + idx] = delta;
+                        break;
+                      case '2019':
+                        update.$inc['demographics.class2019.' + idx] = delta;
+                        break;
+                      default:
+                        break;
+                    }
+                    switch (student.rescol) {
+                      case 'Mathey':
+                        update.$inc['demographics.mathey.' + idx] = delta;
+                        break;
+                      case 'Rockefeller':
+                        update.$inc['demographics.rocky.' + idx] = delta;
+                        break;
+                      case 'Whitman':
+                        update.$inc['demographics.whitman.' + idx] = delta;
+                        break;
+                      case 'Forbes':
+                        update.$inc['demographics.forbes.' + idx] = delta;
+                        break;
+                      case 'Butler':
+                        update.$inc['demographics.butler.' + idx] = delta;
+                        break;
+                      case 'Wilson':
+                        update.$inc['demographics.wilson.' + idx] = delta;
+                        break;
+                    }
                     Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
                       if (err) {
                         console.error(err);
                         res.send({err: true});
                       }
-                      else {
-                        Poll.findOne({pid: pid}, function(err, newPoll) {
-                          if (err) {
-                            console.error(err);
-                            res.send({err: true});
-                          }
-                          else if (newPoll == null) {
-                            res.send({err: true});
-                          }
-                          else {
-                            res.send({responses: newPoll.responses, userResponse: -1});
-                          }
-                        });
-                      }
+                      Poll.findOne({pid: pid}, function(err, newPoll) {
+                        if (err) {
+                          console.error(err);
+                          res.send({err: true});
+                        }
+                        else if (newPoll == null) {
+                          res.send({err: true});
+                        }
+                        else {
+                          res.send({responses: newPoll.responses, userResponse: idx});
+                        }
+                      });
                     });
                   }
                 });
               }
               else {
-                // Update response
-                console.log('User ' + netid + ' has changed their response to ' + pid + '. Updating response.');
-                var update = {$set: {idx: idx}};
-                Response.findOneAndUpdate({pid: pid, netid: netid}, update, function (err, newResponse) {
-                  if (err) {
-                    console.error(err);
-                    res.send({err: true});
-                  }
-                  else {
-                    var update = {$inc: {}};
-                    update.$inc['responses.' + response.idx] = -1;
-                    update.$inc['responses.' + idx] = 1;
-                    Poll.findOneAndUpdate({pid: pid}, update, function (err, newPoll) {
-                      if (err) {
-                        console.error(err);
-                        res.send({err: true});
+                if (response.idx === idx) {
+                  // Revoke response
+                  console.log('User ' + netid + ' unselected their response to ' + pid + '. Revoking response.');
+                  Response.findOneAndRemove({'netid': netid, 'pid': pid}, function (err, response) {
+                    if (err) {
+                      console.error(err);
+                      res.send({err: true});
+                    }
+                    else {
+                      var update = {$inc: {}};
+                      update.$inc['responses.' + idx] = -1;
+                      var delta = -1;
+                      var AB = student.major.charAt(0) != 'B';
+                      if (AB) { // Student is an AB major
+                        update.$inc['demographics.ab.' + idx] = delta;
                       }
                       else {
-                        Poll.findOne({pid: pid}, function(err, newPoll) {
-                          if (err) {
-                            console.error(err);
-                            res.send({err: true});
-                          }
-                          else if (newPoll == null) {
-                            res.send({err: true});
-                          }
-                          else {
-                            res.send({responses: newPoll.responses, userResponse: idx});
-                          }
-                        });
+                        update.$inc['demographics.bse.' + idx] = delta;
                       }
-                    });
-                  }
-                });
+                      switch (student.class) {
+                        case '2015':
+                          update.$inc['demographics.class2015.' + idx] = delta;
+                          break;
+                        case '2016':
+                          update.$inc['demographics.class2016.' + idx] = delta;
+                          break;
+                        case '2017':
+                          update.$inc['demographics.class2017.' + idx] = delta;
+                          break;
+                        case '2018':
+                          update.$inc['demographics.class2018.' + idx] = delta;
+                          break;
+                        case '2019':
+                          update.$inc['demographics.class2019.' + idx] = delta;
+                          break;
+                        default:
+                          break;
+                      }
+                      switch (student.rescol) {
+                        case 'Mathey':
+                          update.$inc['demographics.mathey.' + idx] = delta;
+                          break;
+                        case 'Rockefeller':
+                          update.$inc['demographics.rocky.' + idx] = delta;
+                          break;
+                        case 'Whitman':
+                          update.$inc['demographics.whitman.' + idx] = delta;
+                          break;
+                        case 'Forbes':
+                          update.$inc['demographics.forbes.' + idx] = delta;
+                          break;
+                        case 'Butler':
+                          update.$inc['demographics.butler.' + idx] = delta;
+                          break;
+                        case 'Wilson':
+                          update.$inc['demographics.wilson.' + idx] = delta;
+                          break;
+                      }
+                      Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
+                        if (err) {
+                          console.error(err);
+                          res.send({err: true});
+                        }
+                        else {
+                          Poll.findOne({pid: pid}, function(err, newPoll) {
+                            if (err) {
+                              console.error(err);
+                              res.send({err: true});
+                            }
+                            else if (newPoll == null) {
+                              res.send({err: true});
+                            }
+                            else {
+                              res.send({responses: newPoll.responses, userResponse: -1});
+                            }
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+                else {
+                  // Update response
+                  console.log('User ' + netid + ' has changed their response to ' + pid + '. Updating response.');
+                  var update = {$set: {idx: idx}};
+                  Response.findOneAndUpdate({pid: pid, netid: netid}, update, function (err, newResponse) {
+                    if (err) {
+                      console.error(err);
+                      res.send({err: true});
+                    }
+                    else {
+                      var update = {$inc: {}};
+                      update.$inc['responses.' + response.idx] = -1;
+                      update.$inc['responses.' + idx] = 1;
+                      var AB = student.major.charAt(0) != 'B';
+                      if (AB) { // Student is an AB major
+                        update.$inc['demographics.ab.' + idx] = 1;
+                        update.$inc['demographics.ab.' + response.idx] = -1;
+                      }
+                      else {
+                        update.$inc['demographics.bse.' + idx] = 1;
+                        update.$inc['demographics.bse.' + response.idx] = -1;
+                      }
+                      switch (student.class) {
+                        case '2015':
+                          update.$inc['demographics.class2015.' + idx] = 1;
+                          update.$inc['demographics.class2015.' + response.idx] = -1;
+                          break;
+                        case '2016':
+                          update.$inc['demographics.class2016.' + idx] = 1;
+                          update.$inc['demographics.class2016.' + response.idx] = -1;
+                          break;
+                        case '2017':
+                          update.$inc['demographics.class2017.' + idx] = 1;
+                          update.$inc['demographics.class2017.' + response.idx] = -1;
+                          break;
+                        case '2018':
+                          update.$inc['demographics.class2018.' + idx] = 1;
+                          update.$inc['demographics.class2018.' + response.idx] = -1;
+                          break;
+                        case '2019':
+                          update.$inc['demographics.class2019.' + idx] = 1;
+                          update.$inc['demographics.class2019.' + response.idx] = -1;
+                          break;
+                        default:
+                          break;
+                      }
+                      switch (student.rescol) {
+                        case 'Mathey':
+                          update.$inc['demographics.mathey.' + idx] = 1;
+                          update.$inc['demographics.mathey.' + response.idx] = -1;
+                          break;
+                        case 'Rockefeller':
+                          update.$inc['demographics.rocky.' + idx] = 1;
+                          update.$inc['demographics.rocky.' + response.idx] = -1;
+                          break;
+                        case 'Whitman':
+                          update.$inc['demographics.whitman.' + idx] = 1;
+                          update.$inc['demographics.whitman.' + response.idx] = -1;
+                          break;
+                        case 'Forbes':
+                          update.$inc['demographics.forbes.' + idx] = 1;
+                          update.$inc['demographics.forbes.' + response.idx] = -1;
+                          break;
+                        case 'Butler':
+                          update.$inc['demographics.butler.' + idx] = 1;
+                          update.$inc['demographics.butler.' + response.idx] = -1;
+                          break;
+                        case 'Wilson':
+                          update.$inc['demographics.wilson.' + idx] = 1;
+                          update.$inc['demographics.wilson.' + response.idx] = -1;
+                          break;
+                      }
+                      Poll.findOneAndUpdate({pid: pid}, update, function (err, newPoll) {
+                        if (err) {
+                          console.error(err);
+                          res.send({err: true});
+                        }
+                        else {
+                          Poll.findOne({pid: pid}, function(err, newPoll) {
+                            if (err) {
+                              console.error(err);
+                              res.send({err: true});
+                            }
+                            else if (newPoll == null) {
+                              res.send({err: true});
+                            }
+                            else {
+                              res.send({responses: newPoll.responses, userResponse: idx});
+                            }
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
               }
-            }
-        });
-      }
+            });
+          }
+        }
+      });
     }
   });
 });
