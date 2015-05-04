@@ -110,7 +110,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a, span.choice-tally, div.poll
+a, span.choice-tally, div.poll, .lower-plots
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -518,7 +518,7 @@ hr
   text-align: center;
 }
 
-#feed-sort a
+#feed-sort a, #plot-tab-controls a
 {
   margin-left: 1em;
   margin-right: 1em;
@@ -999,6 +999,18 @@ a.pp-grey:hover, a.pp-grey:active
   height: 200px;
 }
 
+.plot
+{
+  display: inline-block;
+  margin: 0 2em 1em 2em;
+}
+
+.plot h4
+{
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
 /*.pieLabel
 {
   color: white;
@@ -1011,3 +1023,27 @@ a.pp-grey:hover, a.pp-grey:active
   overflow: hidden;
   font-size: 1em;
 }*/
+
+.lower-plots
+{
+  position: relative;
+  margin-top: 4em;
+}
+
+@media (min-width: 768px){
+  .lower-plots
+  {
+    opacity: 0.7;
+  }
+  .lower-plots:hover
+  {
+    opacity: .95;
+  }
+}
+
+.plot-tab
+{
+  position: absolute;
+  top: 4.5em;
+  width: 100%;
+}

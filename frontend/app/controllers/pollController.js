@@ -14,7 +14,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
                 'rgb(238,59,18)',
                 'rgb(244, 186, 112)',
                 'rgb(152, 129, 245)'];
-
+  $scope.demoCategory = '';
   $('body').css('padding-top', '50px');
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -443,9 +443,36 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     redrawBars();
   };
 
+  // Changes which plots are displayed based on which demographic category the user selects
+  $scope.switchDemoCategory = function (newCategory) {
+    $scope.demoCategory = newCategory;
+    $('.plot-tab').css('visibility', 'hidden');
+    switch (newCategory) {
+      case 'major':
+        $('#plot-major').css('visibility','visible');
+        break;
+      case 'class':
+        $('#plot-class').css('visibility','visible');
+        break;
+      case 'college':
+        $('#plot-college').css('visibility','visible');
+        break;
+    }
+  };
+
   var GET = getUrlVars();
   var pid = GET['p'];
 
+  $scope.seniorYear = true;
+  var date = new Date();
+  if (date.getFullYear() != 2015 || (date.getFullYear() == 2015 && date.getMonth() > 6)) {
+    $scope.seniorYear = true;
+  }
+  else {
+    $scope.seniorYear = false;
+  }
+
+  $scope.switchDemoCategory('major');
   fetchPoll(pid);
   $scope.netid = localStorage.getItem('netid');
 
