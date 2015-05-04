@@ -153,11 +153,10 @@ app.post('/polls/submit', function (req, res) {
       newPoll.upvotes = 0;
       newPoll.downvotes = 0;
       newPoll.score = 0;
-
-      var sha256 = crypto.createHash('sha256');
-      sha256.update(newPoll.question + newPoll.author);
-      newPoll.pid = sha256.digest('hex');
       newPoll.time = new Date();
+      var sha256 = crypto.createHash('sha256');
+      sha256.update(newPoll.question + newPoll.time);
+      newPoll.pid = sha256.digest('hex');
       var question = new Poll(newPoll);
       question.save(function (err) {
         if (err) return console.error(err);
