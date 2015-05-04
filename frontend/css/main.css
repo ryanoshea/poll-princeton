@@ -549,13 +549,13 @@ hr
 #page-feed .scoring
 {
   width: 7%;
-  min-width: 5em;
+  min-width: 4em;
 }
 
 #page-feed .poll-content, #page-feed .poll-content:hover, #page-feed .poll-content:active, #page-feed .poll-content:focus, #page-feed .poll-content:visited
 {
   float: left;
-  width: 90%;
+  width: 80%;
   min-width: 10em;
   text-decoration: none;
   color: #222;
@@ -1149,5 +1149,17 @@ a.pp-grey:hover, a.pp-grey:active
   {
     height: 15em;
   }
-
+  .polls .poll-content
+  {
+    margin-left: .5em;
+  }
+  .polls .scoring
+  {
+    margin-top: -.5em;
+  }
+  .polls .poll-meta
+  {
+    margin-left: -4.5em;
+    text-align: center;
+  }
 }
