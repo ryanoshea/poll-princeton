@@ -45,60 +45,72 @@
       <div class="plot-tab centered" id="plot-major">
         <div class="plot">
           <h4>A.B Majors</h4>
-          <div id="plot-ab" class="piechart"<div class="plot">
-        </div>
+          <span class="no-respondents" ng-show="demoTallies.ab == 0">No respondents.</span>
+          <div id="plot-ab" class="piechart" ng-class="{plotinvisible: demoTallies.ab == 0}"></div>
         </div>
         <div class="plot">
           <h4>B.S.E. Majors</h4>
-          <div id="plot-bse" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.bse == 0">No respondents.</span>
+          <div id="plot-bse" class="piechart" ng-class="{plotinvisible: demoTallies.bse == 0}"></div>
         </div>
       </div>
       <div class="plot-tab centered" id="plot-class">
         <div class="plot"  ng-hide="seniorYear">
           <h4>Class of 2015</h4>
-          <div id="plot-2015" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.class2015 == 0">No respondents.</span>
+          <div id="plot-2015" class="piechart" ng-class="{plotinvisible: demoTallies.class2015 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2016</h4>
-          <div id="plot-2016" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.class2016 == 0">No respondents.</span>
+          <div id="plot-2016" class="piechart" ng-class="{plotinvisible: demoTallies.class2016 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2017</h4>
-          <div id="plot-2017" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.class2017 == 0">No respondents.</span>
+          <div id="plot-2017" class="piechart" ng-class="{plotinvisible: demoTallies.class2017 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2018</h4>
-          <div id="plot-2018" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.class2018 == 0">No respondents.</span>
+          <div id="plot-2018" class="piechart" ng-class="{plotinvisible: demoTallies.class2018 == 0}"></div>
         </div>
         <div class="plot" ng-show="seniorYear">
           <h4>Class of 2019</h4>
-          <div id="plot-2019" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.class2019 == 0">No respondents.</span>
+          <div id="plot-2019" class="piechart" ng-class="{plotinvisible: demoTallies.class2019 == 0}"></div>
         </div>
       </div>
       <div class="plot-tab centered" id="plot-college">
         <div class="plot">
           <h4>Butler</h4>
-          <div id="plot-butler" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.butler == 0">No respondents.</span>
+          <div id="plot-butler" class="piechart" ng-class="{plotinvisible: demoTallies.butler == 0}"></div>
         </div>
         <div class="plot">
           <h4>Forbes</h4>
-          <div id="plot-forbes" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.forbes == 0">No respondents.</span>
+          <div id="plot-forbes" class="piechart" ng-class="{plotinvisible: demoTallies.forbes == 0}"></div>
         </div>
         <div class="plot">
           <h4>Mathey</h4>
-          <div id="plot-mathey" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.mathey == 0">No respondents.</span>
+          <div id="plot-mathey" class="piechart" ng-class="{plotinvisible: demoTallies.mathey == 0}"></div>
         </div>
         <div class="plot">
           <h4>Rocky</h4>
-          <div id="plot-rocky" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.rocky == 0">No respondents.</span>
+          <div id="plot-rocky" class="piechart" ng-class="{plotinvisible: demoTallies.rocky == 0}"></div>
         </div>
         <div class="plot">
           <h4>Whitman</h4>
-          <div id="plot-whitman" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.whitman == 0">No respondents.</span>
+          <div id="plot-whitman" class="piechart" ng-class="{plotinvisible: demoTallies.whitman == 0}"></div>
         </div>
         <div class="plot">
           <h4>Wilson</h4>
-          <div id="plot-wilson" class="piechart"></div>
+          <span class="no-respondents" ng-show="demoTallies.wilson == 0">No respondents.</span>
+          <div id="plot-wilson" class="piechart" ng-class="{plotinvisible: demoTallies.wilson == 0}"></div>
         </div>
       </div>
     </div>

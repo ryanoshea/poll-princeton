@@ -29,6 +29,11 @@ input[type=text], textarea
   cursor: text;
 }
 
+.invisible
+{
+  visibility: hidden;
+}
+
 #content
 {
   visibility: hidden;
@@ -1052,4 +1057,22 @@ a.pp-grey:hover, a.pp-grey:active
 .lower-plots .blurb
 {
   margin-bottom: 1em;
+}
+
+.plotinvisible canvas, .plotinvisible .legend
+{
+  visibility: hidden;
+}
+
+.no-respondents
+{
+  float: left;
+  margin-left: 39%;
+  font-style: italic;
+}
+
+.legendLabel
+{
+  text-align: left;
+  padding-left: .5em;
 }

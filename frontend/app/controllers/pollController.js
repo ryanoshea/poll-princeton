@@ -81,6 +81,22 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       $scope.barWidths.push(newWidth);
     }
 
+    /* Check for groups with no responders. */
+    $scope.demoTallies = {};
+    $scope.demoTallies.ab = $scope.poll.demographics.ab.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.bse = $scope.poll.demographics.bse.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.class2015 = $scope.poll.demographics.class2015.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.class2016 = $scope.poll.demographics.class2016.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.class2017 = $scope.poll.demographics.class2017.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.class2018 = $scope.poll.demographics.class2018.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.class2019 = $scope.poll.demographics.class2019.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.butler = $scope.poll.demographics.butler.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.forbes = $scope.poll.demographics.forbes.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.wilson = $scope.poll.demographics.wilson.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.whitman = $scope.poll.demographics.whitman.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.mathey = $scope.poll.demographics.mathey.reduce(function(a, b) {return a + b;});
+    $scope.demoTallies.rocky = $scope.poll.demographics.rocky.reduce(function(a, b) {return a + b;});
+
 
     var data = [];
     for(var i in $scope.poll.responses) {
