@@ -19,7 +19,7 @@
         </li>
       </ul>
       <div>
-        <button class="btn btn-pp" ng-click="addChoice()"><i class="fa fa-plus"></i> Add choice</button>
+        <button class="btn btn-pp" ng-disabled="newPoll.choices.length >= 10" ng-click="addChoice()"><i class="fa fa-plus"></i> Add choice</button>
         <button class="btn btn-lg btn-pp-success poll-submit" ng-click="submitPoll()" ng-disabled="!pollValid()"><i class="fa fa-check-circle"></i> Post</button>
         <span class="poll-valid-indicator" ng-show="pollValid()">{{invalidReason}} <i class="fa fa-check-circle" style="color: #008f1f"></i></span>
         <span class="poll-valid-indicator text-danger" ng-hide="pollValid()">{{invalidReason}} <i class="fa fa-times-circle"></i></span>

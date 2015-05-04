@@ -114,54 +114,74 @@ app.post('/polls/submit', function (req, res) {
     }
     else {
       console.log('User ' + user + ' is authorized to make this request.');
-      console.log(req.body);
-      var newPoll = {};
-      newPoll.question = req.body.question;
-      newPoll.choices = req.body.choices;
-      newPoll.responses = [];
-      newPoll.demographics = {};
-      newPoll.demographics.ab = [];
-      newPoll.demographics.bse = [];
-      newPoll.demographics.class2015 = [];
-      newPoll.demographics.class2016 = [];
-      newPoll.demographics.class2017 = [];
-      newPoll.demographics.class2018 = [];
-      newPoll.demographics.class2019 = [];
-      newPoll.demographics.rocky = [];
-      newPoll.demographics.mathey = [];
-      newPoll.demographics.butler = [];
-      newPoll.demographics.wilson = [];
-      newPoll.demographics.whitman = [];
-      newPoll.demographics.forbes = [];
-      for (var i in newPoll.choices) {
-        newPoll.responses.push(0);
-        newPoll.demographics.ab.push(0);
-        newPoll.demographics.bse.push(0);
-        newPoll.demographics.class2015.push(0);
-        newPoll.demographics.class2016.push(0);
-        newPoll.demographics.class2017.push(0);
-        newPoll.demographics.class2018.push(0);
-        newPoll.demographics.class2019.push(0);
-        newPoll.demographics.rocky.push(0);
-        newPoll.demographics.mathey.push(0);
-        newPoll.demographics.butler.push(0);
-        newPoll.demographics.wilson.push(0);
-        newPoll.demographics.whitman.push(0);
-        newPoll.demographics.forbes.push(0);
+
+      var err = false;
+      // Validity checking
+      if (req.body.question.length > 350) {
+        res.status(413).send({err: true, msg: 'You submitted a poll with a question longer than is allowed.'});
+        err = true;
       }
-      newPoll.author = req.body.author;
-      newPoll.upvotes = 0;
-      newPoll.downvotes = 0;
-      newPoll.score = 0;
-      newPoll.time = new Date();
-      var sha256 = crypto.createHash('sha256');
-      sha256.update(newPoll.question + newPoll.time);
-      newPoll.pid = sha256.digest('hex');
-      var question = new Poll(newPoll);
-      question.save(function (err) {
-        if (err) return console.error(err);
-      });
-      res.send({'pid' : newPoll.pid});
+      if (req.body.choices.length > 10) {
+       res.status(413).send({err: true, msg: 'You submitted a poll with more responses than is allowed.'});
+       err = true;
+      }
+      for (var i in req.body.choices) {
+        if (req.body.choices[i].length > 144) {
+          res.status(413).send({err: true, msg: 'You submitted a poll with a choice that is longer than is allowed.'});
+          err = true;
+        }
+      }
+
+      if (!err) {
+        console.log(req.body);
+        var newPoll = {};
+        newPoll.question = req.body.question;
+        newPoll.choices = req.body.choices;
+        newPoll.responses = [];
+        newPoll.demographics = {};
+        newPoll.demographics.ab = [];
+        newPoll.demographics.bse = [];
+        newPoll.demographics.class2015 = [];
+        newPoll.demographics.class2016 = [];
+        newPoll.demographics.class2017 = [];
+        newPoll.demographics.class2018 = [];
+        newPoll.demographics.class2019 = [];
+        newPoll.demographics.rocky = [];
+        newPoll.demographics.mathey = [];
+        newPoll.demographics.butler = [];
+        newPoll.demographics.wilson = [];
+        newPoll.demographics.whitman = [];
+        newPoll.demographics.forbes = [];
+        for (var i in newPoll.choices) {
+          newPoll.responses.push(0);
+          newPoll.demographics.ab.push(0);
+          newPoll.demographics.bse.push(0);
+          newPoll.demographics.class2015.push(0);
+          newPoll.demographics.class2016.push(0);
+          newPoll.demographics.class2017.push(0);
+          newPoll.demographics.class2018.push(0);
+          newPoll.demographics.class2019.push(0);
+          newPoll.demographics.rocky.push(0);
+          newPoll.demographics.mathey.push(0);
+          newPoll.demographics.butler.push(0);
+          newPoll.demographics.wilson.push(0);
+          newPoll.demographics.whitman.push(0);
+          newPoll.demographics.forbes.push(0);
+        }
+        newPoll.author = req.body.author;
+        newPoll.upvotes = 0;
+        newPoll.downvotes = 0;
+        newPoll.score = 0;
+        newPoll.time = new Date();
+        var sha256 = crypto.createHash('sha256');
+        sha256.update(newPoll.question + newPoll.time);
+        newPoll.pid = sha256.digest('hex');
+        var question = new Poll(newPoll);
+        question.save(function (err) {
+          if (err) return console.error(err);
+        });
+        res.send({'pid' : newPoll.pid});
+      }
     }
   });
 });

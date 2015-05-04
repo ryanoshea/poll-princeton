@@ -41,7 +41,12 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
   };
 
   $scope.addChoice = function () {
-    $scope.newPoll.choices.push("");
+    if ($scope.newPoll.choices.length < 10) {
+      $scope.newPoll.choices.push("");
+    }
+    else {
+      alert('Polls can only have 10 options.');
+    }
   };
 
   $scope.deleteChoice = function (index) {
@@ -66,6 +71,10 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
     }
     if (poll.question.length > 350) { // shouldn't happen, but just in case they get around limits with devtools
       $scope.invalidReason = 'Your question is too long.';
+      return false;
+    }
+    if (poll.choices.length > 10) {
+      $scope.invalidReason = 'Your poll can\'t have more than 10 choices.';
       return false;
     }
     for (var j in bannedWords) {
