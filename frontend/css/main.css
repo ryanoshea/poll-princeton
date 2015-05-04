@@ -1138,4 +1138,14 @@ a.pp-grey:hover, a.pp-grey:active
   {
     display: inline;
   }
+  .piechart, .plot
+  {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .piechart
+  {
+    height: 15em;
+  }
 }
