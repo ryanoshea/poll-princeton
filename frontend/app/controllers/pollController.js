@@ -229,10 +229,30 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       else {
         trimmedChoice = $scope.poll.choices[i];
       }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.rocky[i], color: colors[i]};
+      var element = {label: trimmedChoice, data: $scope.poll.demographics.butler[i], color: colors[i]};
       data.push(element);
     }
-    $.plot('#plot-rocky', data, {
+    $.plot('#plot-butler', data, {
+        series: {
+            pie: {
+                show: true
+            }
+        }
+    });
+
+    var data = [];
+    for(var i in $scope.poll.responses) {
+      var trimmedChoice = '';
+      if ($scope.poll.choices[i].length > 15) {
+        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
+      }
+      else {
+        trimmedChoice = $scope.poll.choices[i];
+      }
+      var element = {label: trimmedChoice, data: $scope.poll.demographics.forbes[i], color: colors[i]};
+      data.push(element);
+    }
+    $.plot('#plot-forbes', data, {
         series: {
             pie: {
                 show: true
@@ -269,30 +289,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       else {
         trimmedChoice = $scope.poll.choices[i];
       }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.butler[i], color: colors[i]};
+      var element = {label: trimmedChoice, data: $scope.poll.demographics.rocky[i], color: colors[i]};
       data.push(element);
     }
-    $.plot('#plot-butler', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        }
-    });
-
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.forbes[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-forbes', data, {
+    $.plot('#plot-rocky', data, {
         series: {
             pie: {
                 show: true
