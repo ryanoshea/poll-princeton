@@ -196,7 +196,7 @@ a, span.choice-tally, span.choice-text, div.poll, .lower-plots
   font-size: 2.4em;
   padding: 0.1em 0.3em 0;
   box-shadow: 0 0.1em 0 0 #D64F3D; /* Old: #D13925 */
-  margin-right: 0.2em;
+  margin-right: 0.5em;
 }
 
 navbar .btn-pp
