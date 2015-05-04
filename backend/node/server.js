@@ -193,16 +193,20 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
     else {
       console.log('User ' + user + ' is authorized to make this request.');
       var sortBy;
-      var fields;
-      if (req.params.sortType == 'popular')
+      var fields = {};
+      if (req.params.sortType == 'popular' || req.params.sortType == 'best')
         sortBy = {'score': -1};
       else if (req.params.sortType == 'newest')
         sortBy = {time: -1};
 
       if (req.params.onlyUser == 'true')
-        fields = {'author': user};
-      else if (req.params.onlyUser == 'false')
-        fields = {};
+        fields.author = user;
+
+      if (req.params.sortType == 'popular') {
+        var weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 3);
+        fields.time = {$gt: weekAgo};
+      }
 
       Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
         var ret = [];
