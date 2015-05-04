@@ -995,11 +995,11 @@ a.pp-grey:hover, a.pp-grey:active
 
 .piechart
 {
-  width: 200px;
+  width: 400px;
   height: 200px;
 }
 
-.pieLabel
+/*.pieLabel
 {
   color: white;
   background: rgba(0,0,0,0.4);
@@ -1010,4 +1010,4 @@ a.pp-grey:hover, a.pp-grey:active
   text-align: center;
   overflow: hidden;
   font-size: 1em;
-}
+}*/

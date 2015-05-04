@@ -631,7 +631,7 @@ app.post('/polls/respond', function (req, res) {
                           res.send({err: true});
                         }
                         else {
-                          res.send({responses: newPoll.responses, userResponse: idx});
+                          res.send({responses: newPoll.responses, userResponse: idx, demographics: newPoll.demographics});
                         }
                       });
                     });
@@ -712,7 +712,7 @@ app.post('/polls/respond', function (req, res) {
                               res.send({err: true});
                             }
                             else {
-                              res.send({responses: newPoll.responses, userResponse: -1});
+                              res.send({responses: newPoll.responses, userResponse: -1, demographics: newPoll.demographics});
                             }
                           });
                         }
@@ -807,7 +807,7 @@ app.post('/polls/respond', function (req, res) {
                               res.send({err: true});
                             }
                             else {
-                              res.send({responses: newPoll.responses, userResponse: idx});
+                              res.send({responses: newPoll.responses, userResponse: idx, demographics: newPoll.demographics});
                             }
                           });
                         }
