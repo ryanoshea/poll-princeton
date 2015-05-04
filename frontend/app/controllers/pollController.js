@@ -7,6 +7,16 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   $('body').css('padding-top', '50px');
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
   $scope.fetchedPoll = false;
   $scope.showPlots = false;
 
@@ -31,7 +41,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       $scope.poll = data;
       var thisPoll = $scope.poll;
       var date = new Date(thisPoll.time);
-      thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
         return a + b;
       });
@@ -42,7 +52,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     });
   }
 
-  
+
   function redrawBars() {
     var maxResp = Math.max.apply(Math, $scope.poll.responses);
     $scope.barWidths = [];

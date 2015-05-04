@@ -26,6 +26,16 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   var onlyUser = '/false';
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 
   $scope.fetchDevs = function () {
     $http.get('http://' + window.location.hostname + '/ppapi/devs').success(function (data, status, headers, config) {
@@ -45,7 +55,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i];
         var date = new Date(thisPoll.time);
-        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       }
       $scope.fetchedPolls = true;
     });
@@ -70,7 +80,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
-        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
           return a + b;
         });
@@ -124,7 +134,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
-        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
           return a + b;
         });
@@ -152,7 +162,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         for (var i in polls) {
           var thisPoll = polls[i].pollData;
           var date = new Date(thisPoll.time);
-          thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+          thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
           thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
             return a + b;
           });
@@ -178,7 +188,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       for (var i in $scope.polls) {
         var thisPoll = $scope.polls[i].pollData;
         var date = new Date(thisPoll.time);
-        thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
         thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
           return a + b;
         });
@@ -206,7 +216,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         for (var i in polls) {
           var thisPoll = polls[i].pollData;
           var date = new Date(thisPoll.time);
-          thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+          thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
           thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
             return a + b;
           });
