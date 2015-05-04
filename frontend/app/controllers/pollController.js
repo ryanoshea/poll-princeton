@@ -59,11 +59,13 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       console.log($scope.poll.responses);
       $scope.fetchedPoll = true;
       redrawBars();
-      if ($scope.poll.userResponse == -1) {
-        $('.lower-plots').css('visibility', 'hidden');
+      if (data.userResponse != -1 /*&& $scope.poll.numResponses > 5*/) {
+        $('.lower-plots').css('visibility', 'visible');
+        $scope.switchDemoCategory('major');
       }
       else {
-        $('.lower-plots').css('visibility', 'visible');
+        $('.lower-plots').css('visibility', 'hidden');
+        $('.plot-tab').css('visibility', 'hidden');
       }
       document.title = $scope.poll.question + ' | PollPrinceton';
     });
@@ -457,16 +459,18 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.userResponse = data.userResponse;
           $scope.poll.demographics = data.demographics;
           console.log($scope.poll.responses);
-          redrawBars();
-          if (data.userResponse == -1) {
-            $('.lower-plots').css('visibility', 'hidden');
-          }
-          else {
-            $('.lower-plots').css('visibility', 'visible');
-          }
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
+          if (data.userResponse != -1 /*&& $scope.poll.numResponses > 5*/) {
+            $('.lower-plots').css('visibility', 'visible');
+            $scope.switchDemoCategory('major');
+          }
+          else {
+            $('.lower-plots').css('visibility', 'hidden');
+            $('.plot-tab').css('visibility', 'hidden');
+          }
+          redrawBars();
         }
       })
       .error(function (data, status, headers, config) {
@@ -527,7 +531,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     $scope.seniorYear = false;
   }
 
-  $scope.switchDemoCategory('major');
   fetchPoll(pid);
   $scope.netid = localStorage.getItem('netid');
 
