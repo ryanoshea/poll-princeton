@@ -110,7 +110,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a, span.choice-tally, div.poll, .lower-plots
+a, span.choice-tally, span.choice-text, div.poll, .lower-plots
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;

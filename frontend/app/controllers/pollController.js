@@ -14,7 +14,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
                 'rgb(238,59,18)',
                 'rgb(244, 186, 112)',
                 'rgb(152, 129, 245)'];
-  $scope.demoCategory = '';
+  $scope.demoCategory = 'major';
   $('body').css('padding-top', '50px');
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -464,7 +464,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           });
           if (data.userResponse != -1 /*&& $scope.poll.numResponses > 5*/) {
             $('.lower-plots').css('visibility', 'visible');
-            $scope.switchDemoCategory('major');
+            $scope.switchDemoCategory($scope.demoCategory);
           }
           else {
             $('.lower-plots').css('visibility', 'hidden');
