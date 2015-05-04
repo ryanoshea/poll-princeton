@@ -97,6 +97,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -117,6 +121,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -137,6 +145,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -157,6 +169,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -177,6 +193,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -197,6 +217,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -217,6 +241,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -237,6 +265,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -257,6 +289,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -277,6 +313,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -297,6 +337,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -317,6 +361,10 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
 
@@ -337,8 +385,15 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
             pie: {
                 show: true
             }
+        },
+        legend: {
+            backgroundColor: 'none',
+            labelBoxBorderColor: 'none'
         }
     });
+
+    // Styling
+    $('.piechart .legend div').css('background-color','none');
   };
 
   $scope.upVote = function (pid) {
