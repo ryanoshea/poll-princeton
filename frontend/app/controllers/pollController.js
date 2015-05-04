@@ -59,7 +59,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       console.log($scope.poll.responses);
       $scope.fetchedPoll = true;
       redrawBars();
-      if (data.userResponse != -1 && $scope.poll.numResponses > 5) {
+      if (data.userResponse != -1 && $scope.poll.numResponses >= 5) {
         $('.lower-plots').css('visibility', 'visible');
         $scope.switchDemoCategory('major');
       }
@@ -478,7 +478,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
-          if (data.userResponse != -1 && $scope.poll.numResponses > 5) {
+          if (data.userResponse != -1 && $scope.poll.numResponses >= 5) {
             $('.lower-plots').css('visibility', 'visible');
             $scope.switchDemoCategory($scope.demoCategory);
           }
