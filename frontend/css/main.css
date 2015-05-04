@@ -1120,6 +1120,7 @@ a.pp-grey:hover, a.pp-grey:active
   #page-poll .poll-content
   {
     margin-left: 6em;
+    padding-right: 1em;
   }
   #page-poll .label
   {
@@ -1148,4 +1149,5 @@ a.pp-grey:hover, a.pp-grey:active
   {
     height: 15em;
   }
+
 }
