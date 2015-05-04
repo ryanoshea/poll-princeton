@@ -935,13 +935,13 @@ footer p
   display: inline-block;
   font-size: 0.4em;
   color: white;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,0.5);
   padding: 0.2em 0.4em;
   border-radius: 0.4em;
   float: left;
   font-weight: bold;
   max-width: 19%;
-  opacity: 0;
+  opacity: 1;
 }
 
 #page-poll .choice-bar-wrapper:hover .choice-tally
@@ -1161,5 +1161,9 @@ a.pp-grey:hover, a.pp-grey:active
   {
     margin-left: -4.5em;
     text-align: center;
+  }
+  #page-poll .choice-bar-wrapper
+  {
+    width: 95%;
   }
 }
