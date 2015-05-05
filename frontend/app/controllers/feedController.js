@@ -44,11 +44,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
-  $scope.deletePolls = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/delete/all').success(function (data, status, headers, config) {
-    });
-  };
-
   //Get call returns an array of objects containing three things: pollData (a complete poll with all data),
   //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Popular = function () {
