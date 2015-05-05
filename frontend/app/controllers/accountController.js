@@ -73,6 +73,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
 
   $scope.fetchNext10Best = function () {
     if ($scope.noMorePolls) return;
+    if ($scope.currentPolls == 0) return;
     var user = localStorage.getItem('netid');
     var ticket = localStorage.getItem('ticket');
     if (user == null || ticket == null) {
@@ -129,6 +130,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
 
   $scope.fetchNext10New = function () {
     if ($scope.noMorePolls) return;
+    if ($scope.currentPolls == 0) return;
     var user = localStorage.getItem('netid');
     var ticket = localStorage.getItem('ticket');
     if (user == null || ticket == null) {
