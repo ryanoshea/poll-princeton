@@ -615,6 +615,11 @@ hr
   opacity: 1;
 }
 
+#page-poll .scoring .unchosen, #page-feed .scoring .unchosen
+{
+  opacity: .25;
+}
+
 #page-login .jumbotron
 {
   background: url('../img/splash-cover.jpg') no-repeat fixed center 50%;

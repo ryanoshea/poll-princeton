@@ -3,9 +3,9 @@
   <div id="content">
 
     <div class="scoring">
-      <a class="vote-submit upvote" ng-click="upVote(poll.pid)" ng-class="{chosen: poll.userVote == true}">good poll</a>
+      <a class="vote-submit upvote" ng-click="upVote(poll.pid)" ng-class="{chosen: poll.userVote == true, unchosen: poll.userVote == false}">good poll</a>
       <p class="score"><strong>{{poll.score}}</strong></p>
-      <a class="vote-submit downvote" ng-click="downVote(poll.pid)" ng-class="{chosen: poll.userVote == false}">bad poll</a>
+      <a class="vote-submit downvote" ng-click="downVote(poll.pid)" ng-class="{chosen: poll.userVote == false, unchosen: poll.userVote == true}">bad poll</a>
     </div>
 
     <div class="poll-content">

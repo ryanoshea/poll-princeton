@@ -13,9 +13,9 @@
     <div class="polls" ng-show="fetchedPolls">
       <div class="poll" ng-repeat="poll in polls track by $index">
         <div class="scoring">
-          <a class="vote-submit upvote" ng-click="upVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == true}">good poll</a>
+          <a class="vote-submit upvote" ng-click="upVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == true, unchosen: poll.userVote == false}">good poll</a>
           <p class="score"><strong>{{poll.pollData.score}}</strong></p>
-          <a class="vote-submit downvote" ng-click="downVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == false}">bad poll</a>
+          <a class="vote-submit downvote" ng-click="downVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == false, unchosen: poll.userVote == true}">bad poll</a>
         </div>
         <div class="poll-content" ng-click="goToPoll(poll.pollData.pid)">
           <p class="poll-question">{{poll.pollData.question}}</p>
