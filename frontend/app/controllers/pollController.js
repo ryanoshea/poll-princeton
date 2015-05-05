@@ -524,12 +524,12 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
     reportTicket.author = user;
     reportTicket.ticket = ticket;
     reportTicket.pollID = $scope.poll.pid;
-    $http.post('/ppapi/polls/report', reportTicket)   
+    $http.post('/ppapi/polls/report', reportTicket)
       .success(function (data, status, headers, config) {
         // send them to the url for that poll
         if (data.success)
           alert('This poll has been reported.');
-        else 
+        else
           alert('You have already reported this poll');
       })
       .error(function (data, status, headers, config) {
@@ -573,6 +573,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   fetchPoll(pid);
   $scope.netid = localStorage.getItem('netid');
+  window.scrollTo(0,0);
 
 });
 
