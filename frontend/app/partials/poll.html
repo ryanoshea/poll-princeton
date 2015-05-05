@@ -27,7 +27,7 @@
               </a>
             </p>
           </div>
-          <div class="choice-bar-wrapper" ng-show="poll.userResponse != -1">
+          <div class="choice-bar-wrapper" ng-show="poll.userResponse != -1 || manualShowDemographics">
             <div class="choice-bar" id="choice-bar-{{$index}}" ng-style="{width: barWidths[$index]}">
               <p style="visibility: hidden">.</p>
             </div>
@@ -36,6 +36,9 @@
           <div style="height: 0; width: 100%; clear: both; visibility: hidden"><span>.</span></div>
         </div>
       </div>
+    </div>
+    <div class="centered">
+      <button id="show-demographics" class="btn btn-pp" ng-click="manualShowDemographics = true; showDemographics();" ng-hide="manualShowDemographics || poll.userResponse != -1">I don't have an opinion. Just show me the results.</button>
     </div>
     <div class="lower-plots">
       <p class="blurb">

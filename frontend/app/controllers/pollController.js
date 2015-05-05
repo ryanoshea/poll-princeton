@@ -15,6 +15,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
                 'rgb(244, 186, 112)',
                 'rgb(152, 129, 245)'];
   $scope.demoCategory = 'major';
+  $scope.manualShowDemograpics = false;
   $('body').css('padding-top', '50px');
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -59,18 +60,31 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       console.log($scope.poll.responses);
       $scope.fetchedPoll = true;
       redrawBars();
-      if (data.userResponse != -1 && $scope.poll.numResponses >= 5) {
-        $('.lower-plots').css('visibility', 'visible');
-        $scope.switchDemoCategory('major');
+      if ($scope.manualShowDemograpics || (data.userResponse != -1 && $scope.poll.numResponses >= 1)) {
+        $scope.showDemographics('major');
       }
       else {
-        $('.lower-plots').css('visibility', 'hidden');
-        $('.plot-tab').css('visibility', 'hidden');
+        $scope.hideDemographics();
       }
       document.title = $scope.poll.question + ' | PollPrinceton';
     });
   }
 
+  $scope.showDemographics = function (category) {
+    if (category != null) {
+      $('.lower-plots').css('visibility', 'visible');
+      $scope.switchDemoCategory(category);
+    }
+    else {
+      $('.lower-plots').css('visibility', 'visible');
+      $scope.switchDemoCategory($scope.demoCategory);
+    }
+  };
+
+  $scope.hideDemographics = function () {
+    $('.lower-plots').css('visibility', 'hidden');
+    $('.plot-tab').css('visibility', 'hidden');
+  };
 
   function redrawBars() {
     var maxResp = Math.max.apply(Math, $scope.poll.responses);
@@ -478,13 +492,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
-          if (data.userResponse != -1 && $scope.poll.numResponses >= 5) {
-            $('.lower-plots').css('visibility', 'visible');
-            $scope.switchDemoCategory($scope.demoCategory);
+          if ($scope.manualShowDemograpics || (data.userResponse != -1 && $scope.poll.numResponses >= 1)) {
+            $scope.showDemographics();
           }
           else {
-            $('.lower-plots').css('visibility', 'hidden');
-            $('.plot-tab').css('visibility', 'hidden');
+            $scope.hideDemographics();
           }
           redrawBars();
         }

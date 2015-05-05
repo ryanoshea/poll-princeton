@@ -1083,6 +1083,11 @@ a.pp-grey:hover, a.pp-grey:active
   display: none;
 }
 
+#show-demographics
+{
+  opacity: 0.75;
+}
+
 @media (max-width: 768px){
   #navbar .navbar-brand img
   {
