@@ -224,7 +224,7 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
       console.log('User ' + user + ' is authorized to make this request.');
       var sortBy;
       var fields = {}; 
-      if (onlyUser) fields.reports = {$lt: 3}; //1 for testing. 3 for deployment
+      if (!onlyUser) fields.reports = {$lt: 3}; //1 for testing. 3 for deployment
       if (req.params.sortType == 'popular' || req.params.sortType == 'best')
         sortBy = {'score': -1};
       else if (req.params.sortType == 'newest')
