@@ -934,8 +934,7 @@ footer p
   margin: 0.35em 0 0 0.5em;
   display: inline-block;
   font-size: 0.4em;
-  color: white;
-  background: rgba(0,0,0,0.5);
+  color: #444;
   padding: 0.2em 0.4em;
   border-radius: 0.4em;
   float: left;
