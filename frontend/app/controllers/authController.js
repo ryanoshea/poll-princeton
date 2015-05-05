@@ -48,7 +48,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
       window.location = newUrl;
     }
   }
-
+  var protectedPage = (($('#page-login').length == 0) && ($('#page-about').length == 0) && ($('#page-privacy').length == 0));
   /* Check with backend about user authentication status. Backend will verify that user is already
      logged in (ticket in localStorage) or the CAS login succeeded. */
   $http.post('/ppapi/auth/loggedin', {
@@ -61,7 +61,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.removeItem('ticket');
         localStorage.removeItem('netid');
         localStorage.removeItem('fullname');
-        if ($('#page-login').length == 0)
+        if (protectedPage)
           window.location = window.location.origin + window.location.pathname + '#/';
         else
           $('#content').css('visibility', 'visible');

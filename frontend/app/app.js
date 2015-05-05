@@ -29,15 +29,14 @@ app.config(function ($routeProvider) {
       controller: 'accountController',
       templateUrl: 'app/partials/account.html'
     })
-    /*.when('/edit', {
-      controller: 'editListingController',
-      templateUrl: 'app/partials/edit-listing.html',
-      resolve: {
-        user: function(Authentication) {
-          return Authentication.getUser();
-        }
-      }
-    })*/
+    .when('/about', {
+      controller: 'staticController',
+      templateUrl: 'app/partials/about.html',
+    })
+    .when('/privacy', {
+      controller: 'staticController',
+      templateUrl: 'app/partials/privacy.html',
+    })
     .otherwise({
       redirectTo: '/'
     });
