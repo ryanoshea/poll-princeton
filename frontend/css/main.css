@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a, span.choice-tally, span.choice-text, div.poll, .lower-plots
+a, span.choice-tally, span.choice-text, div.poll, .lower-plots, .dev-box *
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -293,7 +293,9 @@ navbar .btn-pp
 .flyout h4,
 .flyout h5,
 .flyout h6,
-#content h1
+#content h1,
+.page-static h2,
+.page-static h3
 {
   font-weight: 900;
   text-transform: uppercase;
@@ -301,6 +303,7 @@ navbar .btn-pp
   letter-spacing: -0.02em;
   text-align: center;
   color: #555;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .flyout-compose .poll-choices
@@ -778,7 +781,7 @@ footer *
 
 footer p
 {
-  text-align: right;
+  text-align: center;
   margin: 0.5em 2em;
 }
 
@@ -1108,6 +1111,65 @@ a.pp-grey:hover, a.pp-grey:active
 {
   font-weight: 900;
   font-family: Roboto, sans-serif;
+}
+
+.dev-box
+{
+  display: inline-block;
+  width: 17em;
+  margin: 2em;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.prof-pic
+{
+  width: 15em;
+  height: 15em;
+  border-radius: 7.5em;
+  margin: 2em;
+  -webkit-box-shadow: 6px 6px 26px 0px rgba(50, 50, 50, 0.2);
+  -moz-box-shadow:    6px 6px 26px 0px rgba(50, 50, 50, 0.2);
+  box-shadow:         6px 6px 26px 0px rgba(50, 50, 50, 0.2);
+}
+
+.dev-box a, .dev-box a:hover, .dev-box a:active, .dev-box a:visited, .dev-box a:focus
+{
+  cursor: pointer;
+  cursor: hand;
+  color: #222;
+  text-decoration: none;
+}
+
+.dev-box a *
+{
+  cursor: pointer;
+  cursor: hand;
+}
+
+.dev-box a:hover .prof-pic
+{
+  margin: 1em 3em 3em 1em;
+  -webkit-box-shadow: 6px 6px 26px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    6px 6px 26px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         6px 6px 26px 0px rgba(50, 50, 50, 0.75);
+}
+
+.page-static #content ul
+{
+  list-style: none;
+}
+
+.page-static #content li
+{
+  font-size: 2em;
+  font-weight: 300;
+  margin-bottom: 2em;
+}
+
+.page-static #content li strong
+{
+  font-weight: 600;
 }
 
 @media (max-width: 768px){
