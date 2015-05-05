@@ -8,7 +8,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
                 'rgb(74, 120, 156)',
                 'rgb(187, 115, 101)',
                 'rgb(127, 202, 159)',
-                'rgb(239,184,142)',
+                'rgb(235, 119, 166)',
                 'rgb(138,28,1)',
                 'rgb(133, 193, 245)',
                 'rgb(238,59,18)',
