@@ -230,7 +230,7 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
     else {
       console.log('User ' + user + ' is authorized to make this request.');
       var sortBy;
-      var fields = {}; 
+      var fields = {};
       if (onlyUser == 'false') fields.reports = {$lt: 3}; //1 for testing. 3 for deployment
       if (req.params.sortType == 'popular' || req.params.sortType == 'best')
         sortBy = {'score': -1};
@@ -354,7 +354,7 @@ app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
   });
 });
 
-//Get all polls for one user 
+//Get all polls for one user
 //Should be obsolete?
 app.get('/polls/get/:netid/:ticket', function(req, res) {
   console.log('GET request for /polls/get/' + user + '/' + req.params.ticket);
@@ -555,12 +555,12 @@ app.post('/polls/vote', function (req, res) {
               Karma.findOneAndUpdate(VoterConditions, updateVoterKarma, options, function(err, updatedVoterKarma) {
                 if (err) console.log('Voter score update error');
                 else {
-                  ret.userKarma = updatedVoterKarma;
+                  ret.userKarma = updatedVoterKarma.score;
                   Karma.findOneAndUpdate(AuthorConditions, updateAuthorKarma, options, function(err, updatedAuthorKarma) {
                     if (err) console.log('Voter score update error');
                     res.send(ret);
                   });
-                } 
+                }
               });
             }
           });
@@ -897,16 +897,16 @@ app.post('/polls/report', function (req, res) {
             var update = {$inc: {reports:1}};
             var options = {new: true};
             Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
-                if (err) console.log('Error.');          
+                if (err) console.log('Error.');
                 else {
                   console.log('Reported: ' + updatedPoll);
                   var report = {};
                   report.pid = pollID;
                   report.netid = user;
                   var newReport = new Report(report);
-                  newReport.save(function(err) { 
+                  newReport.save(function(err) {
                     if (err) return console.error(err);
-                  });    
+                  });
                   res.send({'success': true});
                 }
             });

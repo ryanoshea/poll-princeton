@@ -251,6 +251,8 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       .success(function (data, status, headers, config) {
         $scope.polls[idx].pollData.score = data.score;
         $scope.polls[idx].userVote = data.userVote;
+        $('#user-karma').text(data.userKarma);
+        console.log(data.userKarma);
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')
@@ -272,6 +274,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       .success(function (data, status, headers, config) {
         $scope.polls[idx].pollData.score = data.score;
         $scope.polls[idx].userVote = data.userVote;
+        $('#user-karma').text(data.userKarma);
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')

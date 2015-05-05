@@ -6,7 +6,6 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
 
   $scope.username = "";
   $scope.fullname = "";
-  $scope.pollkarma;
 
   // One way of parsing GET variables
   function getUrlVars() {
@@ -74,7 +73,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.setItem('fullname', data.fullname);
         $scope.username = data.netid;
         $scope.fullname = data.fullname;
-        $scope.pollkarma = data.karma;
+        $('#user-karma').text(data.karma);
         if ($('#page-login').length > 0)
           window.location = window.location.origin + window.location.pathname + '#/feed';
         else

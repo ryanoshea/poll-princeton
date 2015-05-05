@@ -445,6 +445,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         //Update the number displayed for the poll. Color the arrow.
         $scope.poll.score = data.score;
         $scope.poll.userVote = data.userVote;
+        $('#user-karma').text(data.userKarma);
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.');
@@ -467,6 +468,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         //Update the number displayed for the poll. Color the arrow.
         $scope.poll.score = data.score;
         $scope.poll.userVote = data.userVote;
+        $('#user-karma').text(data.userKarma);
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.');

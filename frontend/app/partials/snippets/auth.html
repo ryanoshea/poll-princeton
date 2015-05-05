@@ -4,7 +4,7 @@
       <i class="fa fa-user"></i> <i class="fa fa-caret-down"></i>
     </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-      <li role="presentation" class="dropdown-header">{{username + ' ' + pollkarma}}</li>
+      <li role="presentation" class="dropdown-header">{{username}}<span class="badge pull-right" id="user-karma" title="Your PollKarma. Get PollKarma by earning upvotes or voting on other polls."></span></li>
       <li role="presentation"><a href="#/account" role="menuitem" tabindex="-1">My Polls</a></li>
       <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="logout()">Logout</a></li>
     </ul>
