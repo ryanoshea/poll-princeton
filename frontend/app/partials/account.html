@@ -3,13 +3,13 @@
   <div id="content">
     <h1 class="page-head">My Polls</h1>
     <p class="blurb">
-      View and Edit your submitted polls here<br>
+      View your polls here<br>
     </p>
     <hr>
     <div id="feed-sort">
       <p>SORT BY: <a ng-click="sortPopular()" ng-class="{selected: sort === 'popular'}" class="pp">BEST</a> | <a ng-click="sortNewest()" ng-class="{selected: sort === 'newest'}" class="pp">NEWEST</a></p>
     </div>
-    
+
     <div class="polls" ng-show="fetchedPolls">
       <div class="poll" ng-repeat="poll in polls track by $index">
         <div class="scoring">
