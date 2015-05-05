@@ -555,6 +555,7 @@ app.post('/polls/vote', function (req, res) {
               Karma.findOneAndUpdate(VoterConditions, updateVoterKarma, options, function(err, updatedVoterKarma) {
                 if (err) console.log('Voter score update error');
                 else {
+                  ret.userKarma = updatedVoterKarma;
                   Karma.findOneAndUpdate(AuthorConditions, updateAuthorKarma, options, function(err, updatedAuthorKarma) {
                     if (err) console.log('Voter score update error');
                     res.send(ret);
