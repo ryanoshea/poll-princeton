@@ -49,18 +49,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     });
   };
 
-  $scope.fetchAllPolls = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/all').success(function (data, status, headers, config) {
-      $scope.polls = data;
-      for (var i in $scope.polls) {
-        var thisPoll = $scope.polls[i];
-        var date = new Date(thisPoll.time);
-        thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
-      }
-      $scope.fetchedPolls = true;
-    });
-  };
-
   //Get call returns an array of objects containing three things: pollData (a complete poll with all data),
   //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Popular = function () {
@@ -252,7 +240,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         $scope.polls[idx].pollData.score = data.score;
         $scope.polls[idx].userVote = data.userVote;
         $('.user-karma').text(data.userKarma);
-        console.log(data.userKarma);
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')

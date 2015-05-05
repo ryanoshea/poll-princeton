@@ -57,7 +57,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
         return a + b;
       });
-      console.log($scope.poll.responses);
       $scope.fetchedPoll = true;
       redrawBars();
       if (($scope.manualShowDemograpics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
@@ -492,7 +491,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.responses = data.responses;
           $scope.poll.userResponse = data.userResponse;
           $scope.poll.demographics = data.demographics;
-          console.log($scope.poll.responses);
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
