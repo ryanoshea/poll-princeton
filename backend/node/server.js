@@ -104,6 +104,13 @@ var reportSchema = mongoose.Schema({
 
 var Report = mongoose.model('Report', reportSchema);
 
+var karmaSchema = mongoose.Schema({
+  netid: String,
+  score: Number
+})
+
+var Karma = mongoose.model('Karma', karmaSchema);
+
 /* REST Handlers */
 
 app.post('/polls/submit', function (req, res) {
@@ -485,51 +492,78 @@ app.post('/polls/vote', function (req, res) {
             });
           }
           var conditions = {pid: pollID};
+          var VoterConditions = {netid: user};
           var update;
+          var updateVoterKarma;
+          var updateAuthorKarma;
           console.log("negated " + negated);
 
           // This clusterfuck
           if (upOrDown) {
             if (reversed) {
               update = {$inc: {upvotes:1, downvotes: -1, score:2}};
+              updateVoterKarma = {$inc: {score:1}};
+              updateAuthorKarma = {$inc: {score:2}};
             }
             else if (negated) {
               update = {$inc: {upvotes:-1, score:-1}};
+              updateVoterKarma = {$inc: {score:-1}};
+              updateAuthorKarma = {$inc: {score:-1}};
             }
             else {
               update = {$inc: {upvotes:1, score:1}};
+              updateVoterKarma = {$inc: {score:1}};
+              updateAuthorKarma = {$inc: {score:1}};
             }
           }
           else {
             if (reversed) {
               update = {$inc: {downvotes:1, upvotes: -1, score:-2}};
+              updateVoterKarma = {$inc: {score:-1}};
+              updateAuthorKarma = {$inc: {score:-2}};
             }
             else if (negated) {
               update = {$inc: {downvotes:-1, score:1}};
+              updateVoterKarma = {};
+              updateAuthorKarma = {$inc: {score:1}};
             }
             else {
               update = {$inc: {downvotes:1, score:-1}};
+              updateVoterKarma = {};
+              updateAuthorKarma = {$inc: {score:-1}};
             }
           }
           var options = {new: true};
           Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
-              console.log('New score: ' + updatedPoll);
-              if (err) console.log('Error.');
-              if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+            console.log('New score: ' + updatedPoll);
+            if (err) console.log('Error.');
+            if (updatedPoll == null) res.send({'err': true, 'question': 'This poll does not exist.'});
+            else {
+              var ret = {};
+              ret.question = updatedPoll.question;
+              ret.score = updatedPoll.score;
+              ret.choices = updatedPoll.choices;
+              ret.responses = updatedPoll.responses;
+              ret.pid = updatedPoll.pid;
+              if (negated)
+                ret.userVote = null;
               else {
-                var ret = {};
-                ret.question = updatedPoll.question;
-                ret.score = updatedPoll.score;
-                ret.choices = updatedPoll.choices;
-                ret.responses = updatedPoll.responses;
-                ret.pid = updatedPoll.pid;
-                if (negated)
-                  ret.userVote = null;
-                else {
-                  ret.userVote = upOrDown;
-                }
-                res.send(ret);
+                ret.userVote = upOrDown;
               }
+              var author = updatedPoll.author;
+              var AuthorConditions = {netid: author};
+              Karma.findOneAndUpdate(VoterConditions, updateVoterKarma, options, function(err, updatedVoterKarma) {
+                console.log('Updating voter score: ' + updatedVoterKarma.score);
+                if (err) console.log('Voter score update error');
+                else {
+                  Karma.findOneAndUpdate(AuthorConditions, updateAuthorKarma, options, function(err, updatedAuthorKarma) {
+                    console.log('Updating author score: ' + updatedAuthorKarma.score);
+                    if (err) console.log('Voter score update error');
+                    res.send(ret);
+                  });
+                } 
+              });
+            }
           });
         });
       }
@@ -932,7 +966,24 @@ app.post('/auth/loggedin', function (req, res) {
         else {
           var fullname = ticket.netid;
         }
-        res.send({'loggedin' : true, 'netid' : ticket.netid, 'fullname': fullname});
+        Karma.findOne({'netid': ticket.netid}, function(err, userKarma) {
+          if (err) console.log('Karma db error');
+          if (userKarma == null) {
+            var newKarma = {};
+            newKarma.score = 1;
+            newKarma.netid = ticket.netid;
+            var karma = new Karma(newKarma);
+            karma.save(function (err) {
+              if (err) return console.error(err);
+            });
+            res.send({'loggedin' : true, 'netid' : ticket.netid, 'fullname': fullname, 'karma': 1});
+          }
+          else {
+            var pollKarma = userKarma.score;
+            console.log('current karma is' + pollKarma);
+            res.send({'loggedin' : true, 'netid' : ticket.netid, 'fullname': fullname, 'karma': pollKarma});
+          }
+        });
       });
     }
     else {
@@ -986,7 +1037,23 @@ app.post('/auth/loggedin', function (req, res) {
               if (student !== null) {
                 fullname = student.first + ' ' + student.last;
               }
-              res.send({'loggedin' : true, 'netid' : netid, 'fullname': fullname});
+              Karma.findOne({'netid': netid}, function(err, userKarma) {
+                if (err) console.log('Karma db error');
+                if (userKarma.score == null) {
+                  var newKarma = {};
+                  newKarma.score = 1;
+                  newKarma.netid = netid;
+                  var karma = new Karma(newKarma);
+                  karma.save(function (err) {
+                    if (err) return console.error(err);
+                  });
+                  res.send({'loggedin' : true, 'netid' : netid, 'fullname': fullname, 'karma': 1});
+                }
+                else {
+                  var pollKarma = userKarma.score;
+                  res.send({'loggedin' : true, 'netid' : netid, 'fullname': fullname, 'karma': pollKarma});
+                }
+              });
             });
           }
           else {
