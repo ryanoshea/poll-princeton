@@ -711,7 +711,7 @@ hr
   background: rgba(255, 136, 120, 0.8);
 }
 
-#page-login #compose-button
+#page-login #compose-button, #page-about #compose-button, #page-privacy #compose-button
 {
   display: none;
 }
