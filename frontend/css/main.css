@@ -1172,6 +1172,12 @@ a.pp-grey:hover, a.pp-grey:active
   font-weight: 600;
 }
 
+#not-enough-responses
+{
+  display: none;
+  margin-top: 3em;
+}
+
 @media (max-width: 768px){
   #navbar .navbar-brand img
   {

@@ -61,6 +61,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       redrawBars();
       if (($scope.manualShowDemograpics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
         $scope.showDemographics('major');
+        $('#not-enough-responses').fadeOut();
+      }
+      else if ($scope.manualShowDemograpics || data.userResponse != -1) {
+        $('#not-enough-responses').fadeIn();
+        $scope.hideDemographics();
       }
       else {
         $scope.hideDemographics();
@@ -79,6 +84,9 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         $('.lower-plots').css('visibility', 'visible');
         $scope.switchDemoCategory($scope.demoCategory);
       }
+    }
+    else {
+      $('#not-enough-responses').fadeIn();
     }
   };
 
@@ -496,9 +504,15 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           });
           if (($scope.manualShowDemograpics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
             $scope.showDemographics();
+            $('#not-enough-responses').fadeOut();
+          }
+          else if ($scope.manualShowDemograpics || data.userResponse != -1) {
+            $scope.hideDemographics();
+            $('#not-enough-responses').fadeIn();
           }
           else {
             $scope.hideDemographics();
+            $('#not-enough-responses').fadeOut();
           }
           redrawBars();
         }
