@@ -1043,7 +1043,7 @@ app.post('/auth/loggedin', function (req, res) {
               }
               Karma.findOne({'netid': netid}, function(err, userKarma) {
                 if (err) console.log('Karma db error');
-                if (userKarma.score == null) {
+                if (userKarma == null) {
                   var newKarma = {};
                   newKarma.score = 1;
                   newKarma.netid = netid;
