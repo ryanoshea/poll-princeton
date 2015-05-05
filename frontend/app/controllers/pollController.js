@@ -71,13 +71,15 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
   }
 
   $scope.showDemographics = function (category) {
-    if (category != null) {
-      $('.lower-plots').css('visibility', 'visible');
-      $scope.switchDemoCategory(category);
-    }
-    else {
-      $('.lower-plots').css('visibility', 'visible');
-      $scope.switchDemoCategory($scope.demoCategory);
+    if ($scope.poll.numResponses >= 5) {
+      if (category != null) {
+        $('.lower-plots').css('visibility', 'visible');
+        $scope.switchDemoCategory(category);
+      }
+      else {
+        $('.lower-plots').css('visibility', 'visible');
+        $scope.switchDemoCategory($scope.demoCategory);
+      }
     }
   };
 
