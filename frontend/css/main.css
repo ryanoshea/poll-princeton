@@ -499,7 +499,7 @@ navbar .btn-pp
 #auth
 {
   margin-top: 0.6em;
-  margin-right: 1em;
+  margin-right: .4em;
 }
 
 /*@media (max-width: 768px){
@@ -1057,7 +1057,7 @@ a.pp-grey:hover, a.pp-grey:active
 .plot-tab
 {
   position: absolute;
-  top: 4.5em;
+  top: 7.5em;
   width: 100%;
   margin-bottom: 3em;
 }
