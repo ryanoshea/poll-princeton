@@ -73,7 +73,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.setItem('fullname', data.fullname);
         $scope.username = data.netid;
         $scope.fullname = data.fullname;
-        $('#user-karma').text(data.karma);
+        $('.user-karma').text(data.karma);
         if ($('#page-login').length > 0)
           window.location = window.location.origin + window.location.pathname + '#/feed';
         else

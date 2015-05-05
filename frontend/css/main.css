@@ -1087,6 +1087,24 @@ a.pp-grey:hover, a.pp-grey:active
   opacity: 0.75;
 }
 
+#karma-dropdown
+{
+  display: none;
+}
+
+#karma-navbar
+{
+  color: #EB6B57;
+  background-color: rgba(255,255,255,.95);
+  margin-right: .5em;
+}
+
+.user-karma
+{
+  font-weight: 900;
+  font-family: Roboto, sans-serif;
+}
+
 @media (max-width: 768px){
   #navbar .navbar-brand img
   {
@@ -1170,5 +1188,13 @@ a.pp-grey:hover, a.pp-grey:active
   #page-poll .choice-bar-wrapper
   {
     width: 95%;
+  }
+  #karma-navbar
+  {
+    display: none;
+  }
+  #karma-dropdown
+  {
+    display: inline;
   }
 }
