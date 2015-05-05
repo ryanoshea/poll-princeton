@@ -61,7 +61,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
       var user = localStorage.getItem('netid');
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/best/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
@@ -88,7 +88,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
       var user = localStorage.getItem('netid');
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
+    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/best/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;

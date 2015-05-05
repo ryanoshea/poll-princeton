@@ -9,7 +9,9 @@
     </div>
 
     <div class="poll-content">
-      <p class="poll-controls"><a href class="pp-grey" ng-click="deletePoll()" ng-show="poll.isAuthor || netid === 'roshea' || netid === 'marchant' || netid === 'hzlu'"><i class="fa fa-trash"></i> &nbsp; Delete Poll</a></p>
+      <p class="poll-controls"><a href class="pp-grey" ng-click="deletePoll()" ng-show="poll.isAuthor || netid === 'roshea' || netid === 'marchant' || netid === 'hzlu'"><i class="fa fa-trash"></i> &nbsp; Delete Poll</a>
+      <a href class="pp-grey" ng-click="reportPoll()"> <i class="fa fa-minus-circle"></i> &nbsp; Report Poll</a>
+      </p>
       <p class="label">SOMEONE IN PRINCETON WANTS TO KNOW:</p>
       <p class="question">{{poll.question}}</p>
       <p class="poll-meta"><i class="fa fa-clock-o"></i>&nbsp;&nbsp;Posted {{poll.humanTime}} &nbsp;&nbsp;&nbsp;&nbsp; <br class="mobile-break"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;{{poll.numResponses}} <span ng-show="poll.numResponses !== 1">people</span><span ng-hide="poll.numResponses !== 1">person</span> responded</p>

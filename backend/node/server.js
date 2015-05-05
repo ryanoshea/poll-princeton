@@ -48,7 +48,8 @@ var pollSchema = mongoose.Schema({
   pid: String,
   upvotes: Number,
   downvotes: Number,
-  score: Number
+  score: Number,
+  reports: Number,
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
@@ -96,6 +97,12 @@ var studentSchema = mongoose.Schema({
 
 var Student = mongoose.model('Student', studentSchema);
 
+var reportSchema = mongoose.Schema({
+  netid: String,
+  pid: String
+})
+
+var Report = mongoose.model('Report', reportSchema);
 
 /* REST Handlers */
 
@@ -172,6 +179,8 @@ app.post('/polls/submit', function (req, res) {
         newPoll.upvotes = 0;
         newPoll.downvotes = 0;
         newPoll.score = 0;
+        newPoll.reports = 0;
+        newPoll.reporters = {};
         newPoll.time = new Date();
         var sha256 = crypto.createHash('sha256');
         sha256.update(newPoll.question + newPoll.time);
@@ -195,6 +204,7 @@ app.get('/polls/get/all', function (req, res) {
 });
 */
 
+//Get 10 polls of either Popular, Best or Newest
 app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res) {
   console.log('GET request for /polls/' + req.params.sortType + '/' + req.params.netid + '/' + req.params.ticket + '/' + req.params.num);
   var user = req.params.netid;
@@ -213,14 +223,16 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
     else {
       console.log('User ' + user + ' is authorized to make this request.');
       var sortBy;
-      var fields = {};
+      var fields = {}; 
+      fields.reports = {$lt: 3}; //1 for testing. 3 for deployment
       if (req.params.sortType == 'popular' || req.params.sortType == 'best')
         sortBy = {'score': -1};
       else if (req.params.sortType == 'newest')
         sortBy = {time: -1};
 
-      if (req.params.onlyUser == 'true')
+      if (req.params.onlyUser == 'true') {
         fields.author = user;
+      }
 
       if (req.params.sortType == 'popular') {
         var weekAgo = new Date();
@@ -278,6 +290,7 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
   });
 });
 
+//Get one poll in particular
 app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
   console.log('GET request for /polls/get/' + req.params.pid + '/' + req.params.netid + '/' + req.params.ticket);
   var user = req.params.netid;
@@ -334,6 +347,8 @@ app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
   });
 });
 
+//Get all polls for one user 
+//Should be obsolete?
 app.get('/polls/get/:netid/:ticket', function(req, res) {
   console.log('GET request for /polls/get/' + user + '/' + req.params.ticket);
   var user = req.params.netid;
@@ -820,6 +835,55 @@ app.post('/polls/respond', function (req, res) {
           }
         }
       });
+    }
+  });
+});
+
+
+//Report function
+app.post('/polls/report', function (req, res) {
+  var pollID = req.body.pollID;
+  var user = req.body.author;
+  var ticket = req.body.ticket;
+  console.log('POST request for /polls/report/' + pollID + '/' + user);
+  Ticket.findOne({netid: user, ticket: ticket}, function (err, ticket) {
+    if (err) {
+      console.log('Database error.');
+      res.status(500).send({msg: 'Database error.'});
+    }
+    if (ticket == null) {
+      console.log('User ' + user + ' is unauthorized to make this request.');
+      res.status(403).send({msg: 'You are unauthorized to make this request.'});
+    }
+    else {
+      console.log('User ' + user + ' is authorized to make this request.');
+      if (user !== null) {
+        Report.findOne({netid: user, pid: pollID}, function(err, reported) {
+          if (reported == null) {
+            var conditions = {pid: pollID};
+            var update = {$inc: {reports:1}};
+            var options = {new: true};
+            Poll.findOneAndUpdate(conditions, update, options, function (err, updatedPoll) {
+                if (err) console.log('Error.');          
+                else {
+                  console.log('Reported: ' + updatedPoll);
+                  var report = {};
+                  report.pid = pollID;
+                  report.netid = user;
+                  var newReport = new Report(report);
+                  newReport.save(function(err) { 
+                    if (err) return console.error(err);
+                  });    
+                  res.send({'success': true});
+                }
+            });
+          }
+          else res.send({'success': false});
+        });
+      }
+      else {
+        res.status(403).send({'err': true, 'msg': 'You are not logged in.'});
+      }
     }
   });
 });

@@ -513,6 +513,30 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       });
   };
 
+  $scope.reportPoll = function () {
+    var answer = confirm('Are you sure you want to report this poll? Polls should only be reported if they are offensive, personal attacks or spam.');
+    if (!answer) return;
+    var reportTicket = {};
+    do {
+      var user = localStorage.getItem('netid');
+      var ticket = localStorage.getItem('ticket');
+    } while (user == null || ticket == null);
+    reportTicket.author = user;
+    reportTicket.ticket = ticket;
+    reportTicket.pollID = $scope.poll.pid;
+    $http.post('/ppapi/polls/report', reportTicket)   
+      .success(function (data, status, headers, config) {
+        // send them to the url for that poll
+        if (data.success)
+          alert('This poll has been reported.');
+        else 
+          alert('You have already reported this poll');
+      })
+      .error(function (data, status, headers, config) {
+        alert('Something went wrong. Please try to report again in a few moments.')
+      });
+  };
+
   $scope.showLowerPlots = function() {
     $('.lower-plots').css('visibility','visible');
     redrawBars();
