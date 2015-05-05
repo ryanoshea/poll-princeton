@@ -553,12 +553,12 @@ app.post('/polls/vote', function (req, res) {
               var author = updatedPoll.author;
               var AuthorConditions = {netid: author};
               Karma.findOneAndUpdate(VoterConditions, updateVoterKarma, options, function(err, updatedVoterKarma) {
-                console.log('Updating voter score: ' + updatedVoterKarma.score);
                 if (err) console.log('Voter score update error');
                 else {
+                  console.log('Updating voter score: ' + updatedVoterKarma.score);
                   Karma.findOneAndUpdate(AuthorConditions, updateAuthorKarma, options, function(err, updatedAuthorKarma) {
-                    console.log('Updating author score: ' + updatedAuthorKarma.score);
                     if (err) console.log('Voter score update error');
+                    else {console.log('Updating author score: ' + updatedAuthorKarma.score);}
                     res.send(ret);
                   });
                 } 
