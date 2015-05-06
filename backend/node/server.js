@@ -623,52 +623,54 @@ app.post('/polls/respond', function (req, res) {
                   else {
                     var update = {$inc: {}};
                     update.$inc['responses.' + idx] = 1;
-                    var delta = 1;
-                    var AB = student.major.charAt(0) != 'B';
-                    if (AB) { // Student is an AB major
-                      update.$inc['demographics.ab.' + idx] = delta;
-                    }
-                    else {
-                      update.$inc['demographics.bse.' + idx] = delta;
-                    }
-                    switch (student.class) {
-                      case '2015':
-                        update.$inc['demographics.class2015.' + idx] = delta;
-                        break;
-                      case '2016':
-                        update.$inc['demographics.class2016.' + idx] = delta;
-                        break;
-                      case '2017':
-                        update.$inc['demographics.class2017.' + idx] = delta;
-                        break;
-                      case '2018':
-                        update.$inc['demographics.class2018.' + idx] = delta;
-                        break;
-                      case '2019':
-                        update.$inc['demographics.class2019.' + idx] = delta;
-                        break;
-                      default:
-                        break;
-                    }
-                    switch (student.rescol) {
-                      case 'Mathey':
-                        update.$inc['demographics.mathey.' + idx] = delta;
-                        break;
-                      case 'Rockefeller':
-                        update.$inc['demographics.rocky.' + idx] = delta;
-                        break;
-                      case 'Whitman':
-                        update.$inc['demographics.whitman.' + idx] = delta;
-                        break;
-                      case 'Forbes':
-                        update.$inc['demographics.forbes.' + idx] = delta;
-                        break;
-                      case 'Butler':
-                        update.$inc['demographics.butler.' + idx] = delta;
-                        break;
-                      case 'Wilson':
-                        update.$inc['demographics.wilson.' + idx] = delta;
-                        break;
+                    if (student != null) {
+                      var delta = 1;
+                      var AB = student.major.charAt(0) != 'B';
+                      if (AB) { // Student is an AB major
+                        update.$inc['demographics.ab.' + idx] = delta;
+                      }
+                      else {
+                        update.$inc['demographics.bse.' + idx] = delta;
+                      }
+                      switch (student.class) {
+                        case '2015':
+                          update.$inc['demographics.class2015.' + idx] = delta;
+                          break;
+                        case '2016':
+                          update.$inc['demographics.class2016.' + idx] = delta;
+                          break;
+                        case '2017':
+                          update.$inc['demographics.class2017.' + idx] = delta;
+                          break;
+                        case '2018':
+                          update.$inc['demographics.class2018.' + idx] = delta;
+                          break;
+                        case '2019':
+                          update.$inc['demographics.class2019.' + idx] = delta;
+                          break;
+                        default:
+                          break;
+                      }
+                      switch (student.rescol) {
+                        case 'Mathey':
+                          update.$inc['demographics.mathey.' + idx] = delta;
+                          break;
+                        case 'Rockefeller':
+                          update.$inc['demographics.rocky.' + idx] = delta;
+                          break;
+                        case 'Whitman':
+                          update.$inc['demographics.whitman.' + idx] = delta;
+                          break;
+                        case 'Forbes':
+                          update.$inc['demographics.forbes.' + idx] = delta;
+                          break;
+                        case 'Butler':
+                          update.$inc['demographics.butler.' + idx] = delta;
+                          break;
+                        case 'Wilson':
+                          update.$inc['demographics.wilson.' + idx] = delta;
+                          break;
+                      }
                     }
                     Poll.findOneAndUpdate({pid: pid}, update, function (err, poll) {
                       if (err) {
