@@ -20,7 +20,7 @@
           <p class="score"><strong>{{poll.pollData.score}}</strong></p>
           <a class="vote-submit downvote" ng-click="downVote(poll.pollData.pid, $index)" ng-class="{chosen: poll.userVote == false, unchosen: poll.userVote == true}">bad poll</a>
         </div>
-        <a class="poll-content" href="{{address + '#/poll?p=' + poll.pollData.pid}}">
+        <a class="poll-content" href="{{rootUrl + '#/poll?p=' + poll.pollData.pid}}">
       		<p class="poll-question">{{poll.pollData.question}}</p>
           <p class="poll-choices-preview">Vote: &#8216;{{poll.pollData.choices[0]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, </span><span ng-show="poll.pollData.choices.length == 2"> vs. </span>&#8216;{{poll.pollData.choices[1]}}&#8217;<span ng-show="poll.pollData.choices.length > 2">, <i class="fa fa-ellipsis-h"></i></span></p>
           <div class="poll-meta">

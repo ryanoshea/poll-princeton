@@ -4,6 +4,16 @@ var cont = angular.module('poll-princeton.controllers');
 
 cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
+  /* Handle older browsers without good window.location support */
+  if (window.location.hostname == null) {
+    $scope.hostname = 'pollprinceton.com';
+    $scope.rootUrl = 'http://pollprinceton.com/'
+  }
+  else {
+    $scope.hostname = window.location.hostname;
+    $scope.rootUrl = 'http://' + window.location.hostname + window.location.pathname;
+  }
+
   var colors = ['rgb(255,155,127)',
                 'rgb(74, 120, 156)',
                 'rgb(187, 115, 101)',
@@ -49,7 +59,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       var user = localStorage.getItem('netid');
       var ticket = localStorage.getItem('ticket');
     } while (user == null || ticket == null);
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/' + pid + '/' + user + '/' + ticket).success(function (data, status, headers, config) {
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/' + pid + '/' + user + '/' + ticket).success(function (data, status, headers, config) {
       $scope.poll = data;
       var thisPoll = $scope.poll;
       var date = new Date(thisPoll.time);
@@ -536,7 +546,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         }
         else {
           alert('The poll was permanently deleted.');
-          window.location = 'http://' + window.location.hostname + window.location.pathname;
+          window.location = $scope.rootUrl;
         }
       });
   };

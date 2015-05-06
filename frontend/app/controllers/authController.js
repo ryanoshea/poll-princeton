@@ -7,6 +7,16 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
   $scope.username = "";
   $scope.fullname = "";
 
+  /* Handle older browsers without good window.location support */
+  if (window.location.hostname == null) {
+    $scope.hostname = 'pollprinceton.com';
+    $scope.rootUrl = 'http://pollprinceton.com/'
+  }
+  else {
+    $scope.hostname = window.location.hostname;
+    $scope.rootUrl = 'http://' + window.location.hostname + window.location.pathname;
+  }
+
   // One way of parsing GET variables
   function getUrlVars() {
     var vars = [], hash;
@@ -54,7 +64,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
   $http.post('/ppapi/auth/loggedin', {
     'ticket' : ticket,
     'netid' : netid,
-    'returnUrl' : window.location.origin + window.location.pathname + '#/feed'})
+    'returnUrl' : $scope.rootUrl + '#/feed'})
     .success(function (data, status, headers, config) {
       if (!data.loggedin) {
         // User is not authenticated; wipe localStorage and send back to login page.
@@ -62,7 +72,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.removeItem('netid');
         localStorage.removeItem('fullname');
         if (protectedPage)
-          window.location = window.location.origin + window.location.pathname + '#/';
+          window.location = $scope.rootUrl + '#/';
         else
           $('#content').css('visibility', 'visible');
       }
@@ -75,7 +85,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         $scope.fullname = data.fullname;
         $('.user-karma').text(data.karma);
         if ($('#page-login').length > 0)
-          window.location = window.location.origin + window.location.pathname + '#/feed';
+          window.location = $scope.rootUrl + '#/feed';
         else
           $('#content').css('visibility', 'visible');
       }
@@ -85,7 +95,7 @@ cont.controller('authController', function ($scope, $filter, $http, $location) {
         localStorage.removeItem('ticket');
         localStorage.removeItem('netid');
         localStorage.removeItem('fullname');
-        window.location = window.location.origin + window.location.pathname + '#/';
+        window.location = $scope.rootUrl + '#/';
       }
     });
 

@@ -8,7 +8,16 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
 
   $('body').css('padding-top', '50px');
 
-  $scope.address = 'http://' + window.location.hostname + window.location.pathname;
+  /* Handle older browsers without good window.location support */
+  if (window.location.hostname == null) {
+    $scope.hostname = 'pollprinceton.com';
+    $scope.rootUrl = 'http://pollprinceton.com/'
+  }
+  else {
+    $scope.hostname = window.location.hostname;
+    $scope.rootUrl = 'http://' + window.location.hostname + window.location.pathname;
+  }
+
   $scope.fetchedPolls = false;
   $scope.fetching = true;
   $scope.noMorePolls = false;
@@ -37,13 +46,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     return strTime;
   }
 
-  $scope.fetchDevs = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/devs').success(function (data, status, headers, config) {
-      $scope.devs = data;
-      $scope.fetchedDevs = true;
-    });
-  };
-
   //Get call returns an array of objects containing three things: pollData (a complete poll with all data),
   //userVote (true for up, false for down) and userResponse (however Ryan implemented it. -1 for no response I think)
   $scope.fetch10Popular = function () {
@@ -52,7 +54,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if (user == null || ticket == null) {
       setTimeout($scope.fetch10Popular, 1000);
     }
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/popular/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
@@ -81,7 +83,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if (user == null || ticket == null) {
       setTimeout($scope.fetchNext10Popular, 1000);
     }
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/popular/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/popular/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
@@ -109,7 +111,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if (user == null || ticket == null) {
       setTimeout($scope.fetch10Best, 1000);
     }
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/best/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/best/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
@@ -138,7 +140,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if (user == null || ticket == null) {
       setTimeout($scope.fetchNext10Best, 1000);
     }
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/best/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/best/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
@@ -166,7 +168,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
     if (user == null || ticket == null) {
       setTimeout($scope.fetch10New, 1000);
     }
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/newest/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
@@ -196,7 +198,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       setTimeout($scope.fetchNext10New, 1000);
     }
     var user = localStorage.getItem('netid');
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/get/newest/'
+    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/newest/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
@@ -268,11 +270,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
       });
   };
 
-  $scope.deletePolls = function () {
-    $http.get('http://' + window.location.hostname + '/ppapi/polls/delete/all').success(function (data, status, headers, config) {
-    });
-  };
-
   $scope.sortPopular = function () {
     if ($scope.sort !== 'popular') {
       $('.polls').fadeOut(function () {
@@ -313,10 +310,6 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         $('.polls').fadeIn();
       });
     }
-  };
-
-  $scope.goToPoll = function (pid) {
-    window.location = 'http://' + window.location.hostname + window.location.pathname + '#/poll?p=' + pid;
   };
 
   $scope.refresh = function () {
