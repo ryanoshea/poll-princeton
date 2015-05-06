@@ -43,6 +43,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
   $scope.addChoice = function () {
     if ($scope.newPoll.choices.length < 10) {
       $scope.newPoll.choices.push("");
+      $('#choice-input-' + ($scope.newPoll.choices.length - 1)).focus();
     }
     else {
       alert('Polls can only have 10 options.');
