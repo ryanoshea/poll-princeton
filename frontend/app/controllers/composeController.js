@@ -152,7 +152,7 @@ cont.controller('composeController', function ($scope, $filter, $http, $location
         $scope.clearPoll();
         $scope.hideComposeFlyout();
         // send them to the url for that poll
-        window.location = window.location.origin + window.location.pathname + '#/poll/?p=' + data.pid;
+        window.location = $scope.rootUrl + '#/poll/?p=' + data.pid;
       })
       .error(function (data, status, headers, config) {
         alert('Something went wrong. Please try to submit again in a few moments.')
