@@ -77,7 +77,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
     if (user == null || ticket == null) {
       setTimeout($scope.fetchNext10Best, 2000);
     }
-    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/best/'
+    $http.get('/ppapi/polls/get/best/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
@@ -105,7 +105,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
     if (user == null || ticket == null) {
       setTimeout($scope.fetch10New, 2000);
     }
-    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/newest/'
+    $http.get('/ppapi/polls/get/newest/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser).success(function (data, status, headers, config) {
       $scope.fetching = false;
       if (data.err) {
@@ -131,7 +131,7 @@ cont.controller('accountController', function ($scope, $filter, $http, $location
     if ($scope.currentPolls == 0) return;
     var user = localStorage.getItem('netid');
     var ticket = localStorage.getItem('ticket');
-    $http.get('http://' + $scope.hostname + '/ppapi/polls/get/newest/'
+    $http.get('/ppapi/polls/get/newest/'
         + user + '/' + ticket + '/' + $scope.currentPolls + onlyUser)
       .success(function (data, status, headers, config) {
         $scope.fetching = false;
