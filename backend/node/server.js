@@ -243,7 +243,7 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
 
       if (req.params.sortType == 'popular') {
         var yesterday = new Date();
-        yesterday.setDate(weekAgo.getDate() - 1);
+        yesterday.setDate(yesterday.getDate() - 1);
         fields.time = {$gt: yesterday};
       }
 
