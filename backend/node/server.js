@@ -242,9 +242,9 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
       }
 
       if (req.params.sortType == 'popular') {
-        var weekAgo = new Date();
-        weekAgo.setDate(weekAgo.getDate() - 3);
-        fields.time = {$gt: weekAgo};
+        var yesterday = new Date();
+        yesterday.setDate(weekAgo.getDate() - 1);
+        fields.time = {$gt: yesterday};
       }
 
       Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {
