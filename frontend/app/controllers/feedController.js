@@ -96,7 +96,7 @@ cont.controller('feedController', function ($scope, $filter, $http, $location) {
         for (var i in polls) {
           var thisPoll = polls[i].pollData;
           var date = new Date(thisPoll.time);
-          thisPoll.humanTime = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+          thisPoll.humanTime = formatAMPM(date) + ' on ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
           thisPoll.numResponses = thisPoll.responses.reduce(function(a, b) {
             return a + b;
           });
