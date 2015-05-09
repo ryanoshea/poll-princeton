@@ -79,7 +79,7 @@ var Vote = mongoose.model('Vote', voteSchema);
 var responseSchema = mongoose.Schema({
   netid: String,
   pid: String,
-  idx: Number //true is up
+  idx: Number
 });
 
 var Response = mongoose.model('Response', responseSchema);
@@ -100,14 +100,14 @@ var Student = mongoose.model('Student', studentSchema);
 var reportSchema = mongoose.Schema({
   netid: String,
   pid: String
-})
+});
 
 var Report = mongoose.model('Report', reportSchema);
 
 var karmaSchema = mongoose.Schema({
   netid: String,
   score: Number
-})
+});
 
 var Karma = mongoose.model('Karma', karmaSchema);
 
