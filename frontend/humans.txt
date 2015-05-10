@@ -19,6 +19,7 @@
          - AngularJS
          - Bootstrap
          - jQuery
+         - Flot Charts
      - Backend
          - Apache
          - Node.js
@@ -38,3 +39,4 @@
      - Express.js - expressjs.com
      - Mongoose.js - mongoosejs.com
      - MongoDB - mongodb.org
+     - Flot Charts - flotcharts.org
