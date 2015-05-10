@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h5
   font-weight: bold;
 }
 
-a, span.choice-tally, span.choice-text, div.poll, .lower-plots, .dev-box *
+a, span.choice-tally, span.choice-text, div.poll, .lower-plots, .dev-box *, .screenshot, .screenshot-caption
 {
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -1178,6 +1178,69 @@ a.pp-grey:hover, a.pp-grey:active
   margin-top: 3em;
 }
 
+.screenshot
+{
+  width: 45em;
+}
+
+.screenshot-left .screenshot
+{
+  float: left;
+  border-left: 1.5em solid rgba(255, 136, 120, 0.75);
+}
+
+.screenshot-right .screenshot
+{
+  float: right;
+  border-right: 1.5em solid rgba(255, 136, 120, 0.75);
+}
+
+.screenshot-left:hover .screenshot
+{
+  border-left: 2em solid rgba(255, 136, 120, 1);
+  width: 45.5em;
+}
+
+.screenshot-right:hover .screenshot
+{
+  border-right: 2em solid rgba(255, 136, 120, 1);
+  width: 45.5em;
+}
+
+.screenshot-group:hover .screenshot-caption
+{
+  border-top: 1.5em solid rgba(255, 136, 120, 1);
+}
+
+.screenshot-caption
+{
+  width: 20em;
+  border-top: 1em solid rgba(255, 136, 120, 0.75);
+  margin-bottom: 2em;
+}
+
+@media (min-width: 1200px){
+  .screenshot-caption
+  {
+    width: 30em;
+  }
+}
+
+.screenshot-left .screenshot-caption
+{
+  float: right;
+}
+
+.screenshot-right .screenshot-caption
+{
+  float: left;
+}
+
+.screenshot-caption p
+{
+  text-align: left;
+}
+
 @media (max-width: 768px){
   #navbar .navbar-brand img
   {
@@ -1185,7 +1248,7 @@ a.pp-grey:hover, a.pp-grey:active
   }
   #navbar .navbar-brand
   {
-    margin-top: .2em;
+    margin-top: .3em;
   }
   .navbar-nav>li
   {
@@ -1269,5 +1332,42 @@ a.pp-grey:hover, a.pp-grey:active
   #karma-dropdown
   {
     display: inline;
+  }
+}
+@media (max-width: 992px) {
+  .screenshot-left .screenshot
+  {
+    border-left: none;
+    width: 100%;
+  }
+
+  .screenshot-right .screenshot
+  {
+    border-right: none;
+    width: 100%;
+  }
+
+  .screenshot-left:hover .screenshot
+  {
+    border-left: none;
+    width: 100%;
+  }
+
+  .screenshot-right:hover .screenshot
+  {
+    border-right: none;
+    width: 100%;
+  }
+
+  .screenshot-group:hover .screenshot-caption
+  {
+    border-top: 1em solid rgb(255, 136, 120);
+    width: 100%;
+  }
+
+  .screenshot-caption
+  {
+    border-top: 1em solid rgb(255, 136, 120);
+    width: 100%;
   }
 }
