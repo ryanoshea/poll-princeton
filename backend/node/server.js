@@ -242,9 +242,9 @@ app.get('/polls/get/:sortType/:netid/:ticket/:num/:onlyUser', function(req, res)
       }
       fields.score = {$gt: -5}; // Filter out unpopular polls
       if (req.params.sortType == 'popular') {
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        fields.time = {$gt: yesterday};
+        var threshold = new Date();
+        threshold.setDate(threshold.getDate() - 3);
+        fields.time = {$gt: threshold};
       }
 
       Poll.find(fields).sort(sortBy).skip(current).limit(10).exec(function (err, polls) {

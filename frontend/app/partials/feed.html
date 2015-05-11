@@ -8,7 +8,7 @@
     </p>
     <hr>
     <div id="feed-sort">
-      <p><a ng-click="sortPopular()" ng-class="{selected: sort === 'popular'}" class="pp">POPULAR TODAY</a> | <a ng-click="sortNewest()" ng-class="{selected: sort === 'newest'}" class="pp">NEWEST</a> | <a ng-click="sortBest()" ng-class="{selected: sort === 'best'}" class="pp">BEST ALL TIME</a></p>
+      <p><a ng-click="sortPopular()" ng-class="{selected: sort === 'popular'}" class="pp">POPULAR NOW</a> | <a ng-click="sortNewest()" ng-class="{selected: sort === 'newest'}" class="pp">NEWEST</a> | <a ng-click="sortBest()" ng-class="{selected: sort === 'best'}" class="pp">BEST ALL TIME</a></p>
     </div>
     <div ng-show="fetchedDevs" ng-repeat="dev in devs">
       <p><strong>Name:</strong> {{dev.name}} | <strong>Job:</strong> {{dev.job}}</p>
