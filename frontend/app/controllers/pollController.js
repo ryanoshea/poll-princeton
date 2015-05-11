@@ -514,7 +514,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
-          console.log(data.userResponse + ' ' + $scope.manualShowDemographics);
           if (($scope.manualShowDemographics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
             $scope.showDemographics();
             $('#not-enough-responses').fadeOut();
@@ -522,7 +521,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           else if (($scope.manualShowDemographics || data.userResponse != -1) || ($scope.manualShowDemographics && data.userResponse == -1)) {
             $scope.hideDemographics();
             $('#not-enough-responses').fadeIn();
-            console.log('happening');
           }
           else {
             $scope.hideDemographics();
@@ -603,7 +601,6 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
 
   $scope.manuallyShowDemographics = function () {
     $scope.manualShowDemographics = true;
-    console.log('happening 2');
   };
 
   var GET = getUrlVars();
