@@ -25,7 +25,7 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
                 'rgb(244, 186, 112)',
                 'rgb(152, 129, 245)'];
   $scope.demoCategory = 'major';
-  $scope.manualShowDemograpics = false;
+  $scope.manualShowDemographics = false;
   $('body').css('padding-top', '50px');
 
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -69,11 +69,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       });
       $scope.fetchedPoll = true;
       redrawBars();
-      if (($scope.manualShowDemograpics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
+      if (($scope.manualShowDemographics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
         $scope.showDemographics('major');
         $('#not-enough-responses').fadeOut();
       }
-      else if ($scope.manualShowDemograpics || data.userResponse != -1) {
+      else if ($scope.manualShowDemographics || data.userResponse != -1) {
         $('#not-enough-responses').fadeIn();
         $scope.hideDemographics();
       }
@@ -114,334 +114,336 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
       $scope.barWidths.push(newWidth);
     }
 
-    /* Check for groups with no responders. */
-    $scope.demoTallies = {};
-    $scope.demoTallies.ab = $scope.poll.demographics.ab.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.bse = $scope.poll.demographics.bse.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.class2015 = $scope.poll.demographics.class2015.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.class2016 = $scope.poll.demographics.class2016.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.class2017 = $scope.poll.demographics.class2017.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.class2018 = $scope.poll.demographics.class2018.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.class2019 = $scope.poll.demographics.class2019.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.butler = $scope.poll.demographics.butler.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.forbes = $scope.poll.demographics.forbes.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.wilson = $scope.poll.demographics.wilson.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.whitman = $scope.poll.demographics.whitman.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.mathey = $scope.poll.demographics.mathey.reduce(function(a, b) {return a + b;});
-    $scope.demoTallies.rocky = $scope.poll.demographics.rocky.reduce(function(a, b) {return a + b;});
+    if ($scope.poll.numResponses >= 5) {
+      /* Check for groups with no responders. */
+      $scope.demoTallies = {};
+      $scope.demoTallies.ab = $scope.poll.demographics.ab.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.bse = $scope.poll.demographics.bse.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.class2015 = $scope.poll.demographics.class2015.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.class2016 = $scope.poll.demographics.class2016.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.class2017 = $scope.poll.demographics.class2017.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.class2018 = $scope.poll.demographics.class2018.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.class2019 = $scope.poll.demographics.class2019.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.butler = $scope.poll.demographics.butler.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.forbes = $scope.poll.demographics.forbes.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.wilson = $scope.poll.demographics.wilson.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.whitman = $scope.poll.demographics.whitman.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.mathey = $scope.poll.demographics.mathey.reduce(function(a, b) {return a + b;});
+      $scope.demoTallies.rocky = $scope.poll.demographics.rocky.reduce(function(a, b) {return a + b;});
 
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.ab[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-ab', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
-
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.bse[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-bse', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+        else {
+          trimmedChoice = $scope.poll.choices[i];
         }
-    });
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.ab[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-ab', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.class2015[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-2015', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.bse[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-bse', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.class2016[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-2016', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.class2015[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-2015', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.class2017[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-2017', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.class2016[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-2016', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.class2018[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-2018', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.class2017[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-2017', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.class2019[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-2019', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.class2018[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-2018', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.butler[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-butler', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.class2019[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-2019', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.forbes[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-forbes', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.butler[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-butler', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.mathey[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-mathey', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.forbes[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-forbes', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.rocky[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-rocky', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.mathey[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-mathey', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.whitman[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-whitman', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.rocky[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-rocky', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
 
-    var data = [];
-    for(var i in $scope.poll.responses) {
-      var trimmedChoice = '';
-      if ($scope.poll.choices[i].length > 15) {
-        trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
-      }
-      else {
-        trimmedChoice = $scope.poll.choices[i];
-      }
-      var element = {label: trimmedChoice, data: $scope.poll.demographics.wilson[i], color: colors[i]};
-      data.push(element);
-    }
-    $.plot('#plot-wilson', data, {
-        series: {
-            pie: {
-                show: true
-            }
-        },
-        legend: {
-            backgroundColor: 'none',
-            labelBoxBorderColor: 'none'
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
         }
-    });
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.whitman[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-whitman', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
+
+      var data = [];
+      for(var i in $scope.poll.responses) {
+        var trimmedChoice = '';
+        if ($scope.poll.choices[i].length > 15) {
+          trimmedChoice = $scope.poll.choices[i].substring(0,15) + '…';
+        }
+        else {
+          trimmedChoice = $scope.poll.choices[i];
+        }
+        var element = {label: trimmedChoice, data: $scope.poll.demographics.wilson[i], color: colors[i]};
+        data.push(element);
+      }
+      $.plot('#plot-wilson', data, {
+          series: {
+              pie: {
+                  show: true
+              }
+          },
+          legend: {
+              backgroundColor: 'none',
+              labelBoxBorderColor: 'none'
+          }
+      });
+    }
 
     // Styling
     $('.piechart .legend div').css('background-color','none');
@@ -512,13 +514,15 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
           $scope.poll.numResponses = $scope.poll.responses.reduce(function(a, b) {
             return a + b;
           });
-          if (($scope.manualShowDemograpics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
+          console.log(data.userResponse + ' ' + $scope.manualShowDemographics);
+          if (($scope.manualShowDemographics || data.userResponse != -1) && $scope.poll.numResponses >= 5) {
             $scope.showDemographics();
             $('#not-enough-responses').fadeOut();
           }
-          else if ($scope.manualShowDemograpics || data.userResponse != -1) {
+          else if (($scope.manualShowDemographics || data.userResponse != -1) || ($scope.manualShowDemographics && data.userResponse == -1)) {
             $scope.hideDemographics();
             $('#not-enough-responses').fadeIn();
+            console.log('happening');
           }
           else {
             $scope.hideDemographics();
@@ -595,6 +599,11 @@ cont.controller('pollController', function ($scope, $filter, $http, $location) {
         $('#plot-college').css('visibility','visible');
         break;
     }
+  };
+
+  $scope.manuallyShowDemographics = function () {
+    $scope.manualShowDemographics = true;
+    console.log('happening 2');
   };
 
   var GET = getUrlVars();

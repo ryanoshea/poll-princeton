@@ -321,7 +321,15 @@ app.get('/polls/get/:pid/:netid/:ticket', function(req, res) {
           ret.question = poll.question;
           ret.choices = poll.choices;
           ret.responses = poll.responses;
-          ret.demographics = poll.demographics;
+          var numResponses = poll.responses.reduce(function(a, b) {
+            return a + b;
+          });
+          if (numResponses >= 5) {
+            ret.demographics = poll.demographics;
+          }
+          else {
+            ret.demographics = null;
+          }
           ret.time = poll.time;
           ret.pid = poll.pid;
           ret.score = poll.score;

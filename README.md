@@ -10,8 +10,8 @@ You can read about who we are, the stack we deployed, and who we have to thank i
 
 ## How To Deploy
 
-- Get an Apache server running (I used XAMPP) to actually serve the app.
-- Create a symlink between the Apache `htdocs` folder and the `/frontend` directory in this repository. For example, if your symlink is at `htdocs/pp`, browsing to `http://localhost/pp` will serve up the app. You may have to configure Apache to follow symlinks.  
+- Get an Apache server running (I used XAMPP on Windows) to actually serve the app.
+- Create a symlink between the Apache `htdocs` or `www` folder and the `/frontend` directory in this repository. For example, if your symlink is at `htdocs/pp`, browsing to `http://localhost/pp` will serve up the app. You may have to configure Apache to follow symlinks.  
 - Edit Apache's `httpd.conf` by adding `ProxyPass /ppapi/ http://localhost:3000/` to the end and making sure the `mod_proxy` and `mod_proxy_http` modules are turned on. This redirects API requests to `http://localhost/ppapi` to port 3000, where our node.js backend runs. 
 - Install node.js, cd into the `/backend/node` directory.
 - Install the necessary node packages via `npm install express mongoose body-parser multer async fs`
