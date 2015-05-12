@@ -506,7 +506,7 @@ app.post('/polls/vote', function (req, res) {
           var updateAuthorKarma;
           console.log("negated " + negated);
 
-          // This clusterfuck
+          // Determine the proper way to record the vote
           if (upOrDown) {
             if (reversed) {
               update = {$inc: {upvotes:1, downvotes: -1, score:2}};
