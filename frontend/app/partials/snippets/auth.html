@@ -1,12 +1,12 @@
-<div id="auth" ng-controller="authController">
-  <div class="dropdown" ng-hide="username == ''">
+<div id="auth"data-ng-controller="authController">
+  <div class="dropdown"data-ng-hide="username == ''">
     <button class="btn btn-pp dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
       <span class="badge user-karma" id="karma-navbar" title="Your PollKarma. Get PollKarma by earning upvotes or voting on other polls."></span><i class="fa fa-user"></i> <i class="fa fa-caret-down"></i>
     </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
       <li role="presentation" class="dropdown-header">{{username}}<span class="badge pull-right user-karma" id="karma-dropdown" title="Your PollKarma. Get PollKarma by earning upvotes or voting on other polls."></span></li>
       <li role="presentation"><a href="#/account" role="menuitem" tabindex="-1">My Polls</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="logout()">Logout</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1"data-ng-click="logout()">Logout</a></li>
     </ul>
   </div>
 </div>

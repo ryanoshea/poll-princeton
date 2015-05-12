@@ -3,42 +3,42 @@
   <div id="content">
 
     <div class="scoring">
-      <a class="vote-submit upvote" ng-click="upVote(poll.pid)" ng-class="{chosen: poll.userVote == true, unchosen: poll.userVote == false}">good poll</a>
+      <a class="vote-submit upvote" data-ng-click="upVote(poll.pid)" data-ng-class="{chosen: poll.userVote == true, unchosen: poll.userVote == false}">good poll</a>
       <p class="score"><strong>{{poll.score}}</strong></p>
-      <a class="vote-submit downvote" ng-click="downVote(poll.pid)" ng-class="{chosen: poll.userVote == false, unchosen: poll.userVote == true}">bad poll</a>
+      <a class="vote-submit downvote" data-ng-click="downVote(poll.pid)" data-ng-class="{chosen: poll.userVote == false, unchosen: poll.userVote == true}">bad poll</a>
     </div>
 
     <div class="poll-content">
-      <p class="poll-controls"><a href class="pp-grey" ng-click="deletePoll()" ng-show="poll.isAuthor || netid === 'roshea' || netid === 'marchant' || netid === 'hzlu'"><i class="fa fa-trash"></i> &nbsp; Delete Poll</a>
-      <a href class="pp-grey" ng-click="reportPoll()"> <i class="fa fa-minus-circle"></i> &nbsp; Report Poll</a>
+      <p class="poll-controls"><a href="" class="pp-grey" data-ng-click="deletePoll()" data-ng-show="poll.isAuthor || netid === 'roshea' || netid === 'marchant' || netid === 'hzlu'"><i class="fa fa-trash"></i> &nbsp; Delete Poll</a>
+      <a href="" class="pp-grey" data-ng-click="reportPoll()"> <i class="fa fa-minus-circle"></i> &nbsp; Report Poll</a>
       </p>
       <p class="label">SOMEONE IN PRINCETON WANTS TO KNOW:</p>
       <p class="question">{{poll.question}}</p>
-      <p class="poll-meta"><i class="fa fa-clock-o"></i>&nbsp;&nbsp;Posted {{poll.humanTime}} &nbsp;&nbsp;&nbsp;&nbsp; <br class="mobile-break"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;{{poll.numResponses}} <span ng-show="poll.numResponses !== 1">people</span><span ng-hide="poll.numResponses !== 1">person</span> responded</p>
+      <p class="poll-meta"><i class="fa fa-clock-o"></i>&nbsp;&nbsp;Posted {{poll.humanTime}} &nbsp;&nbsp;&nbsp;&nbsp; <br class="mobile-break"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;{{poll.numResponses}} <span data-ng-show="poll.numResponses !== 1">people</span><span data-ng-hide="poll.numResponses !== 1">person</span> responded</p>
       <p class="label" id="label-choices">CHOICES:</p>
       <div class="choices">
-        <div class="choice" ng-repeat="c in poll.choices track by $index">
+        <div class="choice" data-ng-repeat="c in poll.choices track by $index">
           <div class="text-wrapper">
             <p>
-              <a href="" ng-click="respond($index);" ng-class="{selected: poll.userResponse == $index, unselected: poll.userResponse != -1 && poll.userResponse != $index}">
-                <img src="img/radio-button-on.svg" ng-show="poll.userResponse == $index" class="pp-radio">
-                <img src="img/radio-button-off.svg" ng-hide="poll.userResponse == $index" class="pp-radio">
+              <a href="" data-ng-click="respond($index);" data-ng-class="{selected: poll.userResponse == $index, unselected: poll.userResponse != -1 && poll.userResponse != $index}">
+                <img src="img/radio-button-on.svg" data-ng-show="poll.userResponse == $index" class="pp-radio">
+                <img src="img/radio-button-off.svg" data-ng-hide="poll.userResponse == $index" class="pp-radio">
                 <span class="choice-text">{{c}}</span>
               </a>
             </p>
           </div>
-          <div class="choice-bar-wrapper" ng-show="poll.userResponse != -1 || manualShowDemographics">
-            <div class="choice-bar" id="choice-bar-{{$index}}" ng-style="{width: barWidths[$index]}">
+          <div class="choice-bar-wrapper" data-ng-show="poll.userResponse != -1 || manualShowDemographics">
+            <div class="choice-bar" id="choice-bar-{{$index}}" data-ng-style="{width: barWidths[$index]}">
               <p style="visibility: hidden">.</p>
             </div>
-            <span class="choice-tally">{{poll.responses[$index]}} user<span ng-hide="poll.responses[$index] == 1">s</span></span>
+            <span class="choice-tally">{{poll.responses[$index]}} user<span data-ng-hide="poll.responses[$index] == 1">s</span></span>
           </div>
           <div style="height: 0; width: 100%; clear: both; visibility: hidden"><span>.</span></div>
         </div>
       </div>
     </div>
     <div class="centered">
-      <button id="show-demographics" class="btn btn-pp" ng-click="manuallyShowDemographics(); showDemographics();" ng-hide="manualShowDemographics || poll.userResponse != -1">Just show me the results.</button>
+      <button id="show-demographics" class="btn btn-pp" data-ng-click="manuallyShowDemographics(); showDemographics();" data-ng-hide="manualShowDemographics || poll.userResponse != -1">Just show me the results.</button>
     </div>
     <p class="blurb" id="not-enough-responses">Not enough people have responded to see demographic data.</p>
     <div class="lower-plots">
@@ -46,77 +46,77 @@
         See how the University community voted on this poll:
       </p>
       <div id="plot-tab-controls">
-        <p class="centered">DEMOGRAPHICS: <a class="pp" ng-click="switchDemoCategory('major')" ng-class="{selected: demoCategory === 'major'}">MAJOR</a> | <a class="pp" ng-click="switchDemoCategory('class')" ng-class="{selected: demoCategory === 'class'}">CLASS</a> | <a class="pp" ng-click="switchDemoCategory('college')" ng-class="{selected: demoCategory === 'college'}">RES. COLLEGE</a></p>
+        <p class="centered">DEMOGRAPHICS: <a class="pp" data-ng-click="switchDemoCategory('major')" data-ng-class="{selected: demoCategory === 'major'}">MAJOR</a> | <a class="pp" data-ng-click="switchDemoCategory('class')" data-ng-class="{selected: demoCategory === 'class'}">CLASS</a> | <a class="pp" data-ng-click="switchDemoCategory('college')" data-ng-class="{selected: demoCategory === 'college'}">RES. COLLEGE</a></p>
       </div>
       <div class="plot-tab centered" id="plot-major">
         <div class="plot">
           <h4>A.B. Majors</h4>
-          <span class="no-respondents" ng-show="demoTallies.ab == 0">No respondents.</span>
-          <div id="plot-ab" class="piechart" ng-class="{plotinvisible: demoTallies.ab == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.ab == 0">No respondents.</span>
+          <div id="plot-ab" class="piechart" data-ng-class="{plotinvisible: demoTallies.ab == 0}"></div>
         </div>
         <div class="plot">
           <h4>B.S.E. Majors</h4>
-          <span class="no-respondents" ng-show="demoTallies.bse == 0">No respondents.</span>
-          <div id="plot-bse" class="piechart" ng-class="{plotinvisible: demoTallies.bse == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.bse == 0">No respondents.</span>
+          <div id="plot-bse" class="piechart" data-ng-class="{plotinvisible: demoTallies.bse == 0}"></div>
         </div>
       </div>
       <div class="plot-tab centered" id="plot-class">
-        <div class="plot"  ng-hide="seniorYear">
+        <div class="plot"  data-ng-hide="seniorYear">
           <h4>Class of 2015</h4>
-          <span class="no-respondents" ng-show="demoTallies.class2015 == 0">No respondents.</span>
-          <div id="plot-2015" class="piechart" ng-class="{plotinvisible: demoTallies.class2015 == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.class2015 == 0">No respondents.</span>
+          <div id="plot-2015" class="piechart" data-ng-class="{plotinvisible: demoTallies.class2015 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2016</h4>
-          <span class="no-respondents" ng-show="demoTallies.class2016 == 0">No respondents.</span>
-          <div id="plot-2016" class="piechart" ng-class="{plotinvisible: demoTallies.class2016 == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.class2016 == 0">No respondents.</span>
+          <div id="plot-2016" class="piechart" data-ng-class="{plotinvisible: demoTallies.class2016 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2017</h4>
-          <span class="no-respondents" ng-show="demoTallies.class2017 == 0">No respondents.</span>
-          <div id="plot-2017" class="piechart" ng-class="{plotinvisible: demoTallies.class2017 == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.class2017 == 0">No respondents.</span>
+          <div id="plot-2017" class="piechart" data-ng-class="{plotinvisible: demoTallies.class2017 == 0}"></div>
         </div>
         <div class="plot">
           <h4>Class of 2018</h4>
-          <span class="no-respondents" ng-show="demoTallies.class2018 == 0">No respondents.</span>
-          <div id="plot-2018" class="piechart" ng-class="{plotinvisible: demoTallies.class2018 == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.class2018 == 0">No respondents.</span>
+          <div id="plot-2018" class="piechart" data-ng-class="{plotinvisible: demoTallies.class2018 == 0}"></div>
         </div>
-        <div class="plot" ng-show="seniorYear">
+        <div class="plot" data-ng-show="seniorYear">
           <h4>Class of 2019</h4>
-          <span class="no-respondents" ng-show="demoTallies.class2019 == 0">No respondents.</span>
-          <div id="plot-2019" class="piechart" ng-class="{plotinvisible: demoTallies.class2019 == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.class2019 == 0">No respondents.</span>
+          <div id="plot-2019" class="piechart" data-ng-class="{plotinvisible: demoTallies.class2019 == 0}"></div>
         </div>
       </div>
       <div class="plot-tab centered" id="plot-college">
         <div class="plot">
           <h4>Butler</h4>
-          <span class="no-respondents" ng-show="demoTallies.butler == 0">No respondents.</span>
-          <div id="plot-butler" class="piechart" ng-class="{plotinvisible: demoTallies.butler == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.butler == 0">No respondents.</span>
+          <div id="plot-butler" class="piechart" data-ng-class="{plotinvisible: demoTallies.butler == 0}"></div>
         </div>
         <div class="plot">
           <h4>Forbes</h4>
-          <span class="no-respondents" ng-show="demoTallies.forbes == 0">No respondents.</span>
-          <div id="plot-forbes" class="piechart" ng-class="{plotinvisible: demoTallies.forbes == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.forbes == 0">No respondents.</span>
+          <div id="plot-forbes" class="piechart" data-ng-class="{plotinvisible: demoTallies.forbes == 0}"></div>
         </div>
         <div class="plot">
           <h4>Mathey</h4>
-          <span class="no-respondents" ng-show="demoTallies.mathey == 0">No respondents.</span>
-          <div id="plot-mathey" class="piechart" ng-class="{plotinvisible: demoTallies.mathey == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.mathey == 0">No respondents.</span>
+          <div id="plot-mathey" class="piechart" data-ng-class="{plotinvisible: demoTallies.mathey == 0}"></div>
         </div>
         <div class="plot">
           <h4>Rocky</h4>
-          <span class="no-respondents" ng-show="demoTallies.rocky == 0">No respondents.</span>
-          <div id="plot-rocky" class="piechart" ng-class="{plotinvisible: demoTallies.rocky == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.rocky == 0">No respondents.</span>
+          <div id="plot-rocky" class="piechart" data-ng-class="{plotinvisible: demoTallies.rocky == 0}"></div>
         </div>
         <div class="plot">
           <h4>Whitman</h4>
-          <span class="no-respondents" ng-show="demoTallies.whitman == 0">No respondents.</span>
-          <div id="plot-whitman" class="piechart" ng-class="{plotinvisible: demoTallies.whitman == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.whitman == 0">No respondents.</span>
+          <div id="plot-whitman" class="piechart" data-ng-class="{plotinvisible: demoTallies.whitman == 0}"></div>
         </div>
         <div class="plot">
           <h4>Wilson</h4>
-          <span class="no-respondents" ng-show="demoTallies.wilson == 0">No respondents.</span>
-          <div id="plot-wilson" class="piechart" ng-class="{plotinvisible: demoTallies.wilson == 0}"></div>
+          <span class="no-respondents" data-ng-show="demoTallies.wilson == 0">No respondents.</span>
+          <div id="plot-wilson" class="piechart" data-ng-class="{plotinvisible: demoTallies.wilson == 0}"></div>
         </div>
       </div>
     </div>
