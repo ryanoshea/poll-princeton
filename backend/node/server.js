@@ -49,7 +49,7 @@ var pollSchema = mongoose.Schema({
   upvotes: Number,
   downvotes: Number,
   score: Number,
-  reports: Number,
+  reports: Number
 });
 
 var Poll = mongoose.model('Poll', pollSchema);
@@ -129,24 +129,24 @@ app.post('/polls/submit', function (req, res) {
     else {
       console.log('User ' + user + ' is authorized to make this request.');
 
-      var err = false;
+      var pollErr = false;
       // Validity checking
       if (req.body.question.length > 350) {
         res.status(413).send({err: true, msg: 'You submitted a poll with a question longer than is allowed.'});
-        err = true;
+        pollErr = true;
       }
       if (req.body.choices.length > 10) {
        res.status(413).send({err: true, msg: 'You submitted a poll with more responses than is allowed.'});
-       err = true;
+       pollErr = true;
       }
       for (var i in req.body.choices) {
         if (req.body.choices[i].length > 144) {
           res.status(413).send({err: true, msg: 'You submitted a poll with a choice that is longer than is allowed.'});
-          err = true;
+          pollErr = true;
         }
       }
 
-      if (!err) {
+      if (!pollErr) {
         console.log(req.body);
         var newPoll = {};
         newPoll.question = req.body.question;

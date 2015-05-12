@@ -1,6 +1,5 @@
 (function () {
 
-  "use strict";
   var cont = angular.module('poll-princeton.controllers');
 
   cont.controller('accountController', function ($scope, $filter, $http, $location) {
