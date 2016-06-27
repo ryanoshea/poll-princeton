@@ -4,6 +4,10 @@
 
 A social polling app written by Ryan O'Shea, Tess Marchant, and Henry Lu for a semester project in COS 333 at Princeton.
 
+While the site was taken down around a year after launch, you can still [see what it looked like and how it looked](https://www.behance.net/gallery/25980453/PollPrinceton-Social-polling-for-Princeton-students).
+
+![](/frontend/img/facebook-share-panel.jpg)
+
 ## Technology Colophon, Credits, Details
 
 You can read about who we are, the stack we deployed, and who we have to thank in `/frontend/humans.txt`.
